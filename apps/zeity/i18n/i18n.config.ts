@@ -259,6 +259,14 @@ export default defineI18nConfig(() => ({
           success: 'Organisation deleted successfully',
           error: 'Error deleting organisation',
         },
+        quota: {
+          members: 'Members & Invitations',
+          exceeded: {
+            title: 'Quota Exceeded',
+            description:
+              'You have exceeded your organisation quota. Please contact support.',
+          },
+        },
         role: 'Role',
         invitationDate: 'Invitation Date',
       },
@@ -517,6 +525,14 @@ export default defineI18nConfig(() => ({
             'Möchten Sie diese Organisation wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
           success: 'Organisation erfolgreich gelöscht',
           error: 'Fehler beim Löschen der Organisation',
+        },
+        quota: {
+          members: 'Mitglieder & Einladungen',
+          exceeded: {
+            title: 'Kontingent überschritten',
+            description:
+              'Sie haben Ihr Organisationskontingent überschritten. Bitte kontaktieren Sie den Support.',
+          },
         },
         role: 'Rolle',
         invitationDate: 'Einladungsdatum',

@@ -1,0 +1,1 @@
+ALTER TABLE "organisation" ADD COLUMN "quota" jsonb DEFAULT '{}'::jsonb NOT NULL;

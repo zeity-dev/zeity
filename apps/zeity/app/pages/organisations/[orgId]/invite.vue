@@ -12,7 +12,11 @@ const emit = defineEmits(['refresh'])
 </script>
 
 <template>
-    <UPageCard>
-        <OrganisationInvites :organisation-id="org.id" :invites="org?.invites || []" @refresh="emit('refresh')" />
-    </UPageCard>
+    <div class="space-y-6">
+        <OrganisationUserQuotaCard :org="org" />
+
+        <UPageCard>
+            <OrganisationInvites :organisation-id="org.id" :invites="org?.invites || []" @refresh="emit('refresh')" />
+        </UPageCard>
+    </div>
 </template>
