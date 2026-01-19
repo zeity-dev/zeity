@@ -10,28 +10,27 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql
 
-  minio:
-    image: minio/minio
+  storage:
+    image: rustfs/rustfs
     ports:
       - 9000:9000
       - 9001:9001
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-    command: server /data --console-address ":9001"
+      RUSTFS_ACCESS_KEY: storage
+      RUSTFS_SECRET_KEY: storage123
     volumes:
-      - minio-data:/data
+      - storage-data:/data
 
-  minio-init:
+  storage-init:
     image: minio/mc
     restart: "no"
     depends_on:
-      - minio
+      - storage
     entrypoint: >
       sh -c "
         sleep 10 &&
-        mc alias set local http://minio:9000 minio minio123 &&
-        mc mb local/zeity || true
+        mc alias set local http://storage:9000 storage storage123 &&
+        mc mb local/zeity --ignore-existing
       "
 
   maildev:
@@ -47,20 +46,20 @@ services:
     depends_on:
       - postgres
       - maildev
-      - minio
+      - rustfs
     ports:
       - 3000:3000
     environment:
       ZEITY_DATABASE_URL: postgresql://postgres:postgres@postgres/zeity
       ZEITY_MAILER_SMTP_HOST: maildev
       ZEITY_MAILER_SMTP_PORT: 1025
-      ZEITY_S3_END_POINT: http://minio:9000
-      ZEITY_S3_ACCESSKEY: minio
-      ZEITY_S3_SECRETKEY: minio123
+      ZEITY_S3_END_POINT: http://rustfs:9000
+      ZEITY_S3_ACCESSKEY: rustfs
+      ZEITY_S3_SECRETKEY: rustfs123
       ZEITY_S3_BUCKET: zeity
       ZEITY_SESSION_PASSWORD: abcdefghijklmnopqrstuvwxyz1234567890
       NODE_ENV: production
 
 volumes:
   pg-data:
-  minio-data:
+  storage-data:
