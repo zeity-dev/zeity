@@ -139,8 +139,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/zeity',
     s3: {
-      accessKey: 'minio',
-      secretKey: 'minio123',
+      accessKey: 'storage',
+      secretKey: 'storage123',
       endPoint: 'http://localhost:9000',
       bucket: 'zeity',
       region: 'auto',
