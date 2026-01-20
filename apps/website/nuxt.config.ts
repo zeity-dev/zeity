@@ -1,5 +1,5 @@
 const isProd = process.env.NODE_ENV === 'production';
-const baseUrl = 'https://www.zeity.co';
+const baseUrl = 'https://www.zeity.dev';
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
