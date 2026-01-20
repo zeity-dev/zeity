@@ -15,12 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Determine Docker image
+        id: image
+        run: |
+          if [[ "${{ github.event_name }}" == "release" && "${{ github.event.action }}" == "published" ]]; then
+            echo "image=ghcr.io/zeity-dev/zeity" >> $GITHUB_ENV
+          else
+            echo "image=ghcr.io/zeity-dev/zeity-nightly" >> $GITHUB_ENV
+          fi
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          # list of Docker images to use as base name for tags
-          images: ghcr.io/zeity-dev/zeity
+          # use the dynamically determined image name
+          images: ${{ env.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
