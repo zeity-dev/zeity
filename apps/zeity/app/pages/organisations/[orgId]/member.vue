@@ -16,8 +16,6 @@ const emit = defineEmits(['refresh'])
             <OrganisationUserQuotaInfo :org="org" />
         </UPageCard>
 
-        <UPageCard>
-            <OrganisationMembers :organisation-id="org.id" :members="org.members || []" @refresh="emit('refresh')" />
-        </UPageCard>
+        <OrganisationMembers :organisation-id="org.id" :members="org.members || []" @refresh="emit('refresh')" />
     </div>
 </template>

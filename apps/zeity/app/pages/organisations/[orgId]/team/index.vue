@@ -10,7 +10,5 @@ defineProps({
 </script>
 
 <template>
-    <UPageCard>
-        <OrganisationTeamsList :organisation-id="org.id" />
-    </UPageCard>
+    <OrganisationTeamsList :organisation-id="org.id" />
 </template>
