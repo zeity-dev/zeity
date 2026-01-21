@@ -117,8 +117,8 @@ function deleteOrganisation() {
 <template>
     <div class="space-y-6">
         <UPageCard>
-            <div class="flex flex-col items-center justify-center">
-                <UAvatar :src="getOrganisationImagePath(org)" :alt="org?.name" size="3xl" class="mb-4" />
+            <div class="flex flex-col items-center justify-center gap-2">
+                <OrganisationImage :org="org" size="144" />
                 <UButton v-if="isOrgAdmin" :loading="saving" icon="i-lucide-camera" variant="subtle"
                     @click="changeImage">
                     {{ $t('common.upload') }}
@@ -165,8 +165,6 @@ function deleteOrganisation() {
                         </UButton>
                     </div>
                 </template>
-
-
             </UModal>
         </UPageCard>
     </div>
