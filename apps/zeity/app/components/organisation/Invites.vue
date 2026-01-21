@@ -91,7 +91,7 @@ function getInviteActionItems(row: Row<OrganisationInvite>) {
             label: t('organisations.invites.resend'),
             icon: 'i-lucide-send',
             onSelect() {
-                ressendInvite(row.original.id)
+                resendInvite(row.original.id)
             }
         },
         {
@@ -126,7 +126,7 @@ function createInvite(event: FormSubmitEvent<InviteSchema>) {
     })
 }
 
-function ressendInvite(id: string) {
+function resendInvite(id: string) {
     $fetch(`/api/organisation/${params.organisationId}/invite/${id}/resend`, {
         method: 'POST'
     }).then(() => {
@@ -197,6 +197,9 @@ function toggleCreateModal() {
                 {{ $t('organisations.invites.create') }}
             </UButton>
         </div>
-        <UTable :data="invites" :columns="invitesColumns" :empty="$t('organisations.invites.empty')" />
+        <div class="grid relative overflow-y-auto overflow-x-hidden w-full">
+            <UTable :data="invites" :columns="invitesColumns" :empty="$t('organisations.invites.empty')" class="" />
+
+        </div>
     </div>
 </template>
