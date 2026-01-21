@@ -277,9 +277,13 @@ export default defineI18nConfig(() => ({
         organisation: 'Organisation',
         saveSuccess: 'User saved successfully',
         saveError: 'Error saving user',
-        delete: 'Delete User',
-        deleteSuccess: 'User deleted successfully',
-        deleteError: 'Error deleting user',
+        delete: {
+          title: 'Delete User',
+          description:
+            'Are you sure you want to delete your account? This action cannot be undone.',
+          success: 'User deleted successfully',
+          error: 'Error deleting user',
+        },
         verify: 'Verify',
         verificationSuccess: 'Email verified successfully',
         verificationError: 'Error verifying email',
@@ -544,9 +548,13 @@ export default defineI18nConfig(() => ({
         organisation: 'Organisation',
         saveSuccess: 'Benutzer erfolgreich gespeichert',
         saveError: 'Fehler beim Speichern des Benutzers',
-        delete: 'Benutzer löschen',
-        deleteSuccess: 'Benutzer erfolgreich gelöscht',
-        deleteError: 'Fehler beim Löschen des Benutzers',
+        delete: {
+          title: 'Benutzer löschen',
+          description:
+            'Möchten Sie diesen Benutzer wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
+          success: 'Benutzer erfolgreich gelöscht',
+          error: 'Fehler beim Löschen des Benutzers',
+        },
         verify: 'Verifizieren',
         verificationSuccess: 'E-Mail erfolgreich verifiziert',
         verificationError: 'Fehler bei der E-Mail-Verifizierung',

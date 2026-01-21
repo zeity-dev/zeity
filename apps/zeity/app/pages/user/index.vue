@@ -1,99 +1,145 @@
 <script setup lang="ts">
-definePageMeta({
-    middleware: 'auth'
-})
+import type { User } from '@zeity/database/user';
+import type { Organisation } from '@zeity/database/organisation';
+
+const props = defineProps({
+  pending: {
+    type: Boolean,
+    default: false,
+  },
+  user: {
+    type: Object as PropType<User>,
+    required: true,
+  },
+  organisations: {
+    type: Array as PropType<Organisation[]>,
+    required: true,
+  },
+});
+
+const user = ref<User>(props.user);
 
 const { t } = useI18n();
 const toast = useToast();
-const { deleteUser, fetchUser } = useUser();
-const { currentOrganisationId } = useOrganisation();
-
-const { pending, data } = await fetchUser();
+const { deleteUser } = useUser();
+const deleteModalOpen = ref(false);
 
 const noOrganisations = computed(() => {
-    if (pending) {
-        return false;
-    }
-    return (data.value?.organisations.length ?? 0) < 1
+  return (props.organisations.length ?? 0) < 1;
 });
 
 function logout() {
-    useAuth().logout()
+  useAuth().logout();
 }
 
 async function handleDeleteUser() {
-    // TODO: add fancy modal
-    const result = window.confirm('Are you sure you want to delete your account?');
+  // TODO: add fancy modal
+  const result = window.confirm(
+    'Are you sure you want to delete your account?',
+  );
 
-    if (!result) {
-        return
-    }
+  if (!result) {
+    return;
+  }
 
-    await deleteUser().then(async () => {
-        toast.add({
-            color: 'success',
-            title: t('user.deleteSuccess'),
-        })
-        await navigateTo('/auth')
-    }).catch((error) => {
-        console.error(error)
-        toast.add({
-            color: 'error',
-            title: t('user.deleteError'),
-        })
+  await deleteUser()
+    .then(async () => {
+      toast.add({
+        color: 'success',
+        title: t('user.delete.success'),
+      });
+      await navigateTo('/auth');
     })
+    .catch((error) => {
+      console.error(error);
+      toast.add({
+        color: 'error',
+        title: t('user.delete.error'),
+      });
+    });
 }
 </script>
 
 <template>
-    <div class="my-3">
-        <UCard class="max-w-md m-auto">
-            <template #header>
-                <h3 class="text-lg font-semibold leading-6">
-                    {{ $t('user.title') }}
-                </h3>
-            </template>
+  <div class="space-y-6">
+    <UPageCard>
+      <template #header>
+        <h3 class="text-lg font-semibold leading-6">
+          {{ $t('user.title') }}
+        </h3>
+      </template>
 
-            <div class="space-y-4">
+      <div class="space-y-4">
+        <UAlert
+          v-if="noOrganisations"
+          icon="i-lucide-circle-alert"
+          color="primary"
+          variant="subtle"
+          title="Create Organisation"
+          description="Create an organisation to start using zeity."
+          :actions="[
+            {
+              label: $t('organisations.create'),
+              icon: 'i-lucide-plus',
+              to: '/organisations/create',
+            },
+          ]"
+        />
 
-                <UAlert v-if="noOrganisations" icon="i-lucide-circle-alert" color="primary" variant="subtle"
-                    title="Create Organisation" description="Create an organisation to start using zeity." :actions="[
-                        { label: $t('organisations.create'), icon: 'i-lucide-plus', to: '/organisations/create' },
-                    ]" />
+        <UserForm v-model="user" :loading="pending" />
 
-                <UserForm v-model="data.user" :loading="pending" />
+        <div class="flex flex-col gap-2 justify-between">
+          <UButton
+            color="neutral"
+            block
+            icon="i-lucide-arrow-left-from-line"
+            @click="logout"
+          >
+            {{ $t('auth.logout') }}
+          </UButton>
+        </div>
+      </div>
+    </UPageCard>
 
-                <USeparator />
+    <UPageCard class="bg-gradient-to-tl from-error/10 from-5% to-default">
+      <h3
+        class="mb-1 inline-block text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200"
+      >
+        {{ $t('user.delete.title') }}
+      </h3>
 
-                <UFormField :label="$t('user.organisation')" size="lg">
-                    <template v-if="pending">
-                        <USkeleton class="h-13.5 w-full" />
-                    </template>
-                    <template v-else-if="data?.organisations.length">
-                        <URadioGroup v-model="currentOrganisationId" :items="data?.organisations" value-key="id"
-                            label-key="name" variant="card" />
-                    </template>
-                    <template v-else>
-                        <p class="text-dimmed">
-                            {{ $t('organisations.empty.title') }}
-                        </p>
-                    </template>
-                </UFormField>
-                <USeparator />
+      <UModal
+        v-model:open="deleteModalOpen"
+        :title="$t('user.delete.title')"
+        :description="$t('user.delete.description')"
+      >
+        <UButton
+          block
+          size="lg"
+          variant="subtle"
+          color="error"
+          icon="i-lucide-triangle-alert"
+          @click="deleteModalOpen = true"
+        >
+          {{ $t('user.delete.title') }}
+        </UButton>
 
-                <div class="flex flex-col gap-2 justify-between">
-                    <UButton color="neutral" block icon="i-lucide-arrow-left-from-line" @click="logout">
-                        {{ $t('auth.logout') }}
-                    </UButton>
+        <template #footer>
+          <div class="flex justify-between w-full">
+            <UButton
+              type="button"
+              variant="subtle"
+              @click="deleteModalOpen = false"
+            >
+              {{ $t('common.cancel') }}
+            </UButton>
 
-                    <UButton color="error" block icon="i-lucide-triangle-alert" @click="handleDeleteUser">
-                        {{ $t('user.delete') }}
-                    </UButton>
-                </div>
-            </div>
-
-        </UCard>
-
-    </div>
-
+            <UButton color="error" @click="deleteUser">
+              {{ $t('common.delete') }}
+            </UButton>
+          </div>
+        </template>
+      </UModal>
+    </UPageCard>
+  </div>
 </template>
