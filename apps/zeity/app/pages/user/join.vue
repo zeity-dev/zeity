@@ -23,7 +23,7 @@ async function acceptInvite() {
     })
         .then(() => {
             return useToast().add({
-                title: 'Success',
+                title: t('common.success'),
                 description: t('organisations.join.acceptSuccess'),
                 color: 'success'
             })
@@ -32,7 +32,7 @@ async function acceptInvite() {
         .catch((error) => {
             console.error(error)
             useToast().add({
-                title: 'Error',
+                title: t('common.error'),
                 description: t('organisations.join.acceptError'),
                 color: 'error'
             })

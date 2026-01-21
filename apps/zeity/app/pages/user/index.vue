@@ -33,15 +33,6 @@ function logout() {
 }
 
 async function handleDeleteUser() {
-  // TODO: add fancy modal
-  const result = window.confirm(
-    'Are you sure you want to delete your account?',
-  );
-
-  if (!result) {
-    return;
-  }
-
   await deleteUser()
     .then(async () => {
       toast.add({
@@ -134,7 +125,7 @@ async function handleDeleteUser() {
               {{ $t('common.cancel') }}
             </UButton>
 
-            <UButton color="error" @click="deleteUser">
+            <UButton color="error" @click="handleDeleteUser">
               {{ $t('common.delete') }}
             </UButton>
           </div>
