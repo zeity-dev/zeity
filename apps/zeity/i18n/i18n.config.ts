@@ -260,7 +260,7 @@ export default defineI18nConfig(() => ({
           error: 'Error deleting organisation',
         },
         quota: {
-          members: 'Members & Invitations',
+          members: 'Members & Invitations Quota',
           exceeded: {
             title: 'Quota Exceeded',
             description:
@@ -527,7 +527,7 @@ export default defineI18nConfig(() => ({
           error: 'Fehler beim Löschen der Organisation',
         },
         quota: {
-          members: 'Mitglieder & Einladungen',
+          members: 'Mitglieder & Einladungen Kontingent',
           exceeded: {
             title: 'Kontingent überschritten',
             description:

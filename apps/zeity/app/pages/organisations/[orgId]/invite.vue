@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { Organisation } from '@zeity/database/organisation';
-import type { OrganisationInvite } from '@zeity/database/organisation-invite';
+import type { OrganisationWithMembersAndInvites } from '~/types/organisation';
 
 defineProps({
     org: {
-        type: Object as PropType<Organisation & { invites: OrganisationInvite[] }>,
+        type: Object as PropType<OrganisationWithMembersAndInvites>,
         required: true
     }
 })
@@ -13,7 +12,9 @@ const emit = defineEmits(['refresh'])
 
 <template>
     <div class="space-y-6">
-        <OrganisationUserQuotaCard :org="org" />
+        <UPageCard v-if="org.quota.members">
+            <OrganisationUserQuotaInfo :org="org" />
+        </UPageCard>
 
         <UPageCard>
             <OrganisationInvites :organisation-id="org.id" :invites="org?.invites || []" @refresh="emit('refresh')" />
