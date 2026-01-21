@@ -6,7 +6,7 @@ export function useNavigation() {
     [
       {
         label: t('navigation.timer'),
-        to: '/',
+        to: '/timer',
         icon: 'i-lucide-clock',
       },
       {
@@ -42,7 +42,7 @@ export function useNavigation() {
   const horizontalMenu = computed(() => [
     {
       label: t('navigation.timer'),
-      to: '/',
+      to: '/timer',
       icon: 'i-lucide-clock',
     },
     {
