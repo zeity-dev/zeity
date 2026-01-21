@@ -15,6 +15,13 @@
       "when": 1768209081905,
       "tag": "0001_loving_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768841637807,
+      "tag": "0002_clever_starjammers",
+      "breakpoints": true
     }
   ]
 }

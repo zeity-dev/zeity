@@ -5,6 +5,7 @@ import { organisationInvites } from '@zeity/database/organisation-invite';
 
 import { sendInviteMail } from '~~/server/utils/user-invite';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
+import { checkOrganisationMembersQuota } from '~~/server/utils/organisation-quota';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -13,7 +14,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       email: z.email(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!body.success) {
@@ -47,14 +48,22 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const organisation = await useDrizzle()
+  if ((await checkOrganisationMembersQuota(params.data.orgId)) === false) {
+    throw createError({
+      statusCode: 403,
+      message: 'User quota exceeded',
+    });
+  }
+
+  const db = useDrizzle();
+  const organisation = await db
     .select()
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
     .limit(1)
     .then((res) => res[0]);
 
-  const result = await useDrizzle()
+  const result = await db
     .insert(organisationInvites)
     .values({
       email: body.data.email,

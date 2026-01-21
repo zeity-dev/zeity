@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
       id: organisations.id,
       name: organisations.name,
       image: organisations.image,
+      quota: organisations.quota,
     })
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
