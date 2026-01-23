@@ -12,17 +12,17 @@ const { isStarted, loading } = storeToRefs(store);
 // );
 
 const startTimeButton = {
-    icon: 'i-lucide-play',
+    icon: 'i-ri-play-fill',
     label: 'times.start',
     onClick: onToggle,
 }
 const stopTimeButton = {
-    icon: 'i-lucide-square',
+    icon: 'i-ri-stop-fill',
     label: 'times.stop',
     onClick: onToggle,
 }
 const nextTimeButton = {
-    icon: 'i-lucide-skip-forward',
+    icon: 'i-ri-skip-forward-fill',
     label: 'times.recordNext',
     onClick: onStartNext,
 }
@@ -32,7 +32,7 @@ const nextTimeButton = {
 //     onClick: onStartBreak,
 // }
 // const stopBreakButton = {
-//     icon: 'i-lucide-play',
+//     icon: 'i-ri-play-fill',
 //     label: 'times.break.continue',
 //     onClick: onStopBreak,
 // }

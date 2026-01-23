@@ -135,6 +135,9 @@ importers:
       '@iconify-json/lucide':
         specifier: ^1.2.86
         version: 1.2.86
+      '@iconify-json/ri':
+        specifier: ^1.2.7
+        version: 1.2.7
       '@iconify-json/simple-icons':
         specifier: ^1.2.67
         version: 1.2.67
