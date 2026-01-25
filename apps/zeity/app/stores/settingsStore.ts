@@ -8,6 +8,7 @@ interface SettingsState {
   openTimeDetailsOnStart: boolean;
   openTimeDetailsOnStop: boolean;
   calculateBreaks: boolean;
+  roundTimes: boolean;
 }
 
 const defaultSettings: SettingsState = {
@@ -17,6 +18,7 @@ const defaultSettings: SettingsState = {
   openTimeDetailsOnStart: true,
   openTimeDetailsOnStop: false,
   calculateBreaks: false,
+  roundTimes: false,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -42,6 +44,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const openTimeDetailsOnStart = ref(defaultSettings.openTimeDetailsOnStart);
   const openTimeDetailsOnStop = ref(defaultSettings.openTimeDetailsOnStop);
   const calculateBreaks = ref(defaultSettings.calculateBreaks);
+  const roundTimes = ref(defaultSettings.roundTimes);
 
   const settings = computed<SettingsState>(() => ({
     locale: locale.value,
@@ -50,6 +53,7 @@ export const useSettingsStore = defineStore('settings', () => {
     openTimeDetailsOnStart: openTimeDetailsOnStart.value,
     openTimeDetailsOnStop: openTimeDetailsOnStop.value,
     calculateBreaks: calculateBreaks.value,
+    roundTimes: roundTimes.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
@@ -72,6 +76,10 @@ export const useSettingsStore = defineStore('settings', () => {
 
     if (data.calculateBreaks !== undefined) {
       calculateBreaks.value = data.calculateBreaks;
+    }
+
+    if (data.roundTimes !== undefined) {
+      roundTimes.value = data.roundTimes;
     }
   }
 
@@ -113,6 +121,7 @@ export const useSettingsStore = defineStore('settings', () => {
     openTimeDetailsOnStart,
     openTimeDetailsOnStop,
     calculateBreaks,
+    roundTimes,
 
     loadFromLocalStorage,
   };

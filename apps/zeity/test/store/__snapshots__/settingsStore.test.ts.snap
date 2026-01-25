@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useSettingsStore > localStorage > should load settings from localStorage 1`] = `
+{
+  "calculateBreaks": false,
+  "locale": "fr",
+  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStop": false,
+  "roundTimes": false,
+  "themeMode": "dark",
+  "themePrimary": "red",
+}
+`;
+
+exports[`useSettingsStore > should have a default state 1`] = `
+{
+  "calculateBreaks": false,
+  "locale": "en",
+  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStop": false,
+  "roundTimes": false,
+  "themeMode": "dark",
+  "themePrimary": "sky",
+}
+`;
+
+exports[`useSettingsStore > updateSettings > should update settings 1`] = `
+{
+  "calculateBreaks": false,
+  "locale": "de",
+  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStop": false,
+  "roundTimes": false,
+  "themeMode": "dark",
+  "themePrimary": "sky",
+}
+`;

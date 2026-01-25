@@ -33,14 +33,7 @@ describe('useSettingsStore', () => {
 
   it('should have a default state', () => {
     const store = useSettingsStore();
-    expect(store.settings).toStrictEqual({
-      locale: 'en',
-      themeMode: 'dark',
-      themePrimary: 'sky',
-      openTimeDetailsOnStart: true,
-      openTimeDetailsOnStop: false,
-      calculateBreaks: false,
-    });
+    expect(store.settings).toMatchSnapshot();
   });
 
   describe('localStorage', () => {
@@ -52,14 +45,7 @@ describe('useSettingsStore', () => {
       const store = useSettingsStore();
       store.loadFromLocalStorage();
 
-      expect(store.settings).toEqual({
-        locale: 'fr',
-        themeMode: 'dark',
-        themePrimary: 'red',
-        openTimeDetailsOnStart: true,
-        openTimeDetailsOnStop: false,
-        calculateBreaks: false,
-      });
+      expect(store.settings).toMatchSnapshot();
     });
 
     it('should save settings to localStorage', async () => {
@@ -80,6 +66,7 @@ describe('useSettingsStore', () => {
           openTimeDetailsOnStart: true,
           openTimeDetailsOnStop: false,
           calculateBreaks: false,
+          roundTimes: false,
         })
       );
     });
@@ -90,14 +77,7 @@ describe('useSettingsStore', () => {
       const store = useSettingsStore();
       store.updateSettings({ locale: 'de' });
 
-      expect(store.settings).toStrictEqual({
-        locale: 'de',
-        themeMode: 'dark',
-        themePrimary: 'sky',
-        openTimeDetailsOnStart: true,
-        openTimeDetailsOnStop: false,
-        calculateBreaks: false,
-      });
+      expect(store.settings).toMatchSnapshot();
     });
   });
 

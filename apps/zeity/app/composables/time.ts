@@ -7,8 +7,15 @@ import {
   TIME_TYPE_BREAK,
   TIME_TYPE_MANUAL,
 } from '@zeity/types';
-import { nowWithoutMillis, parseDate, timeDiff } from '@zeity/utils/date';
+import {
+  nowWithoutMillis,
+  parseDate,
+  roundToMinutes,
+  roundToSeconds,
+  timeDiff,
+} from '@zeity/utils/date';
 import { useTimerStore } from '~/stores/timerStore';
+import { millisecondsInMinute } from 'date-fns/constants';
 
 interface FetchTimesOptions {
   offset?: number;
@@ -57,9 +64,35 @@ export function useTime() {
   const { t } = useI18n();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
-  const settings = toRef(useSettings().settings);
+  const { settings } = storeToRefs(useSettingsStore());
 
   const store = useTimerStore();
+
+  function roundTime<T extends Partial<Time> = Time>(time: T) {
+    // If the time object is incomplete, return it as is
+    if (!time.start || !time.duration) return time;
+
+    const tmpStart = parseDate(time.start);
+    const tmpDuration = time.duration;
+    const tmpEnd = addMilliseconds(parseDate(tmpStart), tmpDuration);
+
+    // If the difference is less than a minute, round seconds otherwise round minutes
+    const roundFn =
+      tmpDuration < millisecondsInMinute ? roundToSeconds : roundToMinutes;
+
+    const start = roundFn(tmpStart, {
+      roundingMethod: 'floor',
+    }).toISOString();
+    const end = roundFn(tmpEnd, {
+      roundingMethod: 'floor',
+    }).toISOString();
+    const duration = timeDiff(end, start);
+    return {
+      ...time,
+      start,
+      duration,
+    };
+  }
 
   async function loadTimes(options?: FetchTimesOptions) {
     if (!loggedIn.value) return;
@@ -77,7 +110,7 @@ export function useTime() {
   function getOrganisationTimes() {
     const ref = store.findTimes(
       (time) =>
-        !time.userId || time.organisationId === currentOrganisationId.value
+        !time.userId || time.organisationId === currentOrganisationId.value,
     );
 
     return computed(() => ref.value);
@@ -89,6 +122,9 @@ export function useTime() {
   }
 
   async function createTime(data: Time) {
+    if (settings.value.roundTimes) {
+      data = roundTime(data);
+    }
     try {
       if (loggedIn.value) {
         const time = await postTime(data);
@@ -104,6 +140,11 @@ export function useTime() {
     return store.insertTime(data);
   }
   async function updateTime(id: string, data: Partial<Time>) {
+    if (settings.value.roundTimes) {
+      if (data.start && data.duration) {
+        data = roundTime(data);
+      }
+    }
     try {
       if (loggedIn.value && isOnlineTime(id)) {
         const time = await patchTime(id, data);
@@ -190,7 +231,7 @@ export function useTime() {
   function calculateBreakTime(nextItem: Time, previousItem: Time): Time | null {
     const prevEnd = addMilliseconds(
       parseDate(previousItem.start),
-      previousItem.duration
+      previousItem.duration,
     );
 
     // if on different days, no break
