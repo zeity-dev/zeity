@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TIME_TYPE_MANUAL } from '@zeity/types';
 import { nowWithoutMillis, sortDatesDescending } from '@zeity/utils/date';
 
 const { user } = useUser();
@@ -16,7 +17,7 @@ const isEmpty = computed(() => userTimes.value.length < 1);
 
 function timeNew() {
     const now = nowWithoutMillis().toISOString();
-    timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
+    timeDetail.open({ id: 'new', type: TIME_TYPE_MANUAL, start: now, duration: 0, notes: '' });
 }
 
 const offset = ref(0);
