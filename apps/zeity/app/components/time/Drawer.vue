@@ -103,7 +103,6 @@ const parsedState = computed(() => {
     const val = state.value;
     const validated = schema.safeParse(val);
     if (!validated.success) {
-        console.log("invalid")
         return null;
     }
 
