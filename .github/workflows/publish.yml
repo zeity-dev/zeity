@@ -31,6 +31,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
+    if: ${{ github.ref_type == 'tag' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -39,7 +40,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${{ github.ref_type }}" != "tag" ]]; exit;
           gh release create \
             "$GITHUB_REF_NAME" \
             ${{ needs.check-version.outputs.prerelease == 'true' && '--prerelease' || '' }} \
