@@ -169,6 +169,7 @@ export default defineI18nConfig(() => ({
           detailsOnStart: 'Open details on start',
           detailsOnStop: 'Open details on stop',
           calculateBreaks: 'Calculate breaks',
+          roundTimes: 'Round times automatically',
         },
       },
       offline: {
@@ -598,6 +599,7 @@ export default defineI18nConfig(() => ({
           detailsOnStart: 'Details beim Start einblenden',
           detailsOnStop: 'Details beim Stoppen einblenden',
           calculateBreaks: 'Pausen berechnen',
+          roundTimes: 'Zeiten automatisch aufrunden',
         },
       },
       about: {
