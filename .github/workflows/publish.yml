@@ -20,7 +20,7 @@ jobs:
         id: version
         with:
           version: ${{ github.ref_name }}
-          lenient: false
+          lenient: true
 
   create-release:
     name: Create Release
@@ -39,6 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if [[ "${{ github.ref_type }}" != "tag" ]]; exit;
           gh release create \
             "$GITHUB_REF_NAME" \
             ${{ needs.check-version.outputs.prerelease == 'true' && '--prerelease' || '' }} \
