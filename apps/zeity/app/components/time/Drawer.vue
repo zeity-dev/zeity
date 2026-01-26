@@ -120,7 +120,7 @@ watchDebounced(
 
         return handleSave(data);
     },
-    { debounce: 500, maxWait: 1000, deep: true },
+    { debounce: 800, deep: true },
 )
 
 function toState(data: DraftTime | Time) {
