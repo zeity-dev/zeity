@@ -62,28 +62,8 @@ onUnmounted(() => {
 watch([isDraft, isOpen], ([isDraft, isOpen]) => {
     if (isOpen && currentTime.value) {
         loadProjects({ status: [PROJECT_STATUS_ACTIVE] });
-
-        const clone = structuredClone(toRaw(currentTime.value));
-
-        const tz = getLocalTimeZone();
-        if (isTimeValue(clone)) {
-            const start = new Date(clone.start);
-            const end = addMilliseconds(start, clone.duration);
-
-            state.value = {
-                id: clone.id,
-                type: clone.type,
-                start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
-                end: parseAbsolute(end.toISOString(), tz).set({ millisecond: 0 }),
-                notes: clone.notes || '',
-                projectId: clone.projectId || undefined,
-            } satisfies Schema;
-        } else if (isDraftValue(clone)) {
-            state.value = {
-                ...clone,
-                start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
-            } as Schema;
-        }
+        
+        state.value = toState(toRaw(currentTime.value));
     };
 
     if (isDraft && isOpen) {
@@ -120,27 +100,55 @@ const loading = ref(false);
 const parsedState = computed(() => {
     if (!state.value) return;
 
-    return parseSchema(state.value);
+    const val = state.value;
+    const validated = schema.safeParse(val);
+    if (!validated.success) {
+        return null;
+    }
+
+    return parseSchema(val);
 });
 
 watchDebounced(
-    state,
-    (data) => {
-        if (data) {
-            handleSave(data);
-        }
-    },
-    { debounce: 500, maxWait: 1000, deep: true, },
-)
+    parsedState,
+    (data, oldData) => {
+        if (!data) return;
 
-async function handleSave(data: Schema) {
-    return showLoading(async () => {
-        const validated = schema.safeParse(data);
-        if (!validated.success) {
+        if (JSON.stringify(data) === JSON.stringify(oldData)) { 
             return;
         }
-        const time = parseSchema(validated.data);
 
+        return handleSave(data);
+    },
+    { debounce: 800, deep: true },
+)
+
+function toState(data: DraftTime | Time) {
+    const clone = structuredClone(data);
+
+    const tz = getLocalTimeZone();
+    if (isTimeValue(clone)) {
+        const start = new Date(clone.start);
+        const end = addMilliseconds(start, clone.duration);
+
+        return {
+            id: clone.id,
+            type: clone.type,
+            start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
+            end: parseAbsolute(end.toISOString(), tz).set({ millisecond: 0 }),
+            notes: clone.notes || '',
+            projectId: clone.projectId || undefined,
+        } satisfies Schema;
+    } else if (isDraftValue(clone)) {
+        return {
+            ...clone,
+            start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
+        } as Schema;
+    }
+}
+
+async function handleSave(time: Time | DraftTime) {
+    return showLoading(async () => {
         if (!time) return;
 
         if (isDraftValue(time)) {
@@ -148,9 +156,15 @@ async function handleSave(data: Schema) {
         }
         if (isTimeValue(time)) {
             if (time.id === 'new') {
-                await createTime({ ...time, id: nanoid() });
+                const created = await createTime({ ...time, id: nanoid() });
+                if (created) {
+                    state.value = toState(created);
+                }
             } else {
-                await updateTime(time.id, time);
+                const updated = await updateTime(time.id, time);
+                if (updated) {
+                    state.value = toState(updated);
+                }
             }
         }
     });
