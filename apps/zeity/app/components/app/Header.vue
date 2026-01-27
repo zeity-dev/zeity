@@ -47,16 +47,16 @@ const orgItems = computed(() => getAllOrganisations().value.map(organisation => 
                 </UButton>
 
                 <UAvatarGroup v-if="isLoggedIn && user">
-                    <UTooltip :text="currentOrganisation?.name">
-                        <UDropdownMenu :items="orgItems">
+                    <UDropdownMenu :items="orgItems">
+                        <UTooltip :text="currentOrganisation?.name">
                             <UAvatar v-if="currentOrganisation" :src="getOrganisationImagePath(currentOrganisation)" :alt="currentOrganisation?.name" />
-                        </UDropdownMenu>
-                    </UTooltip>
-                    <UTooltip :text="user?.name">
-                        <ULink to="/user">
+                        </UTooltip>
+                    </UDropdownMenu>
+                    <ULink to="/user">
+                        <UTooltip :text="user?.name">
                             <UAvatar :src="getUserImagePath(user)" :alt="user?.name" />
-                        </ULink>
-                    </UTooltip>
+                        </UTooltip>
+                    </ULink>
                 </UAvatarGroup>
             </div>
         </div>
