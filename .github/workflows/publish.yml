@@ -77,7 +77,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=raw,value=latest,enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease == 'false' }}
-            type=raw,value=${{ needs.check-version.outputs.prerelease-id }},enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease }}
+            type=raw,value=${{ needs.check-version.outputs.prerelease }},enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -86,16 +86,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
           push: true
           context: .
           file: apps/zeity/Dockerfile
