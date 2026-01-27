@@ -309,6 +309,8 @@ export default defineI18nConfig(() => ({
       about: {
         title: 'Zeity',
         description: 'Zeity is a productivity app for getting things done.',
+        privacy: 'Privacy',
+        terms: 'Terms of Service',
       },
     },
     de: {
@@ -606,6 +608,8 @@ export default defineI18nConfig(() => ({
         title: 'Zeity',
         description:
           'Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.',
+        privacy: 'Datenschutz',
+        terms: 'Nutzungsbedingungen',
       },
     },
   },

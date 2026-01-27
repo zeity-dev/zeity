@@ -6,5 +6,7 @@ export const useSystemStore = defineStore('systemStore', () => {
     stage: config.public.stage,
     version: config.public.version,
     allowOrganisationCreate: config?.public?.allow?.organisation.create,
+    legal: config.public.legal,
+    links: config.public.links,
   };
 });
