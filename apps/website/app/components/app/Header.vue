@@ -1,5 +1,5 @@
 <template>
-	<div :class="$attrs.class" class="bg-neutral-50 dark:bg-neutral-800 ring-1 ring-neutral-300 dark:ring-neutral-700">
+	<header :class="$attrs.class" class="bg-default/75 backdrop-blur border-b border-default h-(--ui-header-height) sticky top-0 z-50">
 		<div
 			class="flex-1 flex items-center justify-between sm:items-stretch sm:justify-start gap-4 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-16">
 			<UButton to="/" icon="i-zeity-logo" variant="link">
@@ -21,7 +21,7 @@
 				</div>
 			</template>
 		</USlideover>
-	</div>
+	</header>
 </template>
 
 <script setup lang="ts">

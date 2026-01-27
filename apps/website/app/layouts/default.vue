@@ -14,9 +14,7 @@
 		</Head>
 
 		<Body>
-			<header class="shadow">
-				<AppNavigation />
-			</header>
+			<AppHeader />
 			<main>
 				<slot />
 			</main>
