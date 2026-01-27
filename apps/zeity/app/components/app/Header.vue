@@ -1,12 +1,29 @@
 <script setup lang="ts">
+import { TIME_TYPE_MANUAL } from '@zeity/types';
 import { nowWithoutMillis } from '@zeity/utils/date';
 
 const appConfig = useRuntimeConfig();
 const timeDetail = useTimeDetail();
 function timeNew() {
     const now = nowWithoutMillis().toISOString();
-    timeDetail.open({ id: 'new', start: now, duration: 0, notes: '' });
+    timeDetail.open({ id: 'new', type: TIME_TYPE_MANUAL, start: now, duration: 0, notes: '' });
 }
+
+const { isLoggedIn } = useAuth();
+const { user } = useUserSession();
+const { currentOrganisation, getAllOrganisations, setCurrentOrganisationId } = useOrganisation();
+const orgItems = computed(() => getAllOrganisations().value.map(organisation => ({
+    label: organisation.name,
+    avatar: {
+        src: getOrganisationImagePath(organisation),
+        alt: organisation.name,
+    },
+    active: currentOrganisation.value?.id === organisation.id,
+    onSelect() {
+        setCurrentOrganisationId(organisation.id)
+    }
+})))
+
 </script>
 
 <template>
@@ -21,13 +38,26 @@ function timeNew() {
                     </span>
                 </UButton>
             </div>
-            <div class="flex items-center justify-end lg:flex-1 gap-1.5">
+            <div class="flex items-center justify-end lg:flex-1 gap-3">
                 <UButton v-if="$route.path === '/'" square class="rounded-full" icon="i-lucide-plus" variant="outline"
                     @click="timeNew">
                     <span class="sr-only">
                         {{ $t('common.add') }}
                     </span>
                 </UButton>
+
+                <UAvatarGroup v-if="isLoggedIn && user">
+                    <UTooltip :text="currentOrganisation?.name">
+                        <UDropdownMenu :items="orgItems">
+                            <UAvatar v-if="currentOrganisation" :src="getOrganisationImagePath(currentOrganisation)" :alt="currentOrganisation?.name" />
+                        </UDropdownMenu>
+                    </UTooltip>
+                    <UTooltip :text="user?.name">
+                        <ULink to="/user">
+                            <UAvatar :src="getUserImagePath(user)" :alt="user?.name" />
+                        </ULink>
+                    </UTooltip>
+                </UAvatarGroup>
             </div>
         </div>
     </header>
