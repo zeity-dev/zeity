@@ -45,7 +45,7 @@ pnpm test
 
 To run Zeity using the official Docker image, make sure you have Docker and Docker Compose installed.
 
-The provided `docker-compose.yml` is preconfigured to use the image `ghcr.io/zeity-dev/zeity:main` from Docker Hub.
+The provided `docker-compose.yml` is preconfigured to use the image `ghcr.io/zeity-dev/zeity-edge:main` from Docker Hub.
 
 To start the application, run:
 
