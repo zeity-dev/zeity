@@ -1,51 +1,68 @@
 <script setup lang="ts">
+import type { PageFeatureProps } from '@nuxt/ui';
+
+const { t } = useI18n();
 const localePath = useLocalePath();
 
-const features = [
-	{
-		title: 'Usability',
-		description: 'Intuitive and user-friendly interface',
-	},
-	{
-		title: 'Customization',
-		description: 'Tailor zeity to fit your unique workflow',
-	},
-	{
-		title: 'Team Management',
-		description: 'Easily manage your team and their roles',
-	},
-	{
-		title: 'Projects',
-		description: 'Manage your projects efficiently with zeity',
-	},
-	{
-		title: 'Reporting',
-		description: 'Gain insights into your projects and team performance',
-	},
-	{
-		title: 'Open Source',
-		description: 'zeity is fully open source',
-	},
-];
+const features = ref<PageFeatureProps[]>([
+  {
+    title: t('home.features.usability.title'),
+    description: t('home.features.usability.description'),
+    icon: 'i-lucide-check-circle',
+  },
+  {
+    title: t('home.features.customization.title'),
+    description: t('home.features.customization.description'),
+    icon: 'i-lucide-settings',
+  },
+  {
+    title: t('home.features.team.title'),
+    description: t('home.features.team.description'),
+    icon: 'i-lucide-users',
+  },
+  {
+    title: t('home.features.projects.title'),
+    description: t('home.features.projects.description'),
+    icon: 'i-lucide-folder',
+  },
+  {
+    title: t('home.features.reporting.title'),
+    description: t('home.features.reporting.description'),
+    icon: 'i-lucide-chart-pie',
+  },
+  {
+    title: t('home.features.oss.title'),
+    description: t('home.features.oss.description'),
+    icon: 'i-ri-open-source-line',
+  },
+]);
 
 definePageMeta({
-	title: 'home.title',
-	ogTitle: 'home.title',
-	description: 'home.description',
-	ogDescription: 'home.description',
-})
+  title: 'home.title',
+  ogTitle: 'home.title',
+  description: 'home.description',
+  ogDescription: 'home.description',
+});
 </script>
 
 <template>
-	<UPage>
-		<UPageHero :title="$t('home.title')" :description="$t('home.description')" :links="[
-			{ label: $t('home.openDocs'), to: localePath('/docs') },
-		]" />
+  <UPage>
+    <UPageHero
+      :title="$t('home.title')"
+      :description="$t('home.description')"
+      :links="[{ label: $t('home.openDocs'), to: localePath('/docs') }]"
+      orientation="horizontal"
+    >
+      <figure class="relative">
+        <DemoTimer />
+      </figure>
+    </UPageHero>
 
-		<UPageSection :title="$t('home.features.title')" :description="$t('home.features.description')">
-			<UPageGrid>
-				<UPageCard v-for="(item, index) in features" :key="index" v-bind="item" spotlight />
-			</UPageGrid>
-		</UPageSection>
-	</UPage>
+    <UPageSection
+      :title="$t('home.features.title')"
+      :description="$t('home.features.description')"
+      :features="features"
+      icon="i-lucide-rocket"
+    />
+  </UPage>
 </template>
