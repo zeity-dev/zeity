@@ -19,12 +19,12 @@ jobs:
 
       - name: Install and Build
         run: |
-          pnpm --filter ./apps/website/ generate
+          pnpm --filter ./apps/docs/ generate
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./apps/website/.output/public
+          path: ./apps/docs/.output/public
 
   deploy:
     # Add a dependency to the build job

@@ -1,0 +1,11 @@
+{
+    "search": {
+        "placeholder": "Search documentation..."
+    },
+    "demo": {
+        "start": "Start Time Tracker",
+        "stop": "Stop Time Tracker",
+        "recordNext": "Start Next Entry",
+        "note": "Your Tracked Time"
+    }
+}

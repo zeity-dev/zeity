@@ -1,0 +1,25 @@
+{
+  "name": "zeity-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --extends docus",
+    "build": "nuxt build --extends docus",
+    "generate": "nuxt generate --extends docus",
+    "preview": "nuxt preview --extends docus"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.86",
+    "@iconify-json/ri": "^1.2.7",
+    "@nuxt/content": "^3.11.0",
+    "@nuxt/eslint": "^1.12.1",
+    "@nuxt/hints": "1.0.0-alpha.5",
+    "@nuxt/icon": "^2.2.1",
+    "@nuxt/image": "^2.0.0",
+    "@nuxt/ui": "^4.4.0",
+    "@nuxtjs/i18n": "^10.2.1",
+    "@nuxtjs/seo": "^3.3.0",
+    "docus": "^5.4.4",
+    "nuxt": "^4.3.0"
+  }
+}
