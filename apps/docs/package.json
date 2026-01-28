@@ -20,7 +20,6 @@
     "@nuxtjs/i18n": "^10.2.1",
     "@nuxtjs/seo": "^3.3.0",
     "docus": "^5.4.4",
-    "better-sqlite3": "^12.5.0",
     "nuxt": "^4.3.0"
   }
 }

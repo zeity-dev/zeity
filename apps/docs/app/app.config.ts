@@ -6,6 +6,10 @@ export default defineAppConfig({
     },
   },
 
+  github: {
+    rootDir: 'apps/docs',
+  },
+
   socials: {},
 
   // header: {

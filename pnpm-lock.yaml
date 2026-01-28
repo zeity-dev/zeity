@@ -62,9 +62,6 @@ importers:
       '@nuxtjs/seo':
         specifier: ^3.3.0
         version: 3.3.0(@unhead/vue@2.1.2(vue@3.5.27(typescript@5.9.3)))(db0@0.3.4(better-sqlite3@12.6.2)(drizzle-orm@0.45.1(@types/pg@8.16.0)(better-sqlite3@12.6.2)(pg@8.17.2)))(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.57.0)(unhead@2.1.2)(unstorage@1.17.4(db0@0.3.4(better-sqlite3@12.6.2)(drizzle-orm@0.45.1(@types/pg@8.16.0)(better-sqlite3@12.6.2)(pg@8.17.2)))(ioredis@5.9.2))(vite@7.3.1(@types/node@25.0.10)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue@3.5.27(typescript@5.9.3))(zod@4.3.6)
-      better-sqlite3:
-        specifier: ^12.5.0
-        version: 12.6.2
       docus:
         specifier: ^5.4.4
         version: 5.4.4(b6c87b71df80da9a9a6ac84de64560ba)
