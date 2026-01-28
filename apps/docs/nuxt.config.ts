@@ -30,6 +30,10 @@ export default defineNuxtConfig({
     strategy: 'prefix',
   },
 
+  content: {
+    experimental: { nativeSqlite: true },
+  },
+
   icon: {
     customCollections: [
       {
@@ -42,7 +46,7 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: false,
-    }
+    },
   },
 
   site: {
