@@ -8,14 +8,14 @@
   "scripts": {
     "start": "pnpm run --parallel -r dev",
     "start:zeity": "pnpm --filter ./apps/zeity run dev",
-    "start:website": "pnpm --filter ./apps/website run dev",
+    "start:docs": "pnpm run --filter zeity-docs dev",
     "build": "pnpm run -r build",
     "lint": "pnpm run -r lint",
     "test": "vitest"
   },
   "keywords": [],
   "author": "",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "dependencies": {
     "nanoid": "^5.1.6"
   },
