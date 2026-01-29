@@ -1,15 +1,6 @@
 # Zeity Documentation
 
-Modern documentation site for Zeity built with [Nuxt Content](https://content.nuxt.com) and [Nuxt UI](https://ui.nuxt.com).
-
-## Features
-
-- 📖 **Full-text search** - Find documentation quickly
-- 🌙 **Dark mode** - Automatic theme switching
-- 🌐 **i18n support** - English and German
-- 🤖 **AI integration** - MCP server and llms.txt
-- 📱 **Responsive** - Works on all devices
-- ⚡ **Fast** - Static site generation
+Modern documentation site for Zeity built with [Docus](https://docus.dev/).
 
 ## Development
 
@@ -17,7 +8,7 @@ Start the development server:
 
 ```bash
 # From root
-pnpm docs:dev
+pnpm start:docs
 
 # Or from docs directory
 cd apps/docs
@@ -35,8 +26,7 @@ apps/docs/
 ├── content/
 │   ├── index.md            # Landing page
 │   ├── 1.getting-started/  # Getting started guides
-│   ├── 2.guide/            # User guides
-│   └── 3.api/              # API reference
+│   └── 2.guide/            # User guides
 ├── i18n/                   # Translations
 ├── public/                 # Static assets
 └── nuxt.config.ts          # Nuxt configuration
@@ -64,45 +54,25 @@ Create or update `.navigation.yml` in the section folder:
 
 ```yaml
 - title: Getting Started
-  children:
-    - title: Introduction
-      to: /getting-started/introduction
-    - title: Installation
-      to: /getting-started/installation
+  icon: i-lucide-rocket
 ```
 
 ### Use MDC components
 
-Nuxt Content supports [MDC syntax](https://content.nuxt.com/usage/markdown):
+Nuxt Content supports [MDC syntax](https://content.nuxt.com/docs/files/markdown):
 
 ```markdown
-::alert{type="info"}
+::tip
+This is a tip alert
+::
+
+::note
 This is an info alert
 ::
 
-::code-group
-```bash [npm]
-npm install
-```
-```bash [pnpm]
-pnpm install
-```
+::warning
+This is a warning alert
 ::
-```
-
-## Deployment
-
-### Vercel
-
-```bash
-vercel --prod
-```
-
-### Netlify
-
-```bash
-pnpm generate
-# Deploy .output/public
 ```
 
 ### Static Hosting
@@ -112,7 +82,3 @@ pnpm generate
 ```
 
 Deploy the `.output/public` directory to any static hosting provider.
-
-## License
-
-MIT
