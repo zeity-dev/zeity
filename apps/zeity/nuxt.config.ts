@@ -159,6 +159,11 @@ export default defineNuxtConfig({
       appName: 'zeity',
       stage: process.env.NODE_ENV || 'production',
       version: packageJson.version || '0.0.0',
+      legal: {
+        privacy: process.env.ZEITY_LEGAL_PRIVACY || undefined,
+        terms: process.env.ZEITY_LEGAL_TERMS || undefined,
+      },
+      links: process.env.ZEITY_LINKS || undefined,
       allow: {
         organisation: {
           create: booleanEnv(process.env.ZEITY_ALLOW_ORGANISATION_CREATE, true),
