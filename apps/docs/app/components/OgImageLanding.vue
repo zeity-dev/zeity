@@ -23,15 +23,12 @@ const siteName = computed(() => {
     <div class="h-full w-full justify-between relative">
       <div class="flex flex-row justify-center items-center p-8">
         <div
-          class="flex flex-col w-full justify-center text-balance text-center"
+          class="flex flex-col w-full justify-center items-center text-balance text-center"
         >
           <h1 class="m-0 mb-4 text-7xl font-semibold">
             {{ title }}
           </h1>
-          <p
-            v-if="description"
-            class="text-center text-4xl leading-tight text-sky-100"
-          >
+          <p v-if="description" class="text-4xl leading-tight text-sky-100">
             {{ description }}
           </p>
         </div>

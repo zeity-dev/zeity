@@ -1,6 +1,8 @@
 ---
 title: Zeity - Time Tracking Made Simple
 description: Open-source time tracking application for individuals and teams. Track time, manage projects, and collaborate efficiently.
+seo:
+  title: Time Tracking Made Simple
 navigation: false
 ---
 
