@@ -41,11 +41,8 @@ export default defineNuxtConfig({
         dir: './public/icons',
       },
     ],
-  },
-
-  security: {
-    headers: {
-      contentSecurityPolicy: false,
+    clientBundle: {
+      scan: true,
     },
   },
 
