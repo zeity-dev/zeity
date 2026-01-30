@@ -1,5 +1,6 @@
 export function useNavigation() {
   const { t } = useI18n();
+  const { isStarted } = storeToRefs(useTimerStore());
 
   const openMoreMenu = ref(false);
   const verticalMenu = computed(() => [
@@ -8,6 +9,9 @@ export function useNavigation() {
         label: t('navigation.timer'),
         to: '/timer',
         icon: 'i-lucide-clock',
+        badge: isStarted.value
+          ? { color: 'primary', variant: 'solid' }
+          : undefined,
       },
       {
         label: t('navigation.projects'),
@@ -44,6 +48,9 @@ export function useNavigation() {
       label: t('navigation.timer'),
       to: '/timer',
       icon: 'i-lucide-clock',
+      chip: isStarted.value
+        ? { color: 'primary', variant: 'solid' }
+        : undefined,
     },
     {
       label: t('navigation.projects'),

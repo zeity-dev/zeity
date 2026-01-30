@@ -78,7 +78,7 @@ watch(toRef(currentOrganisationId), () => {
             </UButton>
         </section>
 
-        <footer class="sticky bottom-16 md:bottom-3">
+        <footer class="sticky bottom-18 md:bottom-3">
             <TimeDraft />
         </footer>
 
