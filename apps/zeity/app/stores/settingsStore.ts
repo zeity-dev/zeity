@@ -15,7 +15,7 @@ const defaultSettings: SettingsState = {
   locale: 'en',
   themeMode: 'system',
   themePrimary: 'sky',
-  openTimeDetailsOnStart: true,
+  openTimeDetailsOnStart: false,
   openTimeDetailsOnStop: false,
   calculateBreaks: false,
   roundTimes: false,

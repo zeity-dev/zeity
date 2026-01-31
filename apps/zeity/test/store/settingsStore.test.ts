@@ -63,7 +63,7 @@ describe('useSettingsStore', () => {
           locale: 'de',
           themeMode: 'dark',
           themePrimary: 'sky',
-          openTimeDetailsOnStart: true,
+          openTimeDetailsOnStart: false,
           openTimeDetailsOnStop: false,
           calculateBreaks: false,
           roundTimes: false,

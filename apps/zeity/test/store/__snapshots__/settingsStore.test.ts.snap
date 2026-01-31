@@ -4,7 +4,7 @@ exports[`useSettingsStore > localStorage > should load settings from localStorag
 {
   "calculateBreaks": false,
   "locale": "fr",
-  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
   "roundTimes": false,
   "themeMode": "dark",
@@ -16,7 +16,7 @@ exports[`useSettingsStore > should have a default state 1`] = `
 {
   "calculateBreaks": false,
   "locale": "en",
-  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
   "roundTimes": false,
   "themeMode": "dark",
@@ -28,7 +28,7 @@ exports[`useSettingsStore > updateSettings > should update settings 1`] = `
 {
   "calculateBreaks": false,
   "locale": "de",
-  "openTimeDetailsOnStart": true,
+  "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
   "roundTimes": false,
   "themeMode": "dark",
