@@ -7,6 +7,10 @@ import { downloadAs } from '~/utils/download-file';
 
 const { t } = useI18n();
 
+useHead({
+    title: t('settings.title'),
+});
+
 const timeStore = useTimerStore();
 const projectStore = useProjectStore();
 const settingsStore = useSettingsStore();

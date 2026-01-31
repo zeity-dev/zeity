@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import z from 'zod';
 
+useHead({
+  title: useI18n().t('about.title'),
+});
+
 const { t } = useI18n();
 const config = useSystemStore();
 

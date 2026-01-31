@@ -2,6 +2,9 @@
 definePageMeta({
   middleware: 'auth',
 });
+useHead({
+  title: useI18n().t('user.title'),
+});
 
 const { fetchUser } = useUser();
 const { pending, data } = await fetchUser();
