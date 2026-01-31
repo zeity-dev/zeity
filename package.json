@@ -32,7 +32,8 @@
     }
   },
   "resolutions": {
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "vite": "npm:rolldown-vite@latest"
   },
   "packageManager": "pnpm@10.28.2"
 }
