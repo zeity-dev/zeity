@@ -1,3 +1,6 @@
+import type { H3Event } from 'h3';
+import z from 'zod';
+
 import { count, inArray } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationTeams } from '@zeity/database/organisation-team';
@@ -19,7 +22,7 @@ export function doesOrganisationExist(organisationId: string) {
 export function hasUserOrganisationMemberRole(
   userId: string,
   organisationId: string,
-  roles: OrganisationMemberRole[] = [ORGANISATION_MEMBER_ROLE_OWNER]
+  roles: OrganisationMemberRole[] = [ORGANISATION_MEMBER_ROLE_OWNER],
 ) {
   return useDrizzle()
     .select()
@@ -28,15 +31,15 @@ export function hasUserOrganisationMemberRole(
       and(
         eq(organisationMembers.userId, userId),
         eq(organisationMembers.organisationId, organisationId),
-        inArray(organisationMembers.role, roles)
-      )
+        inArray(organisationMembers.role, roles),
+      ),
     )
     .then((res) => res.length > 0);
 }
 
 export function getOrganisationMemberByUserId(
   organisationId: string,
-  userId: string
+  userId: string,
 ) {
   return useDrizzle()
     .select()
@@ -44,15 +47,15 @@ export function getOrganisationMemberByUserId(
     .where(
       and(
         eq(organisationMembers.userId, userId),
-        eq(organisationMembers.organisationId, organisationId)
-      )
+        eq(organisationMembers.organisationId, organisationId),
+      ),
     )
     .limit(1);
 }
 
 export function getOrganisationMembersByUserIds(
   organisationId: string,
-  userIds: string[]
+  userIds: string[],
 ) {
   return useDrizzle()
     .select()
@@ -60,14 +63,14 @@ export function getOrganisationMembersByUserIds(
     .where(
       and(
         inArray(organisationMembers.userId, userIds),
-        eq(organisationMembers.organisationId, organisationId)
-      )
+        eq(organisationMembers.organisationId, organisationId),
+      ),
     );
 }
 
 export function countOrganisationMemberOwner(
   organisationId: string,
-  tx?: unknown
+  tx?: unknown,
 ): Promise<number> {
   const db = (tx as ReturnType<typeof useDrizzle>) ?? useDrizzle();
   return db
@@ -76,8 +79,8 @@ export function countOrganisationMemberOwner(
     .where(
       and(
         eq(organisationMembers.organisationId, organisationId),
-        eq(organisationMembers.role, ORGANISATION_MEMBER_ROLE_OWNER)
-      )
+        eq(organisationMembers.role, ORGANISATION_MEMBER_ROLE_OWNER),
+      ),
     )
     .then((res) => res[0]?.count ?? 0);
 }
@@ -103,7 +106,22 @@ export function getOrganisationTeamsByOrgId(organisationId: string) {
     .from(organisationTeams)
     .leftJoin(
       membersCountSubquery,
-      eq(membersCountSubquery.teamId, organisationTeams.id)
+      eq(membersCountSubquery.teamId, organisationTeams.id),
     )
     .where(eq(organisationTeams.organisationId, organisationId));
+}
+
+const schemaQuota = z
+  .object({
+    members: z.coerce.number().int(),
+  })
+  .partial();
+
+export function getDefaultOrganisationQuota(event: H3Event) {
+  const quota = useRuntimeConfig(event).organisation?.quota;
+  const parsed = schemaQuota.safeParse(quota);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  return {};
 }

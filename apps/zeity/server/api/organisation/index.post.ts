@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { organisations } from '@zeity/database/organisation';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
+import { getDefaultOrganisationQuota } from '~~/server/utils/organisation';
 
 export default defineEventHandler(async (event) => {
   const allowed = useRuntimeConfig(event).public.allow.organisation.create;
@@ -19,7 +20,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       name: z.string().trim().min(3).max(150),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!body.success) {
@@ -30,10 +31,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const defaultQuota = getDefaultOrganisationQuota(event);
+
   const result = await useDrizzle().transaction(async (tx) => {
     const org = await tx
       .insert(organisations)
-      .values(body.data)
+      .values({ ...body.data, quota: defaultQuota })
       .returning()
       .then((res) => res[0]);
 

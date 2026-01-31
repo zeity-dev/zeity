@@ -154,6 +154,11 @@ export default defineNuxtConfig({
         password: undefined,
       },
     },
+    organisation: {
+      quota: {
+        members: undefined,
+      },
+    },
     jwtSecret: 'supersecret',
     public: {
       appName: 'zeity',
