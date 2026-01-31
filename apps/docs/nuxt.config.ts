@@ -46,6 +46,17 @@ export default defineNuxtConfig({
     },
   },
 
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'script-src': [
+          "'wasm-unsafe-eval'",
+          "'strict-dynamic'", // Modify with your custom CSP sources
+        ],
+      },
+    },
+  },
+
   site: {
     name: 'Zeity',
     url: baseUrl,
