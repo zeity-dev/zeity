@@ -3,6 +3,6 @@ export default defineNuxtRouteMiddleware((to) => {
   if (import.meta.server) return;
 
   if (to.path === '/') {
-    return navigateTo('/timer');
+    return navigateTo('/time');
   }
 });

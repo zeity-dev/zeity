@@ -69,7 +69,7 @@ if (import.meta.env.PROD) {
   registerRoute(({ sameOrigin, request }) => {
     const url = new URL(request.url, self.origin);
     const allowedPages = [
-      /^\/timer/,
+      /^\/time/,
       /^\/projects/,
       /^\/settings/,
       /^\/about/,
