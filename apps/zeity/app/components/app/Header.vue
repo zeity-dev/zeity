@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import { TIME_TYPE_MANUAL } from '@zeity/types';
-import { nowWithoutMillis } from '@zeity/utils/date';
-
 const appConfig = useRuntimeConfig();
-const timeDetail = useTimeDetail();
-function timeNew() {
-    const now = nowWithoutMillis().toISOString();
-    timeDetail.open({ id: 'new', type: TIME_TYPE_MANUAL, start: now, duration: 0, notes: '' });
-}
 
 const { isLoggedIn } = useAuth();
 const { user } = useUserSession();
@@ -39,8 +31,8 @@ const orgItems = computed(() => getAllOrganisations().value.map(organisation => 
                 </UButton>
             </div>
             <div class="flex items-center justify-end lg:flex-1 gap-3">
-                <UButton v-if="$route.path === '/'" square class="rounded-full" icon="i-lucide-plus" variant="outline"
-                    @click="timeNew">
+                <UButton v-if="$route.path === '/time'" square class="rounded-full" icon="i-lucide-plus" variant="outline"
+                    to="/time/create">
                     <span class="sr-only">
                         {{ $t('common.add') }}
                     </span>

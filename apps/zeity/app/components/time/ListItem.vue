@@ -26,8 +26,6 @@ const props = defineProps({
 		default: false,
 	},
 });
-const timeDetail = useTimeDetail();
-
 const open = defineModel<boolean>({ default: true });
 
 if (props.defaultOpen !== undefined) {
@@ -54,7 +52,7 @@ function handleToggle() {
 
 	<div v-if="open" :class="$props.class">
 		<UButton v-for="time in times" :key="time.id" :disabled="time.type === TIME_TYPE_BREAK" type="button"
-			variant="ghost" class="w-full flex items-center justify-between gap-2" @click="timeDetail.open(time)">
+			variant="ghost" class="w-full flex items-center justify-between gap-2" :to="`/time/${time.id}`">
 
 			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
 				<span>

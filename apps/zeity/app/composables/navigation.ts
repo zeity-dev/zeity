@@ -7,7 +7,7 @@ export function useNavigation() {
     [
       {
         label: t('navigation.timer'),
-        to: '/timer',
+        to: '/time',
         icon: 'i-lucide-clock',
         badge: isStarted.value
           ? { color: 'primary', variant: 'solid' }
@@ -46,7 +46,7 @@ export function useNavigation() {
   const horizontalMenu = computed(() => [
     {
       label: t('navigation.timer'),
-      to: '/timer',
+      to: '/time',
       icon: 'i-lucide-clock',
       chip: isStarted.value
         ? { color: 'primary', variant: 'solid' }
