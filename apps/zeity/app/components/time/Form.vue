@@ -148,7 +148,7 @@ function toState(data?: DraftTime | Time): Schema | undefined {
 
 async function handleSave(event: FormSubmitEvent<Schema>) {
   const time = parseSchema(event.data);
-  return showLoading(async () => {
+  await showLoading(async () => {
     if (!time) return;
 
     if (isDraftValue(time)) {
@@ -169,6 +169,8 @@ async function handleSave(event: FormSubmitEvent<Schema>) {
       }
     }
   });
+
+  await navigateTo('/time');
 }
 
 function parseSchema(data: Schema) {
@@ -255,7 +257,9 @@ function isDraftValue(
 function isTimeValue(
   value?: Time | DraftTime | Schema | undefined | null,
 ): value is Time {
-  return !!value && ('duration' in value || 'end' in value);
+  if (!value) return false;
+
+  return ('id' in value && 'duration' in value) || 'end' in value;
 }
 
 function showLoading<T>(fn: () => Promise<T>): Promise<T> {
