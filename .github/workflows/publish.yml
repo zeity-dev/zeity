@@ -76,8 +76,10 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease == 'false' }}
-            type=raw,value=${{ needs.check-version.outputs.prerelease }},enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease }}
+            type=raw,value=latest,enable=${{ github.ref_type == 'tag' }}
+          # TODO: use after stable release
+          # type=raw,value=latest,enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease == 'false' }}
+          # type=raw,value=${{ needs.check-version.outputs.prerelease }},enable=${{ github.ref_type == 'tag' && needs.check-version.outputs.prerelease }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
