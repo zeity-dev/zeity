@@ -56,7 +56,7 @@ watch(toRef(currentOrganisationId), () => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-between">
+  <div class="flex flex-col justify-between h-full">
     <section class="grow py-3 my-3">
       <SyncAlert v-if="!!user" class="mt-4" />
 

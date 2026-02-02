@@ -3,7 +3,7 @@ const draft = storeToRefs(useTimerStore()).draft;
 </script>
 
 <template>
-  <div class="grid py-3 my-3">
+  <div class="grid py-3 my-3 h-full">
     <div v-if="!draft">
       <UAlert
         icon="i-lucide-octagon-alert"

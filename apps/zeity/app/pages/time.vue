@@ -5,7 +5,7 @@ useHead({
 </script>
 
 <template>
-  <div class="grid h-full">
+  <div class="flex flex-col h-full">
     <NuxtPage />
   </div>
 </template>
