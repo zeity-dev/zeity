@@ -61,6 +61,7 @@ export default defineNuxtConfig({
         'script-src': [
           "'wasm-unsafe-eval'",
           "'strict-dynamic'", // Modify with your custom CSP sources
+          "'nonce-{{nonce}}'",
         ],
       },
     },
