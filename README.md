@@ -106,7 +106,7 @@ Zeity can be run using the official Docker image.
 
 ### Using Docker Compose
 
-The provided `docker-compose.yml` is preconfigured to use the image `ghcr.io/zeity-dev/zeity-edge:main`.
+The provided `docker-compose.yml` is preconfigured to use the image `ghcr.io/zeity-dev/zeity:latest`.
 
 **Start the application**:
 ```sh
