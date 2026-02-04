@@ -45,8 +45,8 @@ async function signIn(event: FormSubmitEvent<Schema>) {
     <UFormField :label="$t('user.email')" required>
       <UInput
         v-model="state.email"
-        type="email"
         name="email"
+        type="username"
         autocomplete="username webauthn"
         class="w-full"
       />
