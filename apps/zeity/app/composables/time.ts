@@ -181,7 +181,7 @@ export function useTime() {
     }
     return stopDraft();
   }
-  function startDraft(time?: Partial<DraftTime>): DraftTime {
+  async function startDraft(time?: Partial<DraftTime>): Promise<DraftTime> {
     const newDraft = {
       type: TIME_TYPE_MANUAL,
       start: nowWithoutMillis().toISOString(),
@@ -191,7 +191,7 @@ export function useTime() {
     store.setDraft(newDraft);
 
     if (settings.value.openTimeDetailsOnStart) {
-      useTimeDetail().open(newDraft);
+      await navigateTo('/time/draft');
     }
 
     return newDraft;
@@ -214,7 +214,7 @@ export function useTime() {
     store.resetDraft();
 
     if (settings.value.openTimeDetailsOnStop && time) {
-      useTimeDetail().open(time);
+      await navigateTo(`/time/${time.id}`);
     }
 
     return time;
@@ -276,6 +276,7 @@ export function useTime() {
     toggleDraft,
     startDraft,
     stopDraft,
+    roundTime,
 
     calculateBreakTime,
   };

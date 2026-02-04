@@ -92,6 +92,7 @@ export default defineI18nConfig(() => ({
         start: 'Start Time Tracker',
         stop: 'Stop Time Tracker',
         recordNext: 'Start Next Entry',
+        round: 'Round Time',
         empty: {
           title: 'No Times',
           description:
@@ -312,6 +313,18 @@ export default defineI18nConfig(() => ({
         privacy: 'Privacy',
         terms: 'Terms of Service',
       },
+      error: {
+        general: {
+          title: 'An Error Occurred',
+          description:
+            'Sorry, an unexpected error has occurred. Please try again later.',
+        },
+        notFound: {
+          title: 'Not Found',
+          description:
+            "Looks like you've followed a broken link or entered a URL that doesn't exist on this site.",
+        },
+      },
     },
     de: {
       appName: 'Zeity',
@@ -389,6 +402,7 @@ export default defineI18nConfig(() => ({
         start: 'Zeiterfassung starten',
         stop: 'Zeiterfassung stoppen',
         recordNext: 'Nächste Eintragung starten',
+        round: 'Zeit runden',
         empty: {
           title: 'Keine Zeiten',
           description:
@@ -610,6 +624,18 @@ export default defineI18nConfig(() => ({
           'Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.',
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
+      },
+      error: {
+        general: {
+          title: 'Ein Fehler ist aufgetreten',
+          description:
+            'Entschuldigung, ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+        },
+        notFound: {
+          title: 'Nicht gefunden',
+          description:
+            'Es sieht so aus, als wären Sie einem defekten Link gefolgt oder hätten eine URL eingegeben, die auf dieser Seite nicht existiert.',
+        },
       },
     },
   },
