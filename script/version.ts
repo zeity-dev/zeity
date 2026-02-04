@@ -8,7 +8,7 @@ import { resolve } from 'node:path';
 export async function loadPackage(dir: string) {
   const pkgPath = resolve(dir, 'package.json');
   const data = JSON.parse(
-    await fsp.readFile(pkgPath, 'utf-8').catch(() => '{}')
+    await fsp.readFile(pkgPath, 'utf-8').catch(() => '{}'),
   );
   const save = () =>
     fsp.writeFile(pkgPath, JSON.stringify(data, null, 2) + '\n');
@@ -38,6 +38,14 @@ export async function loadWorkspace(dir: string) {
 }
 
 async function main() {
+  const currentBranch = execSync('git rev-parse --abbrev-ref HEAD', {
+    encoding: 'utf-8',
+  }).trim();
+
+  if (currentBranch !== 'main') {
+    throw new Error('You can only bump version on main branch!');
+  }
+
   const workspace = await loadWorkspace(process.cwd());
 
   const newVersion = process.argv[2];
