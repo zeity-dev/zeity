@@ -57,8 +57,8 @@ watch(toRef(currentOrganisationId), () => {
 
 <template>
   <div class="flex flex-col justify-between h-full">
-    <section class="grow py-3 my-3">
-      <SyncAlert v-if="!!user" class="mt-4" />
+    <section class="grow my-3">
+      <SyncAlert v-if="!!user" class="mb-4" />
 
       <TimeList
         default-open
