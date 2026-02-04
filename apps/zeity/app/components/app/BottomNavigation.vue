@@ -27,7 +27,7 @@ watch(
           <li
             v-for="button in horizontalMenu"
             :key="button.label"
-            class="relative min-w-20 py-1"
+            class="relative min-w-18 py-1"
           >
             <ULink
               class="group relative w-full flex flex-1 flex-col items-center gap-0.5 px-2.5 py-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-md focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-primary before:inset-x-px before:inset-y-0"

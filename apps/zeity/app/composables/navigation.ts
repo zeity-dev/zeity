@@ -58,6 +58,11 @@ export function useNavigation() {
       icon: 'i-lucide-list-todo',
     },
     {
+      label: t('navigation.reports'),
+      to: '/reports',
+      icon: 'i-lucide-chart-pie',
+    },
+    {
       label: t('navigation.more'),
       icon: 'i-lucide-more-horizontal',
       onSelect: () => {
