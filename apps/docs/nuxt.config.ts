@@ -33,6 +33,15 @@ export default defineNuxtConfig({
   content: {
     experimental: { nativeSqlite: true },
   },
+  ogImage: {
+    zeroRuntime: true,
+  },
+  sitemap: {
+    zeroRuntime: true,
+  },
+  robots: {
+    allow: ['*'],
+  },
 
   icon: {
     customCollections: [
