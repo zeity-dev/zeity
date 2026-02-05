@@ -6,15 +6,17 @@ import packageJson from '../../package.json' with { type: 'json' };
 const isProd = process.env.NODE_ENV === 'production';
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2026-01-31',
   future: {
     compatibilityVersion: 4,
     typescriptBundlerResolution: true,
   },
   experimental: {
     asyncContext: true,
-    typescriptPlugin: true,
     componentIslands: true,
+    typescriptPlugin: true,
+    viteEnvironmentApi: true,
+    viewTransition: true,
   },
   modules: [
     '@nuxt/hints',
@@ -85,7 +87,6 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
-    lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     locales: [
@@ -198,6 +199,13 @@ export default defineNuxtConfig({
       inline: ['@bradenmacdonald/s3-lite-client'],
     },
   },
+
+  vite: {
+    optimizeDeps: {
+      include: ['@vueuse/core'],
+    },
+  },
+
   devtools: { enabled: true },
 });
 
