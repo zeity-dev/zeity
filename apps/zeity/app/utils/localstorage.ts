@@ -18,5 +18,3 @@ export const useLocalStorage = () => ({
     localStorage?.removeItem(key);
   },
 });
-
-export default useLocalStorage;
