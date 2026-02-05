@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { useIntervalFn } from '@vueuse/core';
-import { addMilliseconds } from 'date-fns';
-import { parseAbsolute, getLocalTimeZone } from '@internationalized/date';
+
 import { nanoid } from 'nanoid';
 
 import type { DraftTime, Time } from '@zeity/types/time';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
-import { pick } from '@zeity/utils/object';
 
-import { type Schema, schema } from '~/schemas/time-form';
+import {
+  type Schema,
+  schema,
+  parseSchema,
+  toSchema,
+  isTimeValue,
+  isDraftValue,
+} from '~/schemas/time-form';
 
 const model = defineModel<Time | DraftTime | undefined>();
 
@@ -51,6 +56,10 @@ const isOffline = computed(() => {
   const time = model.value;
   return isTimeValue(time) && !isOnlineTime(time);
 });
+const isNew = computed(() => {
+  const time = model.value;
+  return isTimeValue(time) && time.id === 'new';
+});
 
 const startDateRef = useTemplateRef('startDateRef');
 const endDateRef = useTemplateRef('endDateRef');
@@ -58,8 +67,8 @@ const endDateRef = useTemplateRef('endDateRef');
 const state = ref<Schema>();
 const loading = ref(false);
 
-const parsedState = computed(() => {
-  if (!state.value) return;
+const parsedState = computed<Time | DraftTime | null>(() => {
+  if (!state.value) return null;
 
   const val = state.value;
   const validated = schema.safeParse(val);
@@ -117,33 +126,7 @@ watch(
 );
 
 if (model.value) {
-  state.value = toState(model.value);
-}
-
-function toState(data?: DraftTime | Time): Schema | undefined {
-  if (!data) return undefined;
-
-  const clone = Object.assign({}, data);
-
-  const tz = getLocalTimeZone();
-  if (isTimeValue(clone)) {
-    const start = new Date(clone.start);
-    const end = addMilliseconds(start, clone.duration);
-
-    return {
-      id: clone.id,
-      type: clone.type,
-      start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
-      end: parseAbsolute(end.toISOString(), tz).set({ millisecond: 0 }),
-      notes: clone.notes || '',
-      projectId: clone.projectId || undefined,
-    } satisfies Schema;
-  } else if (isDraftValue(clone)) {
-    return {
-      ...clone,
-      start: parseAbsolute(clone.start, tz).set({ millisecond: 0 }),
-    } as Schema;
-  }
+  state.value = toSchema(model.value);
 }
 
 async function handleSave(event: FormSubmitEvent<Schema>) {
@@ -159,49 +142,18 @@ async function handleSave(event: FormSubmitEvent<Schema>) {
       if (time.id === 'new') {
         const created = await createTime({ ...time, id: nanoid() });
         if (created) {
-          state.value = toState(created);
+          state.value = toSchema(created);
         }
       } else {
         const updated = await updateTime(time.id, time);
         if (updated) {
-          state.value = toState(updated);
+          state.value = toSchema(updated);
         }
       }
     }
   });
 
   await navigateTo('/time');
-}
-
-function parseSchema(data: Schema) {
-  let duration: number | undefined;
-
-  const start = data.start.toAbsoluteString();
-  const end = 'end' in data ? data.end.toAbsoluteString() : undefined;
-  if (end) {
-    duration = timeDiff(end, start);
-  }
-
-  let id: string | undefined;
-  if ('id' in data) {
-    id = data.id;
-  }
-
-  // Time contain id and duration
-  if (id && duration) {
-    return {
-      ...pick(data, ['type', 'notes', 'projectId']),
-      id,
-      start,
-      duration,
-    } satisfies Time;
-  }
-
-  // otherwise, it's a draft
-  return {
-    ...pick(data, ['type', 'notes', 'projectId']),
-    start,
-  } satisfies DraftTime;
 }
 
 async function handleStop() {
@@ -232,7 +184,7 @@ async function handleRound() {
   if (!parsed) return;
   const time = roundTime(parsed);
   if (time) {
-    state.value = toState(time);
+    state.value = toSchema(time);
   }
 }
 
@@ -247,19 +199,6 @@ async function handleSync() {
 
     model.value = newTime;
   });
-}
-
-function isDraftValue(
-  value: Time | DraftTime | Schema | undefined | null,
-): value is DraftTime {
-  return !!value && !('duration' in value) && !('end' in value);
-}
-function isTimeValue(
-  value?: Time | DraftTime | Schema | undefined | null,
-): value is Time {
-  if (!value) return false;
-
-  return ('id' in value && 'duration' in value) || 'end' in value;
 }
 
 function showLoading<T>(fn: () => Promise<T>): Promise<T> {
@@ -429,7 +368,7 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
         </UButton>
 
         <UButton
-          v-if="isOffline"
+          v-if="isOffline && !isNew"
           type="button"
           color="neutral"
           variant="subtle"
