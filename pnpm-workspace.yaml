@@ -4,6 +4,15 @@ packages:
   - "libs/**"
   - "apps/**"
 
+ignoreDepScripts: true
+ignoreWorkspaceRootCheck: true
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - unrs-resolver
+  - vue-demi
+
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - chokidar@4.0.3

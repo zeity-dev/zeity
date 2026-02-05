@@ -4,7 +4,6 @@
   "version": "1.0.0-beta.3",
   "description": "",
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "start": "pnpm run --parallel -r dev",
     "start:zeity": "pnpm --filter ./apps/zeity run dev",
@@ -22,6 +21,7 @@
   "devDependencies": {
     "@types/node": "^24.10.9",
     "@vitest/coverage-v8": "^4.0.18",
+    "knip": "^5.83.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
