@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { useEntityStore } from './entityStore';
 import type { DraftTime, Time } from '@zeity/types/time';
-import useLocalStorage from '~/utils/localstorage';
+import { useLocalStorage } from '~/utils/localstorage';
 
 export const useTimerStore = defineStore('timer', () => {
   const loading = ref(false);
