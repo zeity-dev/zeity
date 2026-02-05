@@ -324,6 +324,16 @@ export default defineI18nConfig(() => ({
           description:
             "Looks like you've followed a broken link or entered a URL that doesn't exist on this site.",
         },
+        serverError: {
+          title: 'Server Error',
+          description:
+            'Sorry, there was a problem with the server. Please try again later.',
+        },
+        serviceUnavailable: {
+          title: 'Service Unavailable',
+          description:
+            'Sorry, the service is currently unavailable. Please try again later.',
+        },
       },
     },
     de: {
@@ -635,6 +645,16 @@ export default defineI18nConfig(() => ({
           title: 'Nicht gefunden',
           description:
             'Es sieht so aus, als wären Sie einem defekten Link gefolgt oder hätten eine URL eingegeben, die auf dieser Seite nicht existiert.',
+        },
+        serverError: {
+          title: 'Serverfehler',
+          description:
+            'Entschuldigung, es gab ein Problem mit dem Server. Bitte versuchen Sie es später erneut.',
+        },
+        serviceUnavailable: {
+          title: 'Dienst nicht verfügbar',
+          description:
+            'Entschuldigung, der Dienst ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.',
         },
       },
     },
