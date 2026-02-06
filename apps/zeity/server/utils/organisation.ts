@@ -9,6 +9,7 @@ import { organisationMembers } from '@zeity/database/organisation-member';
 
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
+import { nonEmptyString } from './zod';
 
 export function doesOrganisationExist(organisationId: string) {
   return useDrizzle()
@@ -113,7 +114,7 @@ export function getOrganisationTeamsByOrgId(organisationId: string) {
 
 const schemaQuota = z
   .object({
-    members: z.coerce.number().int(),
+    members: nonEmptyString(z.coerce.number().int()),
   })
   .partial();
 
