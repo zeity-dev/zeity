@@ -107,8 +107,8 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
           v-model="state.newPassword"
           autocomplete="new-password"
           class="w-full"
+          :type="passwordVisibility.new ? 'text' : 'password'"
         >
-          <!-- :type="passwordVisibility.new ? 'text' : 'password'" -->
           <template #trailing>
             <UButton
               color="neutral"
