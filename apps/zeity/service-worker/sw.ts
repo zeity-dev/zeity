@@ -29,7 +29,7 @@ if (import.meta.env.DEV) {
 
 if (import.meta.env.PROD) {
   const api = /^\/api\//;
-  denylist = [api, /^\/auth\//];
+  denylist = [api, /^\/auth\/.+/];
 
   const strategy = new NetworkFirst({
     cacheName: 'ssr-pages-caches',
@@ -48,7 +48,7 @@ if (import.meta.env.PROD) {
           params.state ??= {};
           params.state.noRedirect = params.cachedResponse;
           console.log(
-            `[SW] cachedResponseWillBeUsed ${params.request.url}, ${params.state ? JSON.stringify(params.state) : ''}`
+            `[SW] cachedResponseWillBeUsed ${params.request.url}, ${params.state ? JSON.stringify(params.state) : ''}`,
           );
         },
         // This callback will be called when the fetch call fails.
@@ -57,7 +57,7 @@ if (import.meta.env.PROD) {
           if (state?.noRedirect) return state.noRedirect;
 
           console.log(
-            `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`
+            `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`,
           );
           return error && 'name' in error && error.name === 'no-response'
             ? Response.redirect('/offline', 302)
@@ -75,6 +75,7 @@ if (import.meta.env.PROD) {
       /^\/about/,
       /^\/organisations/,
       /^\/user/,
+      /^\/auth$/,
     ];
     const result =
       sameOrigin &&
@@ -90,7 +91,7 @@ if (import.meta.env.PROD) {
 
 // register prerendered app shell for navigation requests
 registerRoute(
-  new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist })
+  new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist }),
 );
 
 self.skipWaiting();
