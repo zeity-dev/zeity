@@ -33,7 +33,7 @@ async function submit(event: FormSubmitEvent<Schema>) {
       });
       await useUserSession().fetch();
     })
-    .catch((error) => {
+    .catch(() => {
       toast.add({
         title: t('auth.forgotPassword.error'),
         color: 'error',

@@ -54,7 +54,7 @@ async function resetPassword(event: FormSubmitEvent<Schema>) {
       await useUserSession().fetch();
       await navigateTo('/user');
     })
-    .catch((error) => {
+    .catch(() => {
       toast.add({
         title: t('auth.resetPassword.error'),
         color: 'error',

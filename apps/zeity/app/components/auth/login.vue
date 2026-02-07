@@ -51,7 +51,7 @@ async function loginPassword(event: FormSubmitEvent<Schema>) {
       });
       emits('submit');
     })
-    .catch((error) => {
+    .catch(() => {
       toast.add({
         title: t('auth.login.error'),
         color: 'error',
@@ -177,46 +177,3 @@ async function loginPasskey() {
     />
   </UForm>
 </template>
-
-<style>
-.slide {
-  /* Enable view transitions for this component */
-  view-transition-name: login;
-}
-
-/* Example: Customizing a slide transition */
-::view-transition-old(login),
-::view-transition-new(login) {
-  animation-duration: 0.3s;
-}
-
-::view-transition-old(login) {
-  animation-name: slide-out;
-}
-
-::view-transition-new(login) {
-  animation-name: slide-in;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-}
-</style>

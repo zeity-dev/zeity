@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3';
 
 import { randomBytes } from 'node:crypto';
-import { OTP_TYPE_PASSWORD_RESET } from './auth-otp';
+import { deleteUsersOTPs, OTP_TYPE_PASSWORD_RESET } from './auth-otp';
 
 export async function findResetRequest(code: string) {
   await deleteExpiredOTPs();
@@ -11,7 +11,7 @@ export async function findResetRequest(code: string) {
 }
 
 export async function createResetRequest(userId: string) {
-  await deleteResetRequests(userId);
+  await deleteUsersOTPs(userId, OTP_TYPE_PASSWORD_RESET);
   const code = randomBytes(32).toString('hex');
 
   await createOTP(userId, code, OTP_TYPE_PASSWORD_RESET);
