@@ -58,8 +58,8 @@ function resend() {
 
 <template>
     <UForm :schema="schema" :state="state" @submit="verify">
-        <UFormField required class="text-center">
-            <UPinInput v-model="state.code" name="code" size="xl" length="6" otp />
+        <UFormField name="code" class="text-center">
+            <UPinInput v-model="state.code" size="xl" length="6" otp />
         </UFormField>
 
         <div class="text-right">

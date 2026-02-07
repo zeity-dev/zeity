@@ -287,6 +287,16 @@ export default defineI18nConfig(() => ({
         organisation: 'Organisation',
         saveSuccess: 'User saved successfully',
         saveError: 'Error saving user',
+        passwordsDoNotMatch: 'Passwords do not match',
+        changePassword: {
+          title: 'Change Password',
+          currentPassword: 'Current Password',
+          newPassword: 'New Password',
+          newPasswordSameAsCurrent:
+            'New password must be different from current password',
+          success: 'Password changed successfully',
+          error: 'Error changing password',
+        },
         delete: {
           title: 'Delete User',
           description:
@@ -615,6 +625,16 @@ export default defineI18nConfig(() => ({
         organisation: 'Organisation',
         saveSuccess: 'Benutzer erfolgreich gespeichert',
         saveError: 'Fehler beim Speichern des Benutzers',
+        passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
+        changePassword: {
+          title: 'Passwort ändern',
+          currentPassword: 'Aktuelles Passwort',
+          newPassword: 'Neues Passwort',
+          newPasswordSameAsCurrent:
+            'Neues Passwort muss sich vom aktuellen Passwort unterscheiden',
+          success: 'Passwort erfolgreich geändert',
+          error: 'Fehler beim Ändern des Passworts',
+        },
         delete: {
           title: 'Benutzer löschen',
           description:

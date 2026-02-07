@@ -99,11 +99,10 @@ async function loginPasskey() {
     @submit.prevent="loginPassword"
   >
     <div v-show="showPasswordStep" class="slide space-y-4">
-      <UFormField :label="$t('user.email')">
+      <UFormField name="email" :label="$t('user.email')">
         <UInput
           v-model="state.email"
           type="email"
-          name="email"
           autocomplete="username webauthn"
           class="w-full"
         />
@@ -117,10 +116,9 @@ async function loginPasskey() {
       />
     </div>
     <div v-show="!showPasswordStep" class="slide space-y-4">
-      <UFormField :label="$t('user.password')">
+      <UFormField name="password" :label="$t('user.password')">
         <UInput
           v-model="state.password"
-          name="password"
           autocomplete="current-password"
           class="w-full"
           :type="passwordVisibility ? 'text' : 'password'"

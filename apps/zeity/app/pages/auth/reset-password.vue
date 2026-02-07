@@ -15,11 +15,10 @@ if (!route.query.token) {
   await navigateTo('/auth/forgot-password');
 }
 
-const pending = ref(false);
-
 const { t } = useI18n();
 const toast = useToast();
 
+const pending = ref(false);
 const passwordVisibility = ref(false);
 
 const schema = z
@@ -28,7 +27,7 @@ const schema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: t('auth.passwordsDoNotMatch'),
+    message: t('user.passwordsDoNotMatch'),
     path: ['confirmPassword'], // Highlights the confirm password field
   });
 type Schema = z.output<typeof schema>;
@@ -77,10 +76,9 @@ async function resetPassword(event: FormSubmitEvent<Schema>) {
       :state="state"
       @submit.prevent="resetPassword"
     >
-      <UFormField :label="$t('user.password')">
+      <UFormField name="password" :label="$t('user.password')">
         <UInput
           v-model="state.password"
-          name="password"
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility ? 'text' : 'password'"
@@ -98,10 +96,9 @@ async function resetPassword(event: FormSubmitEvent<Schema>) {
         </UInput>
       </UFormField>
 
-      <UFormField :label="$t('user.confirmPassword')">
+      <UFormField name="confirmPassword" :label="$t('user.confirmPassword')">
         <UInput
           v-model="state.confirmPassword"
-          name="confirmPassword"
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility ? 'text' : 'password'"

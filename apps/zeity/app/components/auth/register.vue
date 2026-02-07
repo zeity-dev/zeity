@@ -20,7 +20,7 @@ const baseSchema = z.object({
 const schema = baseSchema.refine(
   (data) => data.password === data.confirmPassword,
   {
-    message: t('auth.passwordsDoNotMatch'),
+    message: t('user.passwordsDoNotMatch'),
     path: ['confirmPassword'], // Highlights the confirm password field
   },
 );
@@ -109,18 +109,17 @@ async function registerPasskey() {
     @submit.prevent="registerPassword"
   >
     <div v-show="showPasswordStep" class="slide space-y-4">
-      <UFormField :label="$t('user.email')" required>
+      <UFormField name="email" :label="$t('user.email')">
         <UInput
           v-model="state.email"
           type="email"
-          name="email"
           autocomplete="username webauthn"
           class="w-full"
         />
       </UFormField>
 
-      <UFormField :label="$t('user.name')" required>
-        <UInput v-model="state.name" name="name" class="w-full" />
+      <UFormField name="name" :label="$t('user.name')">
+        <UInput v-model="state.name" class="w-full" />
       </UFormField>
 
       <UButton
@@ -131,10 +130,9 @@ async function registerPasskey() {
       />
     </div>
     <div v-show="!showPasswordStep" class="slide space-y-4">
-      <UFormField :label="$t('user.password')">
+      <UFormField name="password" :label="$t('user.password')">
         <UInput
           v-model="state.password"
-          name="password"
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility ? 'text' : 'password'"
@@ -152,10 +150,9 @@ async function registerPasskey() {
         </UInput>
       </UFormField>
 
-      <UFormField :label="$t('user.confirmPassword')">
+      <UFormField name="confirmPassword" :label="$t('user.confirmPassword')">
         <UInput
           v-model="state.confirmPassword"
-          name="confirmPassword"
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility ? 'text' : 'password'"

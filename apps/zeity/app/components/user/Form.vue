@@ -104,11 +104,11 @@ function handleUserImageUpload() {
                     @click="handleUserImageUpload" />
             </div>
 
-            <UFormField :label="$t('user.email')" required loading>
+            <UFormField :label="$t('user.email')" loading>
                 <UInput :value="user?.email" disabled readonly class="w-full" />
             </UFormField>
-            <UFormField :label="$t('user.name')" required>
-                <UInput v-model="userState.name" name="name" class="w-full" />
+            <UFormField name="name" :label="$t('user.name')">
+                <UInput v-model="userState.name"  class="w-full" />
             </UFormField>
 
             <UButton :disabled="isLoading" :label="$t('common.save')" block type="submit" icon="i-lucide-save" />

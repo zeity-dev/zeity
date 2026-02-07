@@ -1,6 +1,9 @@
-import { authPasswordReset } from '@zeity/database/auth-password-reset';
-import { users } from '@zeity/database/user';
 import { z } from 'zod';
+
+import { users } from '@zeity/database/user';
+import { userAccounts } from '@zeity/database/user-account';
+import { authOTP } from '@zeity/database/auth-otp';
+
 import { useUserPasswordReset } from '~~/server/utils/user-password-reset';
 
 export default defineEventHandler(async (event) => {
@@ -13,7 +16,6 @@ export default defineEventHandler(async (event) => {
   );
 
   const request = await useUserPasswordReset(event).findResetRequest(code);
-  console.log('Reset request:', request);
   if (!request) {
     return createError({
       statusCode: 401,
@@ -27,6 +29,7 @@ export default defineEventHandler(async (event) => {
       .select()
       .from(users)
       .where(eq(users.id, request.userId))
+      .limit(1)
       .then((rows) => rows[0]);
 
     if (!user) {
@@ -38,13 +41,16 @@ export default defineEventHandler(async (event) => {
     }
 
     await tx
-      .update(users)
+      .update(userAccounts)
       .set({ password: await hashPassword(password) })
-      .where(eq(users.id, user.id));
+      .where(
+        and(
+          eq(userAccounts.userId, user.id),
+          eq(userAccounts.providerId, PASSWORD_PROVIDER_ID),
+        ),
+      );
 
-    await tx
-      .delete(authPasswordReset)
-      .where(eq(authPasswordReset.id, request.id));
+    await tx.delete(authOTP).where(eq(authOTP.id, request.id));
 
     useMailer(event).sendMessageMail(
       { email: user.email, name: user.name },

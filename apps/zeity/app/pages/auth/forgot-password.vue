@@ -56,10 +56,9 @@ async function submit(event: FormSubmitEvent<Schema>) {
       :state="state"
       @submit.prevent="submit"
     >
-      <UFormField :label="$t('user.email')">
+      <UFormField name="email" :label="$t('user.email')">
         <UInput
           v-model="state.email"
-          name="email"
           type="email"
           autocomplete="email"
           class="w-full"
