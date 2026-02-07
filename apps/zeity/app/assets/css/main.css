@@ -9,3 +9,44 @@ body {
 #__nuxt {
   display: contents;
 }
+
+.slide {
+  /* Enable view transitions for this component */
+  view-transition-name: slide;
+}
+
+/* Example: Customizing a slide transition */
+::view-transition-old(slide),
+::view-transition-new(slide) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(slide) {
+  animation-name: slide-out;
+}
+
+::view-transition-new(slide) {
+  animation-name: slide-in;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}

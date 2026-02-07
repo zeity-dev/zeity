@@ -5,6 +5,8 @@ import {
   text,
   timestamp,
   uuid,
+  unique,
+  varchar,
 } from 'drizzle-orm/pg-core';
 
 import { timestampColumns } from './common';
@@ -14,6 +16,7 @@ export const authOTP = pgTable(
   'auth_otp',
   {
     id: serial('id').primaryKey(),
+    type: varchar('type', { length: 100 }).notNull(),
     code: text('code').notNull(),
     expiresAt: timestamp('expires_at', { mode: 'date' }).notNull(),
 
@@ -23,7 +26,12 @@ export const authOTP = pgTable(
 
     createdAt: timestampColumns().createdAt,
   },
-  (table) => [index().on(table.expiresAt)]
+  (table) => [
+    index().on(table.expiresAt),
+    index().on(table.code),
+    index().on(table.type),
+    unique().on(table.code, table.type),
+  ],
 );
 
 export type AuthOTP = typeof authOTP.$inferSelect;

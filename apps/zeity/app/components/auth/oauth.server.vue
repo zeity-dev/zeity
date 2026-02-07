@@ -13,8 +13,7 @@ const hasOauth = [
     <USeparator
       v-if="hasOauth"
       orientation="horizontal"
-      label="or"
-      icon="i-lucide-"
+      :label="$t('common.or')"
     />
 
     <div class="flex flex-col gap-2 justify-between">

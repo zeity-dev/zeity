@@ -25,6 +25,7 @@ export default defineI18nConfig(() => ({
         back: 'Back',
         cancel: 'Cancel',
         close: 'Close',
+        continue: 'Continue',
         custom: 'Custom',
         delete: 'Delete',
         download: 'Download',
@@ -32,6 +33,7 @@ export default defineI18nConfig(() => ({
         error: 'Error',
         general: 'General',
         loadMore: 'Load more',
+        or: 'or',
         refresh: 'Refresh',
         save: 'Save',
         send: 'Send',
@@ -280,9 +282,21 @@ export default defineI18nConfig(() => ({
         title: 'User',
         name: 'Full Name',
         email: 'Email',
+        password: 'Password',
+        confirmPassword: 'Confirm Password',
         organisation: 'Organisation',
         saveSuccess: 'User saved successfully',
         saveError: 'Error saving user',
+        passwordsDoNotMatch: 'Passwords do not match',
+        changePassword: {
+          title: 'Change Password',
+          currentPassword: 'Current Password',
+          newPassword: 'New Password',
+          newPasswordSameAsCurrent:
+            'New password must be different from current password',
+          success: 'Password changed successfully',
+          error: 'Error changing password',
+        },
         delete: {
           title: 'Delete User',
           description:
@@ -299,10 +313,34 @@ export default defineI18nConfig(() => ({
       },
       auth: {
         title: 'Authentication',
-        login: 'Login',
-        register: 'Register',
+        forgotPassword: {
+          title: 'Forgot Password',
+          description:
+            'Enter your email to receive password reset instructions.',
+          success: 'Password reset instructions sent successfully',
+          error: 'Error sending password reset instructions',
+        },
+        resetPassword: {
+          title: 'Reset Password',
+          description: 'Enter your new password below.',
+          success: 'Password reset successfully',
+          error: 'Error resetting password',
+        },
+        login: {
+          title: 'Login',
+          error: 'Login failed',
+          success: 'Logged in successfully',
+        },
+        register: {
+          title: 'Register',
+          success: 'Registered successfully',
+          error: 'Registration failed',
+          userExists: 'User already exists',
+        },
+        registerWithPasskey: 'Register with Passkey',
         logout: 'Logout',
         verify: 'Verify Email',
+        loginWithPasskey: 'Login with Passkey',
         loginWithGoogle: 'Login with Google',
         loginWithApple: 'Login with Apple',
         loginWithMicrosoft: 'Login with Microsoft',
@@ -345,6 +383,7 @@ export default defineI18nConfig(() => ({
         back: 'Zurück',
         cancel: 'Abbrechen',
         close: 'Schließen',
+        continue: 'Weiter',
         custom: 'Benutzerdefiniert',
         delete: 'Löschen',
         download: 'Herunterladen',
@@ -352,6 +391,7 @@ export default defineI18nConfig(() => ({
         error: 'Fehler',
         general: 'Allgemein',
         loadMore: 'Mehr laden',
+        or: 'oder',
         refresh: 'Aktualisieren',
         save: 'Speichern',
         send: 'Senden',
@@ -580,9 +620,21 @@ export default defineI18nConfig(() => ({
         title: 'Benutzer',
         name: 'Vollständiger Name',
         email: 'Email',
+        password: 'Passwort',
+        confirmPassword: 'Passwort bestätigen',
         organisation: 'Organisation',
         saveSuccess: 'Benutzer erfolgreich gespeichert',
         saveError: 'Fehler beim Speichern des Benutzers',
+        passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
+        changePassword: {
+          title: 'Passwort ändern',
+          currentPassword: 'Aktuelles Passwort',
+          newPassword: 'Neues Passwort',
+          newPasswordSameAsCurrent:
+            'Neues Passwort muss sich vom aktuellen Passwort unterscheiden',
+          success: 'Passwort erfolgreich geändert',
+          error: 'Fehler beim Ändern des Passworts',
+        },
         delete: {
           title: 'Benutzer löschen',
           description:
@@ -599,10 +651,36 @@ export default defineI18nConfig(() => ({
       },
       auth: {
         title: 'Authentifizierung',
-        login: 'Anmelden',
-        register: 'Registrieren',
+        forgotPassword: {
+          title: 'Passwort vergessen',
+          description:
+            'Geben Sie Ihre E-Mail-Adresse ein, um Anweisungen zum Zurücksetzen des Passworts zu erhalten.',
+          success:
+            'Anweisungen zum Zurücksetzen des Passworts erfolgreich gesendet',
+          error:
+            'Fehler beim Senden der Anweisungen zum Zurücksetzen des Passworts',
+        },
+        resetPassword: {
+          title: 'Passwort zurücksetzen',
+          description: 'Geben Sie unten Ihr neues Passwort ein.',
+          success: 'Passwort erfolgreich zurückgesetzt',
+          error: 'Fehler beim Zurücksetzen des Passworts',
+        },
+        login: {
+          title: 'Anmelden',
+          error: 'Anmeldung fehlgeschlagen',
+          success: 'Erfolgreich angemeldet',
+        },
+        register: {
+          title: 'Registrieren',
+          error: 'Registrierung fehlgeschlagen',
+          success: 'Erfolgreich registriert',
+          userExists: 'Benutzer existiert bereits',
+        },
+        registerWithPasskey: 'Mit Passkey registrieren',
         logout: 'Abmelden',
         verify: 'E-Mail verifizieren',
+        loginWithPasskey: 'Mit Passkey anmelden',
         loginWithGoogle: 'Mit Google anmelden',
         loginWithApple: 'Mit Apple anmelden',
         loginWithMicrosoft: 'Mit Microsoft anmelden',

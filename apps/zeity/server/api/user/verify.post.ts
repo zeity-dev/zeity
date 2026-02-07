@@ -1,9 +1,12 @@
 import { z } from 'zod';
 import { users } from '@zeity/database/user';
 import {
-  isUserVerified,
   deleteUsersOTPs,
-  verifyOTP,
+  OTP_TYPE_EMAIL_VERIFICATION,
+} from '~~/server/utils/auth-otp';
+import {
+  isUserVerified,
+  verifyEmailVerificationOTP,
 } from '~~/server/utils/user-verification';
 import { refreshUserSession } from '~~/server/utils/user-session';
 
@@ -14,7 +17,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       code: z.string().length(6),
-    }).safeParse
+    }).safeParse,
   );
   if (!query.success) {
     throw createError({
@@ -25,10 +28,12 @@ export default defineEventHandler(async (event) => {
   }
 
   // verify otp
-  const otp = await verifyOTP(user.id, query.data.code).catch((e) => {
-    console.error(e);
-    return null;
-  });
+  const otp = await verifyEmailVerificationOTP(user.id, query.data.code).catch(
+    (e: unknown) => {
+      console.error(e);
+      return null;
+    },
+  );
 
   // if token is invalid or userId in token does not match the session user id
   if (!otp) {
@@ -38,7 +43,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  await deleteUsersOTPs(user.id);
+  await deleteUsersOTPs(user.id, OTP_TYPE_EMAIL_VERIFICATION);
 
   // check if email is already verified
   const emailVerified = await isUserVerified(user.id);

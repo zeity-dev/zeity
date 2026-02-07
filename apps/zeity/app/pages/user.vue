@@ -19,7 +19,11 @@ const { pending, data } = await fetchUser();
         <UNavigationMenu
           :items="[
             { label: $t('navigation.profile'), to: '/user', exact: true },
-            { label: $t('navigation.organisations'), to: `/user/organisations` },
+            { label: $t('user.changePassword.title'), to: '/user/password' },
+            {
+              label: $t('navigation.organisations'),
+              to: '/user/organisations',
+            },
           ]"
           highlight
           class="-mx-1 flex-1"

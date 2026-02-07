@@ -1,6 +1,5 @@
 import { handleOAuthLogin } from '~~/server/utils/auth';
-
-const MICROSOFT_PROVIDER_ID = 'microsoft';
+import { MICROSOFT_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
 export default defineOAuthMicrosoftEventHandler({
   async onSuccess(event, { user }) {

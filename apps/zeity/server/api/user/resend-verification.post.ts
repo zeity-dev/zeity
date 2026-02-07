@@ -1,5 +1,9 @@
 import { users } from '@zeity/database/user';
-import { createOTP, deleteUsersOTPs } from '~~/server/utils/user-verification';
+import {
+  deleteUsersOTPs,
+  OTP_TYPE_EMAIL_VERIFICATION,
+} from '~~/server/utils/auth-otp';
+import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -25,14 +29,14 @@ export default defineEventHandler(async (event) => {
   }
 
   // delete previous OTPs of the user
-  await deleteUsersOTPs(user.id);
+  await deleteUsersOTPs(user.id, OTP_TYPE_EMAIL_VERIFICATION);
 
-  const otp = await createOTP(session.user.id);
+  const otp = await createEmailVerificationOTP(session.user.id);
   await useMailer(event).sendMessageMail(
     { email: user.email, name: user.name },
     'Verify your email',
     ['Please verify your email address by entering the code below:'],
-    [{ children: [{ text: otp, class: 'font-bold text-2xl' }] }]
+    [{ children: [{ text: otp, class: 'font-bold text-2xl' }] }],
   );
 
   return sendNoContent(event);
