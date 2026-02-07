@@ -3,19 +3,11 @@ import type { H3Event } from 'h3';
 import { SignJWT, jwtVerify } from 'jose';
 
 import { users } from '@zeity/database/user';
-import { authOTP } from '@zeity/database/auth-otp';
 import { JWT_ALGORITHM, useJwtSecret } from './jwt-secret';
+import { OTP_TYPE_EMAIL_VERIFICATION } from './auth-otp';
 
 const JWT_ISSUER = 'zeity';
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-export function deleteUsersOTPs(userId: string) {
-  return useDrizzle().delete(authOTP).where(eq(authOTP.userId, userId));
-}
-export function deleteExpiredOTPs() {
-  const now = new Date();
-  return useDrizzle().delete(authOTP).where(lte(authOTP.expiresAt, now));
-}
 
 export function generateOTP(length = 6) {
   let otp = '';
@@ -23,39 +15,6 @@ export function generateOTP(length = 6) {
   for (let i = 0; i < length; i++) {
     otp += numbers[randomInt(numbers.length)];
   }
-
-  return otp;
-}
-export async function verifyOTP(userId: string, code: string) {
-  await deleteExpiredOTPs();
-
-  const otp = await useDrizzle()
-    .select()
-    .from(authOTP)
-    .where(
-      and(
-        eq(authOTP.userId, userId),
-        eq(authOTP.code, code),
-        gte(authOTP.expiresAt, new Date())
-      )
-    )
-    .then((rows) => rows[0]);
-
-  return otp;
-}
-
-export async function createOTP(userId: string) {
-  const otp = generateOTP();
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 5);
-
-  await useDrizzle()
-    .insert(authOTP)
-    .values({
-      code: otp,
-      expiresAt,
-      userId,
-    })
-    .returning({ id: authOTP.id });
 
   return otp;
 }
@@ -70,7 +29,7 @@ export async function isUserVerified(userId: string) {
 
 export function generateEmailVerificationToken(
   secret: Uint8Array,
-  userId: string
+  userId: string,
 ) {
   return new SignJWT({ type: 'email-verification', userId })
     .setProtectedHeader({
@@ -84,7 +43,7 @@ export function generateEmailVerificationToken(
 
 export async function verifyEmailVerificationToken(
   secret: Uint8Array,
-  token: string
+  token: string,
 ) {
   const { payload } = await jwtVerify(token, secret, {
     issuer: JWT_ISSUER,
@@ -92,6 +51,20 @@ export async function verifyEmailVerificationToken(
   });
 
   return payload;
+}
+
+export async function createEmailVerificationOTP(userId: string) {
+  const otp = generateOTP();
+
+  const code = `${userId}:${otp}`;
+  await createOTP(userId, code, OTP_TYPE_EMAIL_VERIFICATION);
+
+  return otp;
+}
+
+export function verifyEmailVerificationOTP(userId: string, otp: string) {
+  const code = `${userId}:${otp}`;
+  return verifyOTP(userId, code, OTP_TYPE_EMAIL_VERIFICATION);
 }
 
 export function useUserVerification(event: H3Event) {

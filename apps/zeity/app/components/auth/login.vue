@@ -5,23 +5,79 @@ import type { FormSubmitEvent } from '@nuxt/ui';
 const pending = ref(false);
 const emits = defineEmits(['submit']);
 
+const { t } = useI18n();
 const toast = useToast();
-const { authenticate } = useWebAuthn();
 
+const showPasswordStep = ref(true);
+const passwordVisibility = ref(false);
 
 const schema = z.object({
   email: z.email().trim(),
+  password: z.string().min(8),
 });
 type Schema = z.output<typeof schema>;
 const state = ref<Partial<Schema>>({
   email: '',
+  password: '',
 });
 
-async function signIn(event: FormSubmitEvent<Schema>) {
+function toggleShowPasswordStep() {
+  if (!document.startViewTransition) {
+    // Fallback: no fancy animation, just update state
+    showPasswordStep.value = !showPasswordStep.value;
+  } else {
+    document.startViewTransition(() => {
+      showPasswordStep.value = !showPasswordStep.value;
+    });
+  }
+}
+
+async function loginPassword(event: FormSubmitEvent<Schema>) {
+  if (event.data.email && !event.data.password) {
+    toggleShowPasswordStep();
+    return;
+  }
+
   pending.value = true;
 
-  await authenticate(event.data.email)
-    .then(() => emits('submit'))
+  await $fetch('/api/auth/login', {
+    method: 'POST',
+    body: event.data,
+  })
+    .then(() => {
+      toast.add({
+        title: t('auth.login.success'),
+        color: 'success',
+      });
+      emits('submit');
+    })
+    .catch((error) => {
+      toast.add({
+        title: t('auth.login.error'),
+        color: 'error',
+      });
+    })
+    .finally(() => {
+      pending.value = false;
+    });
+}
+
+async function loginPasskey() {
+  const event = schema.pick({ email: true }).safeParse(state.value);
+  if (!event.success) {
+    return;
+  }
+  pending.value = true;
+
+  await useWebAuthn()
+    .authenticate(event.data.email)
+    .then(() => {
+      toast.add({
+        title: t('auth.loginSuccess'),
+        color: 'success',
+      });
+      emits('submit');
+    })
     .catch((error) => {
       toast.add({
         title: error.data?.message || error.message,
@@ -37,21 +93,130 @@ async function signIn(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UForm
-    class="flex flex-col gap-4"
+    class="space-y-4"
     :schema="schema"
     :state="state"
-    @submit.prevent="signIn"
+    @submit.prevent="loginPassword"
   >
-    <UFormField :label="$t('user.email')" required>
-      <UInput
-        v-model="state.email"
-        type="email"
-        name="email"
-        autocomplete="username webauthn"
-        class="w-full"
-      />
-    </UFormField>
+    <div v-show="showPasswordStep" class="slide space-y-4">
+      <UFormField :label="$t('user.email')">
+        <UInput
+          v-model="state.email"
+          type="email"
+          name="email"
+          autocomplete="username webauthn"
+          class="w-full"
+        />
+      </UFormField>
 
-    <UButton block type="submit" :label="$t('auth.login')" :loading="pending" />
+      <UButton
+        block
+        type="button"
+        :label="$t('common.continue')"
+        @click="toggleShowPasswordStep"
+      />
+    </div>
+    <div v-show="!showPasswordStep" class="slide space-y-4">
+      <UFormField :label="$t('user.password')">
+        <UInput
+          v-model="state.password"
+          name="password"
+          autocomplete="current-password"
+          class="w-full"
+          :type="passwordVisibility ? 'text' : 'password'"
+        >
+          <template #trailing>
+            <UButton
+              color="neutral"
+              variant="link"
+              size="sm"
+              :icon="passwordVisibility ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+              :aria-pressed="passwordVisibility"
+              @click="passwordVisibility = !passwordVisibility"
+            />
+          </template>
+        </UInput>
+
+        <template #hint>
+          <ULink
+            to="/auth/forgot-password"
+            class="text-sm text-primary-600 hover:underline"
+          >
+            {{ $t('auth.forgotPassword.title') }}
+          </ULink>
+        </template>
+      </UFormField>
+
+      <div class="flex gap-2">
+        <UButton
+          :title="$t('common.back')"
+          icon="i-lucide-chevron-left"
+          color="neutral"
+          variant="subtle"
+          @click="toggleShowPasswordStep"
+        />
+
+        <UButton
+          block
+          type="submit"
+          :label="$t('auth.login.title')"
+          :loading="pending"
+        />
+      </div>
+    </div>
+
+    <USeparator :label="$t('common.or')" />
+
+    <UButton
+      block
+      type="button"
+      color="neutral"
+      :label="$t('auth.loginWithPasskey')"
+      :loading="pending"
+      @click="loginPasskey"
+    />
   </UForm>
 </template>
+
+<style>
+.slide {
+  /* Enable view transitions for this component */
+  view-transition-name: login;
+}
+
+/* Example: Customizing a slide transition */
+::view-transition-old(login),
+::view-transition-new(login) {
+  animation-duration: 0.3s;
+}
+
+::view-transition-old(login) {
+  animation-name: slide-out;
+}
+
+::view-transition-new(login) {
+  animation-name: slide-in;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+</style>

@@ -1,6 +1,5 @@
 import { handleOAuthLogin } from '~~/server/utils/auth';
-
-const GOOGLE_PROVIDER_ID = 'google';
+import { GOOGLE_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
 export default defineOAuthGoogleEventHandler({
   config: {

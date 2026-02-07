@@ -15,6 +15,8 @@ export const userAccounts = pgTable(
     providerId: text('provider_id').notNull(),
     scope: text('scope'),
 
+    password: text('password'),
+
     ...timestampColumns(),
   },
   (table) => [unique().on(table.accountId, table.providerId)]

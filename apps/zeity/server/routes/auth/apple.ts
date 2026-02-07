@@ -1,4 +1,4 @@
-const APPLE_PROVIDER_ID = 'apple';
+import { APPLE_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
 export default defineOAuthAppleEventHandler({
   async onSuccess(event, { user, payload }) {

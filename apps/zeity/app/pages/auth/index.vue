@@ -55,13 +55,13 @@ async function handleRedirect() {
 
 const items = ref([
   {
-    label: $t('auth.login'),
+    label: $t('auth.login.title'),
     slot: 'login',
     value: 'login',
     icon: 'i-lucide-log-in',
   },
   {
-    label: $t('auth.register'),
+    label: $t('auth.register.title'),
     slot: 'register',
     value: 'register',
     icon: 'i-lucide-user-plus',
