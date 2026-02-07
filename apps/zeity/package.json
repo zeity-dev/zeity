@@ -40,7 +40,7 @@
     "@nuxt/eslint": "^1.13.0",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/image": "^2.0.0",
-    "@nuxt/test-utils": "^3.23.0",
+    "@nuxt/test-utils": "^4.0.0",
     "@nuxt/ui": "^4.4.0",
     "@nuxtjs/i18n": "^10.2.1",
     "@types/etag": "^1.8.4",
