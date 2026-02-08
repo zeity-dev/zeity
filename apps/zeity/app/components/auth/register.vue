@@ -9,7 +9,7 @@ const { t } = useI18n();
 const toast = useToast();
 
 const showPasswordStep = ref(true);
-const passwordVisibility = ref(false);
+const passwordVisibility = ref({ password: false, confirmPassword: false });
 
 const baseSchema = z.object({
   email: z.email().trim(),
@@ -135,16 +135,22 @@ async function registerPasskey() {
           v-model="state.password"
           autocomplete="new-password"
           class="w-full"
-          :type="passwordVisibility ? 'text' : 'password'"
+          :type="passwordVisibility.password ? 'text' : 'password'"
         >
           <template #trailing>
             <UButton
               color="neutral"
               variant="link"
               size="sm"
-              :icon="passwordVisibility ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-              :aria-pressed="passwordVisibility"
-              @click="passwordVisibility = !passwordVisibility"
+              :icon="
+                passwordVisibility.password
+                  ? 'i-lucide-eye-off'
+                  : 'i-lucide-eye'
+              " 
+              :aria-pressed="passwordVisibility.password"
+              @click="
+                passwordVisibility.password = !passwordVisibility.password
+              "
             />
           </template>
         </UInput>
@@ -155,16 +161,23 @@ async function registerPasskey() {
           v-model="state.confirmPassword"
           autocomplete="new-password"
           class="w-full"
-          :type="passwordVisibility ? 'text' : 'password'"
+          :type="passwordVisibility.confirmPassword ? 'text' : 'password'"
         >
           <template #trailing>
             <UButton
               color="neutral"
               variant="link"
               size="sm"
-              :icon="passwordVisibility ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-              :aria-pressed="passwordVisibility"
-              @click="passwordVisibility = !passwordVisibility"
+              :icon="
+                passwordVisibility.confirmPassword
+                  ? 'i-lucide-eye-off'
+                  : 'i-lucide-eye'
+              "
+              :aria-pressed="passwordVisibility.confirmPassword"
+              @click="
+                passwordVisibility.confirmPassword =
+                  !passwordVisibility.confirmPassword
+              "
             />
           </template>
         </UInput>
