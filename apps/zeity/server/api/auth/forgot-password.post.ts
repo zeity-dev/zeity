@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
         children: [
           {
             class: 'text-sm text-gray-500',
-            text: 'If you did not request this, please ignore this email. The link will expire in 5 hours.',
+            text: 'If you did not request this, please ignore this email. The link will expire in one hour.',
           },
         ],
       },
