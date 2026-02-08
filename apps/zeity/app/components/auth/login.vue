@@ -137,7 +137,7 @@ async function loginPasskey() {
 
         <template #hint>
           <ULink
-            to="/auth/forgot-password"
+            :to="`/auth/forgot-password?email=${state.email}`"
             class="text-sm text-primary-600 hover:underline"
           >
             {{ $t('auth.forgotPassword.title') }}

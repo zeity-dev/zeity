@@ -10,13 +10,14 @@ const pending = ref(false);
 
 const { t } = useI18n();
 const toast = useToast();
+const route = useRoute();
 
 const schema = z.object({
   email: z.string().email().trim(),
 });
 type Schema = z.output<typeof schema>;
 const state = ref<Partial<Schema>>({
-  email: '',
+  email: (route.query.email as string) || '',
 });
 
 async function submit(event: FormSubmitEvent<Schema>) {
