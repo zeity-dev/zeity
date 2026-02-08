@@ -7,7 +7,7 @@ useHead({
 });
 
 const { fetchUser } = useUser();
-const { pending, data } = await fetchUser();
+const { pending, data, refresh } = await fetchUser();
 </script>
 
 <template>
@@ -19,10 +19,13 @@ const { pending, data } = await fetchUser();
         <UNavigationMenu
           :items="[
             { label: $t('navigation.profile'), to: '/user', exact: true },
-            { label: $t('user.changePassword.title'), to: '/user/password' },
             {
               label: $t('navigation.organisations'),
               to: '/user/organisations',
+            },
+            {
+              label: $t('user.security.title'),
+              to: '/user/security',
             },
           ]"
           highlight
@@ -35,7 +38,9 @@ const { pending, data } = await fetchUser();
       <NuxtPage
         :user="data?.user"
         :organisations="data?.organisations"
+        :providers="data?.providers"
         :pending="pending"
+        @refresh="refresh"
       />
     </template>
   </UDashboardPanel>
