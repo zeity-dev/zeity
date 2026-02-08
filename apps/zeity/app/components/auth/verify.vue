@@ -25,8 +25,8 @@ function verify(event: FormSubmitEvent<Schema>) {
                 color: 'success',
                 title: t('user.verificationSuccess'),
             })
+            emits('submit')
         })
-        .then(() => emits('submit'))
         .catch((error) => {
             console.error(error);
             toast.add({
