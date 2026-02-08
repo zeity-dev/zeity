@@ -126,6 +126,13 @@ export default defineNuxtConfig({
         'upgrade-insecure-requests': false,
       },
     },
+    rateLimiter: {
+      // Global rate limiting - generous for normal traffic
+      tokensPerInterval: 150,
+      interval: 6 * 10000, // 1 minute
+      headers: true, // Send rate limit headers
+      throwError: true,
+    },
   },
   routeRules: {
     '/': { prerender: true },
@@ -135,6 +142,76 @@ export default defineNuxtConfig({
     },
     '/organisations/**': {
       appMiddleware: ['auth'],
+    },
+    '/api/auth/login': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 5,
+          interval: 15 * 60 * 1000, // 15 minutes - 5 attempts per 15 min
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/auth/register': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 3,
+          interval: 60 * 60 * 1000, // 1 hour - 3 registrations per hour
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/auth/forgot-password': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 3,
+          interval: 60 * 60 * 1000, // 1 hour - 3 reset requests per hour
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/auth/reset-password': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 5,
+          interval: 60 * 60 * 1000, // 1 hour - 5 attempts per hour
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/user/verify': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 5,
+          interval: 60 * 60 * 1000, // 1 hour - 5 verification attempts per hour
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/webauthn/**': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 10,
+          interval: 5 * 60 * 1000, // 5 minutes - 10 attempts per 5 min
+          headers: true,
+          throwError: true,
+        },
+      },
+    },
+    '/api/**': {
+      security: {
+        rateLimiter: {
+          tokensPerInterval: 100,
+          interval: 60 * 1000, // 1 minute - 100 requests per minute
+          headers: true,
+          throwError: true,
+        },
+      },
     },
   },
   runtimeConfig: {
