@@ -52,15 +52,18 @@ export async function verifyOTP(userId: string, code: string, type: string) {
   return otp;
 }
 
-export async function createOTP(userId: string, code: string, type: string) {
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 5);
-
+export async function createOTP(
+  userId: string,
+  code: string,
+  type: string,
+  expiresAt?: Date,
+) {
   await useDrizzle()
     .insert(authOTP)
     .values({
       type,
       code,
-      expiresAt,
+      expiresAt: expiresAt || new Date(Date.now() + 1000 * 60 * 5),
       userId,
     })
     .returning({ id: authOTP.id });

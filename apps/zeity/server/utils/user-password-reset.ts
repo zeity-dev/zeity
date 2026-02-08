@@ -14,7 +14,8 @@ export async function createResetRequest(userId: string) {
   await deleteUsersOTPs(userId, OTP_TYPE_PASSWORD_RESET);
   const code = randomBytes(32).toString('hex');
 
-  await createOTP(userId, code, OTP_TYPE_PASSWORD_RESET);
+  const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 5); // 5 hour
+  await createOTP(userId, code, OTP_TYPE_PASSWORD_RESET, expiresAt);
 
   return code;
 }
