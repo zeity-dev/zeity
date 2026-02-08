@@ -1,7 +1,7 @@
 const baseUrl = 'https://www.zeity.dev';
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2026-01-31',
 
   experimental: {
     viewTransition: true,
@@ -11,8 +11,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/seo',
     '@nuxtjs/i18n',
-    'nuxt-og-image',
-    'nuxt-schema-org',
     '@nuxt/icon',
     '@nuxt/ui',
     '@nuxt/image',
