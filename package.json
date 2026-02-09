@@ -19,9 +19,9 @@
     "nanoid": "^5.1.6"
   },
   "devDependencies": {
-    "@types/node": "^24.10.9",
+    "@types/node": "^24.10.12",
     "@vitest/coverage-v8": "^4.0.18",
-    "knip": "^5.83.0",
+    "knip": "^5.83.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },

@@ -9,17 +9,17 @@
     "preview": "nuxt preview --extends docus"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.87",
-    "@iconify-json/ri": "^1.2.8",
-    "@nuxt/content": "^3.11.0",
-    "@nuxt/eslint": "^1.13.0",
+    "@iconify-json/lucide": "^1.2.89",
+    "@iconify-json/ri": "^1.2.9",
+    "@nuxt/content": "^3.11.2",
+    "@nuxt/eslint": "^1.14.0",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/icon": "^2.2.1",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.4.0",
-    "@nuxtjs/i18n": "^10.2.1",
+    "@nuxtjs/i18n": "^10.2.3",
     "@nuxtjs/seo": "^3.4.0",
-    "docus": "^5.4.4",
-    "nuxt": "^4.3.0"
+    "docus": "^5.5.0",
+    "nuxt": "^4.3.1"
   }
 }
