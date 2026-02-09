@@ -33,7 +33,6 @@ export default defineEventHandler(async (event) => {
     .limit(1)
     .then((res) => res[0] || { user: null, user_account: null });
 
-
   if (!user || !user_account?.password) {
     throw invalidCredentialsError;
   }

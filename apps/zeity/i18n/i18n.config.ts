@@ -312,6 +312,32 @@ export default defineI18nConfig(() => ({
         saveSuccess: 'User saved successfully',
         saveError: 'Error saving user',
         passwordsDoNotMatch: 'Passwords do not match',
+        security: {
+          title: 'Security',
+          providers: {
+            disconnect: 'Disconnect',
+            disconnectSuccess: 'Provider disconnected successfully',
+            disconnectError: 'Error disconnecting provider',
+            password: {
+              title: 'Password',
+              description: 'Authenticate using a password',
+              change: 'Change password',
+              setup: 'Set up password',
+            },
+            google: {
+              title: 'Google',
+              description: 'Authenticate using your Google account',
+            },
+            apple: {
+              title: 'Apple',
+              description: 'Authenticate using your Apple ID',
+            },
+            microsoft: {
+              title: 'Microsoft',
+              description: 'Authenticate using your Microsoft account',
+            },
+          },
+        },
         changePassword: {
           title: 'Change Password',
           currentPassword: 'Current Password',
@@ -673,6 +699,32 @@ export default defineI18nConfig(() => ({
         saveSuccess: 'Benutzer erfolgreich gespeichert',
         saveError: 'Fehler beim Speichern des Benutzers',
         passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
+        security: {
+          title: 'Sicherheit',
+          providers: {
+            disconnect: 'Trennen',
+            disconnectSuccess: 'Anbieter erfolgreich getrennt',
+            disconnectError: 'Fehler beim Trennen des Anbieters',
+            password: {
+              title: 'Passwort',
+              description: 'Mit einem Passwort authentifizieren',
+              change: 'Passwort ändern',
+              setup: 'Passwort einrichten',
+            },
+            google: {
+              title: 'Google',
+              description: 'Mit Ihrem Google-Konto authentifizieren',
+            },
+            apple: {
+              title: 'Apple',
+              description: 'Mit Ihrer Apple-ID authentifizieren',
+            },
+            microsoft: {
+              title: 'Microsoft',
+              description: 'Mit Ihrem Microsoft-Konto authentifizieren',
+            },
+          },
+        },
         changePassword: {
           title: 'Passwort ändern',
           currentPassword: 'Aktuelles Passwort',

@@ -6,6 +6,15 @@ definePageMeta({
   middleware: 'auth',
 });
 
+const props = defineProps({
+  providers: {
+    type: Array as PropType<string[]>,
+    default: () => [],
+  },
+});
+
+const emits = defineEmits(['refresh']);
+
 const { t } = useI18n();
 const toast = useToast();
 
@@ -15,6 +24,8 @@ const passwordVisibility = ref({
   new: false,
   confirm: false,
 });
+
+const hasPassword = computed(() => props.providers.includes('password'));
 
 const schema = z
   .object({
@@ -53,6 +64,8 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
         title: t('user.changePassword.success'),
         color: 'success',
       });
+      emits('refresh');
+      await navigateTo('/user/security');
     })
     .catch(() => {
       toast.add({
@@ -67,7 +80,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UPageCard :title="$t('user.changePassword.title')" class="my-3 space-y-6">
+  <UPageCard :title="$t('user.changePassword.title')">
     <UForm
       class="space-y-4"
       :schema="schema"
@@ -75,6 +88,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
       @submit="updatePassword"
     >
       <UFormField
+        v-if="hasPassword"
         name="currentPassword"
         :label="$t('user.changePassword.currentPassword')"
       >
