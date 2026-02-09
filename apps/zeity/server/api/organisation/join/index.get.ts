@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       token: z.string(),
-    }).safeParse
+    }).safeParse,
   );
   if (!query.success) {
     console.log('Invalid request query', query.error);
@@ -37,12 +37,13 @@ export default defineEventHandler(async (event) => {
       createdAt: organisationInvites.createdAt,
       organisation: {
         name: organisations.name,
+        image: organisations.image,
       },
     })
     .from(organisationInvites)
     .leftJoin(
       organisations,
-      eq(organisations.id, organisationInvites.organisationId)
+      eq(organisations.id, organisationInvites.organisationId),
     )
     .where(eq(organisationInvites.id, jwt.inviteId))
     .limit(1)
