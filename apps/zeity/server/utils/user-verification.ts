@@ -1,12 +1,11 @@
 import { randomInt } from 'node:crypto';
 import type { H3Event } from 'h3';
-import { SignJWT, jwtVerify } from 'jose';
 
 import { users } from '@zeity/database/user';
-import { JWT_ALGORITHM, useJwtSecret } from './jwt-secret';
+import { useJwtSecret } from './jwt-secret';
+import { generateToken, verifyToken } from './jwt';
 import { OTP_TYPE_EMAIL_VERIFICATION } from './auth-otp';
 
-const JWT_ISSUER = 'zeity';
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export function generateOTP(length = 6) {
@@ -31,24 +30,14 @@ export function generateEmailVerificationToken(
   secret: Uint8Array,
   userId: string,
 ) {
-  return new SignJWT({ type: 'email-verification', userId })
-    .setProtectedHeader({
-      alg: JWT_ALGORITHM,
-    })
-    .setIssuer(JWT_ISSUER)
-    .setIssuedAt()
-    .setExpirationTime('1d')
-    .sign(secret);
+  return generateToken({ type: 'email-verification', userId }, secret);
 }
 
 export async function verifyEmailVerificationToken(
   secret: Uint8Array,
   token: string,
 ) {
-  const { payload } = await jwtVerify(token, secret, {
-    issuer: JWT_ISSUER,
-    algorithms: [JWT_ALGORITHM],
-  });
+  const payload = await verifyToken(secret, token);
 
   return payload;
 }
