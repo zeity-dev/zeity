@@ -3,7 +3,10 @@ import { pgTable, uuid, text, varchar, index } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 import { organisations } from './organisation';
 import { users } from './user';
-import { JOIN_REQUEST_STATUS_PENDING, JoinRequestStatus } from '@zeity/types';
+import {
+  type JoinRequestStatus,
+  JOIN_REQUEST_STATUS_PENDING,
+} from '@zeity/types';
 
 export const organisationJoinRequests = pgTable(
   'organisation_join_request',

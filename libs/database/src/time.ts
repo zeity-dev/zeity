@@ -11,7 +11,7 @@ import { timestampColumns } from './common';
 import { projects } from './project';
 import { users } from './user';
 import { organisations } from './organisation';
-import { TIME_TYPE_MANUAL, TimeType } from '@zeity/types';
+import { type TimeType, TIME_TYPE_MANUAL } from '@zeity/types';
 
 export const times = pgTable(
   'time',
