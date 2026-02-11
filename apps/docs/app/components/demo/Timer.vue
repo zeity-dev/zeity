@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import {
-  TIME_TYPE_MANUAL,
-  type DraftTime,
-  type Time,
-} from '@zeity/types';
-import {
-  nowWithoutMillis,
-  timeDiff,
-} from '@zeity/utils/date';
+import { type DraftTime, type Time, TIME_TYPE_MANUAL } from '@zeity/types';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
 
 const draft = ref<DraftTime | null>({
   start: nowWithoutMillis().toISOString(),
@@ -41,7 +34,16 @@ function onStartDraft() {
 </script>
 
 <template>
-  <div class="relative">
-    <DemoDraft v-model="draft" @start="onStartDraft()" @stop="onStopDraft()" />
-  </div>
+  <ClientOnly>
+    <div class="relative">
+      <DemoDraft
+        v-model="draft"
+        @start="onStartDraft()"
+        @stop="onStopDraft()"
+      />
+    </div>
+    <template #placeholder>
+      <USkeleton class="h-12 w-full rounded-md" />
+    </template>
+  </ClientOnly>
 </template>

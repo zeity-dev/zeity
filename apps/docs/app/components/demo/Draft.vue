@@ -52,7 +52,7 @@ watch(isStarted, (value) => {
 </script>
 
 <template>
-  <div class="relative m-2">
+  <div class="relative">
     <div class="rounded-md shadow bg-[var(--ui-bg-accented)]">
       <UButton
         type="button"
