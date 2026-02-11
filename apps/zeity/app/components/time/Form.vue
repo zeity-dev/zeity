@@ -157,7 +157,14 @@ async function handleSave(event: FormSubmitEvent<Schema>) {
 }
 
 async function handleStop() {
-  const time = await showLoading(stopDraft);
+  const draft = parsedState.value;
+  if (!draft) return;
+
+  const time = await showLoading(async () => {
+    timeStore.updateDraft(draft);
+    return stopDraft();
+  });
+
   if (time) {
     await navigateTo(`/time/${time.id}`);
     return;
@@ -182,6 +189,7 @@ async function handleRemove() {
 async function handleRound() {
   const parsed = parsedState.value;
   if (!parsed) return;
+
   const time = roundTime(parsed);
   if (time) {
     state.value = toSchema(time);
