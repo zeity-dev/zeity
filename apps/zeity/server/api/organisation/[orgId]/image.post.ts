@@ -50,6 +50,13 @@ export default defineEventHandler(async (event) => {
   }
 
   const file = files[0];
+  if (!file) {
+    throw createError({
+      statusCode: 400,
+      message: 'Invalid file',
+    });
+  }
+
   if (!checkFileSize(file.data.byteLength)) {
     throw createError({
       statusCode: 400,
