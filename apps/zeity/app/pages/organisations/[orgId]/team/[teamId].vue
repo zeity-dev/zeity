@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import z from 'zod'
 import type { FormSubmitEvent, TableColumn } from '@nuxt/ui'
-import type { User } from '@zeity/database/user';
+import type { User } from '@zeity/types/user';
+import type { OrganisationMemberRole } from '@zeity/types/organisation';
 
 interface TeamMemberData {
-    memberId: number;
+    memberId: string;
     userId: string;
-    role: string;
-    user: User;
+    role: OrganisationMemberRole;
+    user: User | null;
 }
 
 const { t } = useI18n()

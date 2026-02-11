@@ -35,7 +35,7 @@ watch(user, (value) => {
 function handleUpdateUser(event: FormSubmitEvent<UserSchema>) {
     return updateUser(event.data)
         .then((data) => {
-            user.value = data.user!
+            user.value = data.user as User;
             toast.add({
                 color: 'success',
                 title: t('user.saveSuccess'),
@@ -97,7 +97,7 @@ function handleUserImageUpload() {
         <UForm v-else class="flex flex-col gap-2" :schema="userSchema" :state="userState"
             @submit.prevent="handleUpdateUser">
 
-            <div class="flex flex-col items-center gap-2">
+            <div v-if="user" class="flex flex-col items-center gap-2">
                 <UserImage :user="user" size="144" />
 
                 <UButton :disabled="isLoading" :label="$t('common.upload')" icon="i-lucide-camera" variant="subtle"

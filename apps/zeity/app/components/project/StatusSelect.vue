@@ -16,7 +16,7 @@ const projectStatusFormItems = computed(() => [
     <USelect v-model="model" :items="projectStatusFormItems">
         <template #leading="{ modelValue, ui }">
             <UChip v-if="modelValue" inset standalone :color="getProjectStatusColor(model!)"
-                :size="ui.itemLeadingChipSize()" :class="ui.itemLeadingChip()" />
+                :size="ui.itemLeadingChipSize() as UISize" :class="ui.itemLeadingChip()" />
         </template>
     </USelect>
 

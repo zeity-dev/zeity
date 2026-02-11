@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui';
+import type { Organisation } from '@zeity/database/organisation';
 import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types';
 
 definePageMeta({
@@ -30,7 +31,7 @@ const links = computed(() => {
     return links;
 })
 
-const { data, refresh, error } = await useFetch(() => `/api/organisation/${organisationId}`);
+const { data, refresh, error } = await useFetch<Organisation>(() => `/api/organisation/${organisationId}`);
 
 switch (error.value?.statusCode) {
     case 401:

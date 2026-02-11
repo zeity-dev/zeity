@@ -15,7 +15,7 @@ const teamIds = computed(() => props.teamIds || []);
 const { user } = useUser();
 const { currentOrganisationId } = useOrganisation();
 const { pending, data } = await useLazyAsyncData(`organisation-${currentOrganisationId.value}-member`, () =>
-    $fetch(`/api/organisation/${currentOrganisationId.value}/member`, {
+    $fetch<OrganisationMemberWithUser[]>(`/api/organisation/${currentOrganisationId.value}/member`, {
         method: 'GET',
         query: {
             team: teamIds.value,

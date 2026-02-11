@@ -7,7 +7,7 @@ const noSelected = computed(() => selectedIds.value.length === 0);
 
 const { currentOrganisationId } = useOrganisation();
 const { pending, data } = await useLazyAsyncData(
-    () => $fetch(`/api/organisation/${currentOrganisationId.value}/team`),
+    () => $fetch<OrganisationTeam[]>(`/api/organisation/${currentOrganisationId.value}/team`),
     {
         watch: [currentOrganisationId],
     }

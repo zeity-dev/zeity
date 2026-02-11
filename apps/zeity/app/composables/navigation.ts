@@ -1,9 +1,11 @@
+import type { NavigationMenuItem } from '@nuxt/ui';
+
 export function useNavigation() {
   const { t } = useI18n();
   const { isStarted } = storeToRefs(useTimerStore());
 
   const openMoreMenu = ref(false);
-  const verticalMenu = computed(() => [
+  const verticalMenu = computed<NavigationMenuItem[][]>(() => [
     [
       {
         label: t('navigation.timer'),
@@ -43,7 +45,7 @@ export function useNavigation() {
     ],
   ]);
 
-  const horizontalMenu = computed(() => [
+  const horizontalMenu = computed<NavigationMenuItem[]>(() => [
     {
       label: t('navigation.timer'),
       to: '/time',

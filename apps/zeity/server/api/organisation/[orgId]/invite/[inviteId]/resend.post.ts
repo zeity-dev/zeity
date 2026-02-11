@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
     )
     .where(eq(organisationInvites.id, params.data.inviteId))
     .limit(1)
-    .then((res) => res[0]);
+    .then((res) => res[0] || { organisation: null, organisation_invite: null });
 
   if (!organisation || !organisation_invite) {
     throw createError({

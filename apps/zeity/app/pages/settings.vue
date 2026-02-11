@@ -221,7 +221,7 @@ function sanitizeProject(data: unknown) {
                 <span>{{ $t('settings.color') }}</span>
                 <USelect v-model="settingsStore.themePrimary" :items="themePrimaryOptions" class="min-w-60">
                     <template #leading="{ modelValue, ui }">
-                        <UChip v-if="modelValue" inset standalone :size="ui.itemLeadingChipSize()"
+                        <UChip v-if="modelValue" inset standalone :size="ui.itemLeadingChipSize() as UISize"
                             :class="ui.itemLeadingChip()" :style="`--ui-primary: var(--ui-color-${modelValue}-400);`" />
                     </template>
                 </USelect>

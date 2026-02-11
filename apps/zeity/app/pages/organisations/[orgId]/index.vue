@@ -39,6 +39,7 @@ function switchEditing() {
 function changeName(event: FormSubmitEvent<Schema>) {
     saving.value = true
     return $fetch(`/api/organisation/${organisationId}`, {
+         // @ts-ignore: nuxt is confused with other endpoints
         method: 'PATCH',
         body: {
             name: event.data.name
@@ -96,6 +97,7 @@ function changeImage() {
 
 function deleteOrganisation() {
     return $fetch(`/api/organisation/${organisationId}`, {
+        // @ts-ignore: nuxt is confused with other endpoints
         method: 'DELETE',
     }).then(async () => {
         toast.add({

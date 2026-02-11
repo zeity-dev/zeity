@@ -31,7 +31,7 @@ const formatOptions = [
     { label: 'JSON', value: 'json' },
 ];
 
-type EnhancedTime = Time & { project: string | null, user: string | null, type: string };
+type EnhancedTime = Omit<Time, 'type'> & { project: string | null, user: string | null, type: string };
 const exportedFields: (keyof EnhancedTime)[] = ['user', 'type', 'start', 'duration', 'project', 'notes'] as const;
 
 async function downloadReport(type = 'json') {

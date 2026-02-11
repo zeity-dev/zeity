@@ -21,7 +21,7 @@ const src = computed(() => {
 });
 
 const textSize = computed(() => {
-  const size = Math.floor(props.size / 16);
+  const size = Math.floor(Number(props.size) / 16);
   switch (size) {
     case 9:
       return 'text-7xl';
