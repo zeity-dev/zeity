@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
       organisationId: params.data.orgId,
     },
     await useJwtSecret(event),
+    { expiresIn: '7d' },
   );
 
   const link = new URL(`${getRequestURL(event).origin}/organisations/join`);

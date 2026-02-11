@@ -7,6 +7,9 @@ const JWT_ISSUER = 'zeity';
 export function generateToken(
   payload: Record<string, unknown>,
   secret: Uint8Array,
+  options?: {
+    expiresIn?: string | number;
+  },
 ) {
   return new SignJWT(payload)
     .setProtectedHeader({
@@ -14,7 +17,7 @@ export function generateToken(
     })
     .setIssuer(JWT_ISSUER)
     .setIssuedAt()
-    .setExpirationTime('1d')
+    .setExpirationTime(options?.expiresIn ?? '1d')
     .sign(secret);
 }
 
