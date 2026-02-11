@@ -39,7 +39,7 @@ function switchEditing() {
 function changeName(event: FormSubmitEvent<Schema>) {
     saving.value = true
     return $fetch(`/api/organisation/${organisationId}`, {
-         // @ts-ignore: nuxt is confused with other endpoints
+        // @ts-expect-error: nuxt bug https://github.com/nuxt/nuxt/issues/19077
         method: 'PATCH',
         body: {
             name: event.data.name
@@ -97,7 +97,7 @@ function changeImage() {
 
 function deleteOrganisation() {
     return $fetch(`/api/organisation/${organisationId}`, {
-        // @ts-ignore: nuxt is confused with other endpoints
+        // @ts-expect-error: nuxt bug https://github.com/nuxt/nuxt/issues/19077
         method: 'DELETE',
     }).then(async () => {
         toast.add({
