@@ -17,7 +17,7 @@ Zeity is a modern, full-stack time tracking application built with Nuxt 4 and fo
 - 👥 **Team Collaboration**: Team management and member invitations
 - 📊 **Project Management**: Create and manage projects with status tracking
 - 📤 **Data Export**: Export time entries to CSV and XLSX formats
-- 🔐 **Authentication**: Passkeys and OAuth
+- 🔐 **Authentication**: Password, Passkeys and OAuth
 - 🌐 **i18n Support**: Multi-language support
 - 📱 **PWA Ready**: Progressive Web App with offline capabilities
 - 🎨 **Modern UI**: Built with Nuxt UI for a polished user experience
