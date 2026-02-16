@@ -23,6 +23,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (
+    !(await canUserReadOrganisationByOrgId(session.user, params.data.orgId))
+  ) {
+    throw createError({
+      statusCode: 403,
+      message: 'Forbidden',
+    });
+  }
+
   const result = await useDrizzle()
     .select({
       id: organisations.id,
