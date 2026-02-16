@@ -59,6 +59,20 @@ export default defineI18nConfig(() => ({
         about: 'About',
         more: 'More',
       },
+      hints: {
+        auth: {
+          title: 'You are logged out',
+          description:
+            'Please log in to sync your data across devices and access all features of Zeity.',
+          login: 'Login',
+        },
+        pwa: {
+          title: 'Install Zeity',
+          description:
+            'For a better experience, install Zeity on your device. It works offline and loads faster.',
+          install: 'Install',
+        },
+      },
       sync: {
         title: 'Sync',
         description:
@@ -465,6 +479,20 @@ export default defineI18nConfig(() => ({
         profile: 'Profil',
         about: 'Über',
         more: 'Mehr',
+      },
+      hints: {
+        auth: {
+          title: 'Sie sind abgemeldet',
+          description:
+            'Bitte melden Sie sich an, um Ihre Daten über Geräte hinweg zu synchronisieren und alle Funktionen von Zeity zu nutzen.',
+          login: 'Anmelden',
+        },
+        pwa: {
+          title: 'Zeity installieren',
+          description:
+            'Für ein besseres Erlebnis installieren Sie Zeity auf Ihrem Gerät. Es funktioniert offline und lädt schneller.',
+          install: 'Installieren',
+        },
       },
       sync: {
         title: 'Synchronisieren',
