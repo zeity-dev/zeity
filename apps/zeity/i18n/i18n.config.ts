@@ -72,6 +72,12 @@ export default defineI18nConfig(() => ({
             'For a better experience, install Zeity on your device. It works offline and loads faster.',
           install: 'Install',
         },
+        pwaRefresh: {
+          title: 'Update Available',
+          description:
+            'A new version of Zeity is available. Please refresh the page to get the latest features and improvements.',
+          refresh: 'Refresh',
+        },
       },
       sync: {
         title: 'Sync',
@@ -492,6 +498,12 @@ export default defineI18nConfig(() => ({
           description:
             'Für ein besseres Erlebnis installieren Sie Zeity auf Ihrem Gerät. Es funktioniert offline und lädt schneller.',
           install: 'Installieren',
+        },
+        pwaRefresh: {
+          title: 'Update verfügbar',
+          description:
+            'Eine neue Version von Zeity ist verfügbar. Bitte aktualisieren Sie die Seite, um die neuesten Funktionen und Verbesserungen zu erhalten.',
+          refresh: 'Aktualisieren',
         },
       },
       sync: {
