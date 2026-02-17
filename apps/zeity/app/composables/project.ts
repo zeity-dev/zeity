@@ -64,14 +64,14 @@ export function useProject() {
   function getOrganisationProjects() {
     const ref = store.findProjects(
       (project) =>
-        !project.userId ||
-        project.organisationId === currentOrganisationId.value
+        !project.organisationId ||
+        project.organisationId === currentOrganisationId.value,
     );
     return computed(() => ref.value);
   }
 
   function getOfflineProjects() {
-    const ref = store.findProjects((project) => !project.userId);
+    const ref = store.findProjects((project) => !project.organisationId);
     return computed(() => ref.value);
   }
 
@@ -130,7 +130,7 @@ export function useProject() {
       typeof idOrProject === 'object'
         ? idOrProject
         : findProjectById(idOrProject).value;
-    return !!project?.userId;
+    return !!project?.organisationId;
   }
 
   return {

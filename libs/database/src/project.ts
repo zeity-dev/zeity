@@ -20,13 +20,13 @@ export const projects = pgTable(
     organisationId: uuid('organisation_id')
       .notNull()
       .references(() => organisations.id, { onDelete: 'cascade' }),
-    userId: uuid('user_id')
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id').references(() => users.id, {
+      onDelete: 'set null',
+    }),
 
     ...timestampColumns(),
   },
-  (table) => [index().on(table.name), index().on(table.status)]
+  (table) => [index().on(table.name), index().on(table.status)],
 );
 
 export type Project = typeof projects.$inferSelect; // return type when queried
