@@ -63,7 +63,7 @@ function deleteTime(id: string) {
 export function useTime() {
   const { t } = useI18n();
   const { loggedIn } = useUserSession();
-  const { currentOrganisation } = useOrganisation();
+  const { currentOrganisationId } = useOrganisation();
   const { settings } = storeToRefs(useSettingsStore());
 
   const store = useTimerStore();
@@ -110,7 +110,8 @@ export function useTime() {
   function getOrganisationTimes() {
     const ref = store.findTimes(
       (time) =>
-        !time.organisationMemberId || time.organisationMemberId === currentOrganisation.value?.member.id,
+        !time.organisationId ||
+        time.organisationId === currentOrganisationId.value,
     );
 
     return computed(() => ref.value);

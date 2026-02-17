@@ -5,6 +5,7 @@ import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 import { getOrganisationMembersByMemberIds } from '~~/server/utils/organisation';
+import { isPrivilegedOrganisationMember } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -53,19 +54,24 @@ export default defineEventHandler(async (event) => {
       inArray(times.organisationMemberId, organisationMemberIds),
     );
   } else {
-    const organisationMemberId = await getOrganisationMemberByUserId(
+    const organisationMember = await getOrganisationMemberByUserId(
       organisation.value,
       session.user.id,
-    ).then((member) => member?.id || null);
+    );
 
-    if (!organisationMemberId) {
+    if (!organisationMember) {
       throw createError({
         statusCode: 403,
         message: 'Forbidden',
       });
     }
 
-    whereStatements.push(eq(times.organisationMemberId, organisationMemberId));
+    // if the user is not a privileged member, they can only see their own times
+    if (!isPrivilegedOrganisationMember(organisationMember)) {
+      whereStatements.push(
+        eq(times.organisationMemberId, organisationMember.id),
+      );
+    }
   }
 
   if (query.data.projectId) {

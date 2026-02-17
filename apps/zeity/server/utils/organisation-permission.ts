@@ -93,3 +93,9 @@ export function canUserDeleteOrganisationByOrgId(
     [ORGANISATION_MEMBER_ROLE_OWNER],
   );
 }
+
+export function isPrivilegedOrganisationMember(
+  member: Pick<OrganisationMember, 'role'>,
+) {
+  return privilegedRoles.includes(member.role);
+}
