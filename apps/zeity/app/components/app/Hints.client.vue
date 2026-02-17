@@ -3,7 +3,7 @@ const { loggedIn } = useUserSession();
 
 const closedHints = ref({
   auth: false,
-  pwa: false,
+  pwaInstall: false,
   pwaRefresh: false,
 });
 </script>
@@ -12,8 +12,6 @@ const closedHints = ref({
   <div class="relative flex w-full snap-x snap-mandatory gap-6 overflow-x-auto">
     <UAlert
       v-if="!closedHints.auth && !loggedIn"
-      icon="i-lucide-lock"
-      color="neutral"
       :title="$t('hints.auth.title')"
       :description="$t('hints.auth.description')"
       :actions="[
@@ -23,6 +21,8 @@ const closedHints = ref({
           to: '/auth',
         },
       ]"
+      icon="i-lucide-lock"
+      color="neutral"
       variant="outline"
       class="shrink-0 snap-center"
       close
@@ -30,13 +30,15 @@ const closedHints = ref({
     />
 
     <UAlert
-      v-if="$pwa?.showInstallPrompt && $pwa?.needRefresh"
-      :title="$t('hints.pwa.title')"
-      :description="$t('hints.pwa.description')"
+      v-if="
+        !closedHints.pwaInstall && $pwa?.showInstallPrompt && !$pwa?.needRefresh
+      "
+      :title="$t('hints.pwaInstall.title')"
+      :description="$t('hints.pwaInstall.description')"
       :actions="[
         {
           icon: 'i-lucide-download',
-          label: $t('hints.pwa.install'),
+          label: $t('hints.pwaInstall.install'),
           onClick: () => {
             $pwa?.install();
           },
@@ -47,10 +49,11 @@ const closedHints = ref({
       variant="outline"
       class="shrink-0 snap-center"
       close
+      @update:open="closedHints.pwaInstall = true"
     />
 
     <UAlert
-      v-if="$pwa?.needRefresh"
+      v-if="!closedHints.pwaRefresh && $pwa?.needRefresh"
       :title="$t('hints.pwaRefresh.title')"
       :description="$t('hints.pwaRefresh.description')"
       :actions="[
@@ -67,6 +70,7 @@ const closedHints = ref({
       variant="outline"
       class="snap-center"
       close
+      @update:open="closedHints.pwaRefresh = true"
     />
   </div>
 </template>

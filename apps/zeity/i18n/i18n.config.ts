@@ -66,7 +66,7 @@ export default defineI18nConfig(() => ({
             'Please log in to sync your data across devices and access all features of Zeity.',
           login: 'Login',
         },
-        pwa: {
+        pwaInstall: {
           title: 'Install Zeity',
           description:
             'For a better experience, install Zeity on your device. It works offline and loads faster.',
