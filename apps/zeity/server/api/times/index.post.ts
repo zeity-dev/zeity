@@ -57,6 +57,7 @@ export default defineEventHandler(async (event) => {
     .insert(times)
     .values({
       ...body.data,
+      organisationId: organisation.value,
       organisationMemberId,
     })
     .returning()

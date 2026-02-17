@@ -64,28 +64,32 @@ export function canUserReadOrganisationByOrgId(
   user: Pick<User, 'id'>,
   orgId: string,
 ) {
-  return hasUserOrganisationMemberRole(user.id, orgId, [
-    ORGANISATION_MEMBER_ROLE_OWNER,
-    ORGANISATION_MEMBER_ROLE_ADMIN,
-    ORGANISATION_MEMBER_ROLE_MEMBER,
-  ]);
+  return hasUserOrganisationMemberRole(
+    { organisationId: orgId, userId: user.id },
+    [
+      ORGANISATION_MEMBER_ROLE_OWNER,
+      ORGANISATION_MEMBER_ROLE_ADMIN,
+      ORGANISATION_MEMBER_ROLE_MEMBER,
+    ],
+  );
 }
 
 export function canUserUpdateOrganisationByOrgId(
   user: Pick<User, 'id'>,
   orgId: string,
 ) {
-  return hasUserOrganisationMemberRole(user.id, orgId, [
-    ORGANISATION_MEMBER_ROLE_OWNER,
-    ORGANISATION_MEMBER_ROLE_ADMIN,
-  ]);
+  return hasUserOrganisationMemberRole(
+    { organisationId: orgId, userId: user.id },
+    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN],
+  );
 }
 
 export function canUserDeleteOrganisationByOrgId(
   user: Pick<User, 'id'>,
   orgId: string,
 ) {
-  return hasUserOrganisationMemberRole(user.id, orgId, [
-    ORGANISATION_MEMBER_ROLE_OWNER,
-  ]);
+  return hasUserOrganisationMemberRole(
+    { organisationId: orgId, userId: user.id },
+    [ORGANISATION_MEMBER_ROLE_OWNER],
+  );
 }

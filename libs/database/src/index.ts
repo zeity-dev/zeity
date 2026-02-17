@@ -19,6 +19,7 @@ export {
   or,
   asc,
   desc,
+  isNotNull,
 } from 'drizzle-orm';
 
 export function createPool(connectionString: string) {

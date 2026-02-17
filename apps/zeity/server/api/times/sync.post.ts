@@ -63,6 +63,7 @@ export default defineEventHandler(async (event) => {
     .values(
       body.data.map((time) => ({
         ...time,
+        organisationId: organisation.value,
         organisationMemberId,
       })),
     )

@@ -15,6 +15,7 @@ export interface Time {
 
   projectId?: string | null;
 
+  organisationId?: string | null;
   organisationMemberId?: string | null;
 
   createdAt?: string;

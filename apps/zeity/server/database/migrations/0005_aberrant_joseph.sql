@@ -11,10 +11,6 @@ SET organisation_member_id = om.id
 FROM "organisation_member" om
 WHERE t.organisation_id = om.organisation_id AND t.user_id = om.user_id;
 
-ALTER TABLE "time" DROP CONSTRAINT "time_organisation_id_organisation_id_fk";
---> statement-breakpoint
-ALTER TABLE "time" DROP CONSTRAINT "time_user_id_user_id_fk";
---> statement-breakpoint
+ALTER TABLE "time" DROP CONSTRAINT "time_user_id_user_id_fk";--> statement-breakpoint
 
-ALTER TABLE "time" DROP COLUMN "organisation_id";--> statement-breakpoint
 ALTER TABLE "time" DROP COLUMN "user_id";

@@ -4,6 +4,7 @@ import { and, eq, desc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
+import { getOrganisationMembersByMemberIds } from '~~/server/utils/organisation';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -15,7 +16,7 @@ export default defineEventHandler(async (event) => {
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
 
-      userId: coerceArray(z.uuid()).optional(),
+      organisationMemberId: coerceArray(z.uuid()).optional(),
       projectId: coerceArray(z.uuid()).optional(),
       rangeStart: z.coerce.date().optional(),
       rangeEnd: z.coerce.date().optional(),
@@ -30,16 +31,18 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const whereStatements = [];
+  const whereStatements = [eq(times.organisationId, organisation.value)];
 
-  if (query.data.userId) {
-    const organisationMemberIds = await getOrganisationMembersByUserIds(
+  if (query.data.organisationMemberId) {
+    const organisationMemberIds = await getOrganisationMembersByMemberIds(
       organisation.value,
-      query.data.userId,
+      query.data.organisationMemberId,
     ).then((members) => members.map((member) => member.id));
 
-    // check if all userIds belongs to the organisation
-    if (organisationMemberIds.length !== query.data.userId.length) {
+    // check if all organisationMemberIds belongs to the organisation
+    if (
+      organisationMemberIds.length !== query.data.organisationMemberId.length
+    ) {
       throw createError({
         statusCode: 403,
         message: 'Forbidden',

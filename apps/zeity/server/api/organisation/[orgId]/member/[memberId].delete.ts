@@ -12,8 +12,8 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.uuid(),
-      userId: z.uuid(),
-    }).safeParse
+      memberId: z.uuid(),
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
@@ -32,9 +32,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    await hasUserOrganisationMemberRole(params.data.userId, params.data.orgId, [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-    ])
+    await hasUserOrganisationMemberRole(
+      { organisationId: params.data.orgId, memberId: params.data.memberId },
+      [ORGANISATION_MEMBER_ROLE_OWNER],
+    )
   ) {
     throw createError({
       statusCode: 400,
@@ -48,14 +49,14 @@ export default defineEventHandler(async (event) => {
       .where(
         and(
           eq(organisationMembers.organisationId, params.data.orgId),
-          eq(organisationMembers.userId, params.data.userId)
-        )
+          eq(organisationMembers.id, params.data.memberId),
+        ),
       );
 
     // check if organisation has at least one owner
     const ownerCount = await countOrganisationMemberOwner(
       params.data.orgId,
-      tx
+      tx,
     );
 
     if (ownerCount < 1) {

@@ -84,17 +84,17 @@ function getMemberActionItems(row: Row<OrganisationMember>) {
         {
             icon: findRoleIcon(ORGANISATION_MEMBER_ROLE_OWNER),
             label: t('organisations.members.setRole', { role: t('organisations.members.role.owner') }),
-            disabled: row.original.role === ORGANISATION_MEMBER_ROLE_OWNER,
+            disabled: !row.original.userId || row.original.role === ORGANISATION_MEMBER_ROLE_OWNER,
             onSelect() {
-                setMemberRole(row.original.userId, ORGANISATION_MEMBER_ROLE_OWNER)
+                setMemberRole(row.original.id, ORGANISATION_MEMBER_ROLE_OWNER)
             }
         },
         {
             icon: findRoleIcon(ORGANISATION_MEMBER_ROLE_ADMIN),
             label: t('organisations.members.setRole', { role: t('organisations.members.role.admin') }),
-            disabled: row.original.role === ORGANISATION_MEMBER_ROLE_ADMIN,
+            disabled: !row.original.userId || row.original.role === ORGANISATION_MEMBER_ROLE_ADMIN,
             onSelect() {
-                setMemberRole(row.original.userId, ORGANISATION_MEMBER_ROLE_ADMIN)
+                setMemberRole(row.original.id, ORGANISATION_MEMBER_ROLE_ADMIN)
             }
         },
         {
@@ -102,21 +102,21 @@ function getMemberActionItems(row: Row<OrganisationMember>) {
             label: t('organisations.members.setRole', { role: t('organisations.members.role.member') }),
             disabled: row.original.role === ORGANISATION_MEMBER_ROLE_MEMBER,
             onSelect() {
-                setMemberRole(row.original.userId, ORGANISATION_MEMBER_ROLE_MEMBER)
+                setMemberRole(row.original.id, ORGANISATION_MEMBER_ROLE_MEMBER)
             }
         },
         {
             icon: 'i-lucide-trash',
             label: t('common.delete'),
             onSelect() {
-                deleteMember(row.original.userId)
+                deleteMember(row.original.id)
             }
         }
     ]
 }
 
-function deleteMember(userId: string) {
-    return $fetch(`/api/organisation/${params.organisationId}/member/${userId}`, {
+function deleteMember(memberId: string) {
+    return $fetch(`/api/organisation/${params.organisationId}/member/${memberId}`, {
         method: 'DELETE'
     }).then(() => {
         toast.add({
@@ -133,8 +133,8 @@ function deleteMember(userId: string) {
     })
 }
 
-function setMemberRole(userId: string, role: OrganisationMemberRole) {
-    $fetch(`/api/organisation/${params.organisationId}/member/${userId}`, {
+function setMemberRole(memberId: string, role: OrganisationMemberRole) {
+    $fetch(`/api/organisation/${params.organisationId}/member/${memberId}`, {
         method: 'PATCH',
         body: {
             role
@@ -156,19 +156,16 @@ function setMemberRole(userId: string, role: OrganisationMemberRole) {
 </script>
 
 <template>
-    <div>
-        <h3 class="text-lg font-semibold leading-6">
-            {{ $t('organisations.members.title') }}
-        </h3>
+    <UPageCard :title="$t('organisations.members.title')">
         <UTable :data="members" :columns="membersColumns">
             <template #name-cell="{ row }">
                 <div class="flex items-center gap-3">
                     <UAvatar :src="getUserImagePath(row.original.user)" :alt="`${row.original.user?.name}`" />
                     <p class="font-medium text-highlighted">
-                        {{ row.original.user?.name }}
+                        {{ row.original.user?.name || t('user.deleted') }}
                     </p>
                 </div>
             </template>
         </UTable>
-    </div>
+    </UPageCard>
 </template>

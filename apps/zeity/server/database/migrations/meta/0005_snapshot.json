@@ -1,5 +1,5 @@
 {
-  "id": "9aa229bd-c01b-40df-a0aa-474750e5292d",
+  "id": "eb128f21-f4e0-4b9a-ba97-d87a47ca6803",
   "prevId": "25212695-887a-40e0-bd71-a73f157c39c9",
   "version": "7",
   "dialect": "postgresql",
@@ -817,6 +817,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "organisation_id": {
+          "name": "organisation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "organisation_member_id": {
           "name": "organisation_member_id",
           "type": "uuid",
@@ -876,6 +882,19 @@
           "tableTo": "project",
           "columnsFrom": [
             "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "time_organisation_id_organisation_id_fk": {
+          "name": "time_organisation_id_organisation_id_fk",
+          "tableFrom": "time",
+          "tableTo": "organisation",
+          "columnsFrom": [
+            "organisation_id"
           ],
           "columnsTo": [
             "id"

@@ -35,7 +35,10 @@ export default defineEventHandler(async (event) => {
     session.user.id,
   ).then((member) => member?.id);
 
-  if (existing.organisationMemberId !== organisationMemberId) {
+  if (
+    existing.organisationId !== organisation.value ||
+    existing.organisationMemberId !== organisationMemberId
+  ) {
     throw createError({
       statusCode: 403,
       message: 'Forbidden',

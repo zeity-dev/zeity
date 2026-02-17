@@ -53,6 +53,7 @@ export default defineEventHandler(async (event) => {
 
   const members = await useDrizzle()
     .select({
+      id: organisationMembers.id,
       userId: organisationMembers.userId,
       organisationId: organisationMembers.organisationId,
 
