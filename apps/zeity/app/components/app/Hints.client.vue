@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const pwa = useNuxtApp().$pwa;
+const pwa = usePWA();
 const { t } = useI18n();
 const { loggedIn } = useUserSession();
 
@@ -62,10 +62,6 @@ const availableHints = computed(() => {
   return result;
 });
 
-const hints = computed(() =>
-  availableHints.value.filter((hint) => !closedHints.value.includes(hint.id)),
-);
-
 const hint = computed(() =>
   availableHints.value
     .filter((hint) => !closedHints.value.includes(hint.id))
@@ -79,7 +75,7 @@ function closeHint() {
 
 <template>
   <UAlert
-    v-for="hint in hints"
+    v-if="hint"
     :key="hint.id"
     :icon="hint.icon"
     :color="hint.color"
