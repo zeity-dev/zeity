@@ -24,6 +24,7 @@ const isEmpty = computed(() => userTimes.value.length < 1);
 const offset = ref(0);
 const limit = ref(40);
 const isLoading = ref(false);
+const hasOrg = computed(() => !!currentOrganisation.value);
 const endReached = ref(true);
 
 function reloadAll() {
@@ -53,7 +54,9 @@ function loadMore() {
 }
 
 onMounted(() => {
-  reloadAll();
+  if (hasOrg.value) {
+    reloadAll();
+  }
 });
 
 watch(currentOrganisation, () => {
@@ -64,7 +67,7 @@ watch(currentOrganisation, () => {
 <template>
   <div class="flex flex-col justify-between h-full">
     <section class="grow my-3">
-      <SyncAlert v-if="!!user" class="mb-4" />
+      <SyncAlert v-if="hasOrg && !!user" class="mb-4" />
 
       <TimeList
         default-open
@@ -98,7 +101,7 @@ watch(currentOrganisation, () => {
       />
 
       <UButton
-        v-if="!endReached"
+        v-if="hasOrg && !endReached"
         block
         class="mt-2"
         variant="subtle"
