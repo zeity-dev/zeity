@@ -25,7 +25,7 @@ const availableHints = computed(() => {
     });
   }
 
-  if (!pwa?.isPWAInstalled && !pwa?.showInstallPrompt) {
+  if (pwa?.showInstallPrompt && pwa?.needRefresh) {
     result.push({
       id: 'pwa-hint',
       color: 'neutral' as const,
@@ -36,7 +36,7 @@ const availableHints = computed(() => {
         {
           icon: 'i-lucide-download',
           label: t('hints.pwa.install'),
-          onselect: () => pwa?.install(),
+          onClick: () => pwa?.install(),
         },
       ],
     });
@@ -53,7 +53,7 @@ const availableHints = computed(() => {
         {
           icon: 'i-lucide-refresh-cw',
           label: t('hints.pwaRefresh.refresh'),
-          onselect: () => pwa?.updateServiceWorker(),
+          onClick: () => pwa?.updateServiceWorker(),
         },
       ],
     });
