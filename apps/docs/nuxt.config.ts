@@ -74,6 +74,10 @@ export default defineNuxtConfig({
     '/*': { prerender: true },
   },
 
+  devServer: {
+    port: 4000,
+  },
+
   devtools: {
     enabled: true,
   },
