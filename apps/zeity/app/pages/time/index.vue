@@ -36,7 +36,11 @@ function loadMore() {
   if (isLoading.value) return;
   isLoading.value = true;
 
-  loadTimes({ offset: offset.value, limit: limit.value })
+  loadTimes({
+    offset: offset.value,
+    limit: limit.value,
+    organisationMemberId: currentOrganisation.value?.member.id,
+  })
     .then((data) => {
       offset.value += data?.length || 0;
       if ((data?.length ?? 0) < limit.value) {
