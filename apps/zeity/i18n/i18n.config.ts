@@ -493,7 +493,7 @@ export default defineI18nConfig(() => ({
             'Bitte melden Sie sich an, um Ihre Daten über Geräte hinweg zu synchronisieren und alle Funktionen von Zeity zu nutzen.',
           login: 'Anmelden',
         },
-        pwa: {
+        pwaInstall: {
           title: 'Zeity installieren',
           description:
             'Für ein besseres Erlebnis installieren Sie Zeity auf Ihrem Gerät. Es funktioniert offline und lädt schneller.',
