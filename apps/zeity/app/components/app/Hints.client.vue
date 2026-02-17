@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const pwa = usePWA();
 const { t } = useI18n();
 const { loggedIn } = useUserSession();
 
@@ -25,6 +24,7 @@ const availableHints = computed(() => {
     });
   }
 
+  const pwa = useNuxtApp().$pwa;
   if (pwa?.showInstallPrompt && pwa?.needRefresh) {
     result.push({
       id: 'pwa-hint',
