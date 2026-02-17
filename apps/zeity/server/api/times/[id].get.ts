@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
@@ -28,12 +28,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  if (
-    !(
-      result.userId === session.user.id ||
-      result.organisationId === organisation.value
-    )
-  ) {
+  const organisationMemberId = await getOrganisationMemberByUserId(
+    organisation.value,
+    session.user.id,
+  ).then((member) => member?.id);
+
+  if (result.organisationMemberId !== organisationMemberId) {
     throw createError({
       statusCode: 403,
       message: 'Forbidden',

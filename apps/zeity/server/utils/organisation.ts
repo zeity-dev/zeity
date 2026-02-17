@@ -51,7 +51,8 @@ export function getOrganisationMemberByUserId(
         eq(organisationMembers.organisationId, organisationId),
       ),
     )
-    .limit(1);
+    .limit(1)
+    .then((res) => res[0]);
 }
 
 export function getOrganisationMembersByUserIds(

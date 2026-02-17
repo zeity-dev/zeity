@@ -40,7 +40,7 @@ async function downloadReport(type = 'json') {
         ...item,
         type: t(`times.type.${item.type}`),
         project: getProjectName(item.projectId),
-        user: getUserName(item.userId),
+        user: getUserName(item.organisationMemberId),
     }));
 
     processing.value = true;
@@ -63,12 +63,12 @@ async function downloadReport(type = 'json') {
     }
 }
 
-function getUserName(userId: string | undefined | null): string | null {
-    if (!userId) {
+function getUserName(organisationMemberId: string | undefined | null): string | null {
+    if (!organisationMemberId) {
         return null;
     }
 
-    const member = props.members.find(item => item.userId === userId);
+    const member = props.members.find(item => item.id === organisationMemberId);
     if (member?.user) {
         return member.user.name;
     }

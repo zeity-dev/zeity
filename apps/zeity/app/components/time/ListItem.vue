@@ -61,7 +61,7 @@ function handleToggle() {
 			</div>
 
 			<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
-				<UTooltip v-if="loggedIn && !time.userId" :text="$t('times.offline')">
+				<UTooltip v-if="loggedIn && !time.organisationMemberId" :text="$t('times.offline')">
 					<UIcon name="i-lucide-cloud-off" />
 				</UTooltip>
 

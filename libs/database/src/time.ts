@@ -9,8 +9,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 import { projects } from './project';
-import { users } from './user';
-import { organisations } from './organisation';
+import { organisationMembers } from './organisation-member';
 import { type TimeType, TIME_TYPE_MANUAL } from '@zeity/types';
 
 export const times = pgTable(
@@ -34,16 +33,14 @@ export const times = pgTable(
       onDelete: 'cascade',
     }),
 
-    organisationId: uuid('organisation_id')
-      .notNull()
-      .references(() => organisations.id, { onDelete: 'cascade' }),
-    userId: uuid('user_id')
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
+    organisationMemberId: uuid('organisation_member_id').references(
+      () => organisationMembers.id,
+      { onDelete: 'cascade' },
+    ),
 
     ...timestampColumns(),
   },
-  (table) => [index().on(table.start), index().on(table.duration)]
+  (table) => [index().on(table.start), index().on(table.duration)],
 );
 
 export type Time = typeof times.$inferSelect; // return type when queried

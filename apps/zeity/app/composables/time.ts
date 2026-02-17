@@ -21,7 +21,7 @@ interface FetchTimesOptions {
   offset?: number;
   limit?: number;
 
-  userId?: string | string[];
+  organisationMemberId?: string | string[];
   projectId?: string | string[];
   rangeStart?: string;
   rangeEnd?: string;
@@ -63,7 +63,7 @@ function deleteTime(id: string) {
 export function useTime() {
   const { t } = useI18n();
   const { loggedIn } = useUserSession();
-  const { currentOrganisationId } = useOrganisation();
+  const { currentOrganisation } = useOrganisation();
   const { settings } = storeToRefs(useSettingsStore());
 
   const store = useTimerStore();
@@ -110,14 +110,14 @@ export function useTime() {
   function getOrganisationTimes() {
     const ref = store.findTimes(
       (time) =>
-        !time.userId || time.organisationId === currentOrganisationId.value,
+        !time.organisationMemberId || time.organisationMemberId === currentOrganisation.value?.member.id,
     );
 
     return computed(() => ref.value);
   }
 
   function getOfflineTimes() {
-    const ref = store.findTimes((time) => !time.userId);
+    const ref = store.findTimes((time) => !time.organisationMemberId);
     return computed(() => ref.value);
   }
 
@@ -225,7 +225,7 @@ export function useTime() {
       typeof idOrTime === 'object'
         ? idOrTime
         : store.findTimeById(idOrTime).value;
-    return !!time?.userId;
+    return !!time?.organisationMemberId;
   }
 
   function calculateBreakTime(nextItem: Time, previousItem: Time): Time | null {
@@ -256,7 +256,7 @@ export function useTime() {
       start: prevEnd.toISOString(),
       duration: duration,
       notes: t('times.break.notes'),
-      userId: previousItem.userId,
+      organisationMemberId: previousItem.organisationMemberId,
     } satisfies Time;
   }
 

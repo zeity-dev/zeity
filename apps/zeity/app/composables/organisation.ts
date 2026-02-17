@@ -31,17 +31,17 @@ export function useOrganisation() {
 
   function fetchOrganisationTeam(
     orgId: MaybeRef<string | null | undefined>,
-    teamId: MaybeRef<string | null | undefined>
+    teamId: MaybeRef<string | null | undefined>,
   ) {
     const orgIdRef = toRef(orgId);
     const teamIdRef = toRef(teamId);
     return useFetch(
-      () => `/api/organisation/${orgIdRef.value}/team/${teamIdRef.value}`
+      () => `/api/organisation/${orgIdRef.value}/team/${teamIdRef.value}`,
     );
   }
 
   function fetchOrganisationMembers(
-    orgId: MaybeRef<string | null | undefined>
+    orgId: MaybeRef<string | null | undefined>,
   ) {
     const id = toRef(orgId);
     return useFetch(() => `/api/organisation/${id.value}/member`, {
@@ -53,7 +53,7 @@ export function useOrganisation() {
 
   async function createOrganisationTeam(
     orgId: string,
-    data: Partial<NewOrganisationTeam>
+    data: Partial<NewOrganisationTeam>,
   ) {
     store.setLoading(true);
     return (
@@ -89,13 +89,13 @@ export function useOrganisation() {
 
   function userHasOrganisationRole(
     orgId: string | number,
-    roles: OrganisationMemberRole[]
+    roles: OrganisationMemberRole[],
   ) {
     const organisation = store.findOrganisationById(orgId);
     return computed(() => {
       if (!organisation.value) return false;
 
-      return roles.includes(organisation.value.role);
+      return roles.includes(organisation.value.member.role);
     });
   }
 

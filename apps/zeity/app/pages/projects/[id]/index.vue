@@ -3,8 +3,8 @@ import { calculateDiffSum, formatDuration, sortDatesDescending } from '@zeity/ut
 import type { ProjectStatus } from '@zeity/types/project';
 
 const route = useRoute()
-const { user } = useUser()
 const { loggedIn } = useUserSession();
+const { currentOrganisation } = useOrganisation()
 const { findProjectById } = useProject()
 const { loadTimes, getOrganisationTimes } = useTime();
 const { loadProject, updateProject, isOnlineProject } = useProject();
@@ -24,7 +24,7 @@ const projectId = route.params.id as string;
 const project = findProjectById(projectId);
 const orgTimes = getOrganisationTimes();
 // show all times of the current user and offline times
-const userTimes = computed(() => orgTimes.value.filter((item) => !item.userId || item.userId === user.value?.id));
+const userTimes = computed(() => orgTimes.value.filter((item) => !item.organisationMemberId || item.organisationMemberId === currentOrganisation.value?.member.id));
 const projectTimes = computed(() => userTimes.value.filter((time) => time.projectId === projectId));
 const sortedProjectTimes = computed(() => projectTimes.value.toSorted((a, b) => sortDatesDescending(a.start, b.start)));
 const projectTimeSum = computed(() => formatDuration(calculateDiffSum(projectTimes.value)));
