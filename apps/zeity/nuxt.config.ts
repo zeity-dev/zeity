@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     filename: 'sw.ts',
     injectRegister: 'auto',
     client: {
+      installPrompt: true,
       periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
     },
     manifest: {

@@ -59,6 +59,26 @@ export default defineI18nConfig(() => ({
         about: 'About',
         more: 'More',
       },
+      hints: {
+        auth: {
+          title: 'You are logged out',
+          description:
+            'Please log in to sync your data across devices and access all features of Zeity.',
+          login: 'Login',
+        },
+        pwaInstall: {
+          title: 'Install Zeity',
+          description:
+            'For a better experience, install Zeity on your device. It works offline and loads faster.',
+          install: 'Install',
+        },
+        pwaRefresh: {
+          title: 'Update Available',
+          description:
+            'A new version of Zeity is available. Please refresh the page to get the latest features and improvements.',
+          refresh: 'Refresh',
+        },
+      },
       sync: {
         title: 'Sync',
         description:
@@ -466,6 +486,26 @@ export default defineI18nConfig(() => ({
         profile: 'Profil',
         about: 'Über',
         more: 'Mehr',
+      },
+      hints: {
+        auth: {
+          title: 'Sie sind abgemeldet',
+          description:
+            'Bitte melden Sie sich an, um Ihre Daten über Geräte hinweg zu synchronisieren und alle Funktionen von Zeity zu nutzen.',
+          login: 'Anmelden',
+        },
+        pwaInstall: {
+          title: 'Zeity installieren',
+          description:
+            'Für ein besseres Erlebnis installieren Sie Zeity auf Ihrem Gerät. Es funktioniert offline und lädt schneller.',
+          install: 'Installieren',
+        },
+        pwaRefresh: {
+          title: 'Update verfügbar',
+          description:
+            'Eine neue Version von Zeity ist verfügbar. Bitte aktualisieren Sie die Seite, um die neuesten Funktionen und Verbesserungen zu erhalten.',
+          refresh: 'Aktualisieren',
+        },
       },
       sync: {
         title: 'Synchronisieren',
