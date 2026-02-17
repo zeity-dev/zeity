@@ -4,14 +4,16 @@ import { sortDatesDescending } from '@zeity/utils/date';
 const { user } = useUser();
 const timerStore = useTimerStore();
 const settingsStore = useSettingsStore();
-const { currentOrganisationId } = useOrganisation();
+const { currentOrganisation } = useOrganisation();
 const { loadTimes, toggleDraft, getOrganisationTimes } = useTime();
 
 const orgTimes = getOrganisationTimes();
 // show all times of the current user and offline times
 const userTimes = computed(() =>
   orgTimes.value.filter(
-    (item) => !item.userId || item.userId === user.value?.id,
+    (item) =>
+      !item.organisationMemberId ||
+      item.organisationMemberId === currentOrganisation.value?.member.id,
   ),
 );
 const sortedTimes = computed(() =>
@@ -34,7 +36,11 @@ function loadMore() {
   if (isLoading.value) return;
   isLoading.value = true;
 
-  loadTimes({ offset: offset.value, limit: limit.value })
+  loadTimes({
+    offset: offset.value,
+    limit: limit.value,
+    organisationMemberId: currentOrganisation.value?.member.id,
+  })
     .then((data) => {
       offset.value += data?.length || 0;
       if ((data?.length ?? 0) < limit.value) {
@@ -50,7 +56,7 @@ onMounted(() => {
   reloadAll();
 });
 
-watch(toRef(currentOrganisationId), () => {
+watch(currentOrganisation, () => {
   reloadAll();
 });
 </script>

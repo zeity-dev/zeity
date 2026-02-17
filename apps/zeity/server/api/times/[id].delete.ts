@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
@@ -30,11 +30,14 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const organisationMemberId = await getOrganisationMemberByUserId(
+    organisation.value,
+    session.user.id,
+  ).then((member) => member?.id);
+
   if (
-    !(
-      existing.userId === session.user.id ||
-      existing.organisationId === organisation.value
-    )
+    existing.organisationId !== organisation.value ||
+    existing.organisationMemberId !== organisationMemberId
   ) {
     throw createError({
       statusCode: 403,

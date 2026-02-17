@@ -76,7 +76,7 @@ export const useTimerStore = defineStore('timer', () => {
 
   const offlineTimes = computed(() => {
     const times = timesStore.getAll();
-    return times.value.filter((time) => !time.userId);
+    return times.value.filter((time) => !time.organisationMemberId);
   });
 
   watch(draft, (value) => {

@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-import { eq, desc, inArray } from '@zeity/database';
+import { and, eq, desc, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { coerceArray } from '~~/server/utils/zod';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
-import { userIdsBelongsToOrganisation } from '~~/server/utils/organisation-permission';
+import { getOrganisationMembersByMemberIds } from '~~/server/utils/organisation';
+import { isPrivilegedOrganisationMember } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -16,11 +17,11 @@ export default defineEventHandler(async (event) => {
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
 
-      userId: coerceArray(z.uuid()).optional(),
+      organisationMemberId: coerceArray(z.uuid()).optional(),
       projectId: coerceArray(z.uuid()).optional(),
       rangeStart: z.coerce.date().optional(),
       rangeEnd: z.coerce.date().optional(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!query.success) {
@@ -33,29 +34,51 @@ export default defineEventHandler(async (event) => {
 
   const whereStatements = [eq(times.organisationId, organisation.value)];
 
-  if (query.data.userId) {
-    // check if the u belongs to the organisation
-    const usersBelongToOrg = await userIdsBelongsToOrganisation(
-      { id: organisation.value },
-      query.data.userId
-    );
-    if (!usersBelongToOrg) {
+  if (query.data.organisationMemberId) {
+    const organisationMemberIds = await getOrganisationMembersByMemberIds(
+      organisation.value,
+      query.data.organisationMemberId,
+    ).then((members) => members.map((member) => member.id));
+
+    // check if all organisationMemberIds belongs to the organisation
+    if (
+      organisationMemberIds.length !== query.data.organisationMemberId.length
+    ) {
       throw createError({
         statusCode: 403,
         message: 'Forbidden',
       });
     }
 
-    whereStatements.push(inArray(times.userId, query.data.userId));
+    whereStatements.push(
+      inArray(times.organisationMemberId, organisationMemberIds),
+    );
   } else {
-    whereStatements.push(eq(times.userId, session.user.id));
+    const organisationMember = await getOrganisationMemberByUserId(
+      organisation.value,
+      session.user.id,
+    );
+
+    if (!organisationMember) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+
+    // if the user is not a privileged member, they can only see their own times
+    if (!isPrivilegedOrganisationMember(organisationMember)) {
+      whereStatements.push(
+        eq(times.organisationMemberId, organisationMember.id),
+      );
+    }
   }
 
   if (query.data.projectId) {
     // check if the project belongs to the organisation
     const isOrganisationProject = await doesProjectsBelongsToOrganisation(
       query.data.projectId,
-      organisation.value
+      organisation.value,
     );
     if (!isOrganisationProject) {
       throw createError({

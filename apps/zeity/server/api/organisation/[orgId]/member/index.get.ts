@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
       user: users,
     })
     .from(organisationMembers)
-    .innerJoin(users, eq(users.id, organisationMembers.userId))
+    .leftJoin(users, eq(users.id, organisationMembers.userId))
     .where(and(...whereStatements))
     .orderBy(asc(users.name))
     .offset(query.data.offset)

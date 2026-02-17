@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
       // tags: z.array(z.number()).optional(),
       projectId: z.uuid().optional(),
       notes: z.string().optional(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!body.success) {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
   if (body.data.projectId) {
     const isOrganisationProject = await doesProjectsBelongsToOrganisation(
       body.data.projectId,
-      organisation.value
+      organisation.value,
     );
     if (!isOrganisationProject) {
       throw createError({
@@ -41,12 +41,24 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const organisationMemberId = await getOrganisationMemberByUserId(
+    organisation.value,
+    session.user.id,
+  ).then((member) => member?.id);
+
+  if (!organisationMemberId) {
+    throw createError({
+      statusCode: 403,
+      message: 'Forbidden',
+    });
+  }
+
   const result = await useDrizzle()
     .insert(times)
     .values({
       ...body.data,
-      userId: session.user.id,
       organisationId: organisation.value,
+      organisationMemberId,
     })
     .returning()
     .then((data) => data[0]);

@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3';
 import z from 'zod';
 
-import { count, inArray } from '@zeity/database';
+import { count, inArray, isNotNull } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
@@ -21,20 +21,33 @@ export function doesOrganisationExist(organisationId: string) {
 }
 
 export function hasUserOrganisationMemberRole(
-  userId: string,
-  organisationId: string,
+  options:
+    | {
+        organisationId: string;
+        userId: string;
+      }
+    | {
+        organisationId: string;
+        memberId: string;
+      },
   roles: OrganisationMemberRole[] = [ORGANISATION_MEMBER_ROLE_OWNER],
 ) {
+  const where = [
+    eq(organisationMembers.organisationId, options.organisationId),
+  ];
+
+  if ('userId' in options) {
+    where.push(eq(organisationMembers.userId, options.userId));
+  } else if ('memberId' in options) {
+    where.push(eq(organisationMembers.id, options.memberId));
+  } else {
+    throw new Error('Either userId or memberId must be provided');
+  }
+
   return useDrizzle()
     .select()
     .from(organisationMembers)
-    .where(
-      and(
-        eq(organisationMembers.userId, userId),
-        eq(organisationMembers.organisationId, organisationId),
-        inArray(organisationMembers.role, roles),
-      ),
-    )
+    .where(and(...where, inArray(organisationMembers.role, roles)))
     .then((res) => res.length > 0);
 }
 
@@ -51,7 +64,8 @@ export function getOrganisationMemberByUserId(
         eq(organisationMembers.organisationId, organisationId),
       ),
     )
-    .limit(1);
+    .limit(1)
+    .then((res) => res[0]);
 }
 
 export function getOrganisationMembersByUserIds(
@@ -69,6 +83,21 @@ export function getOrganisationMembersByUserIds(
     );
 }
 
+export function getOrganisationMembersByMemberIds(
+  organisationId: string,
+  memberIds: string[],
+) {
+  return useDrizzle()
+    .select()
+    .from(organisationMembers)
+    .where(
+      and(
+        inArray(organisationMembers.id, memberIds),
+        eq(organisationMembers.organisationId, organisationId),
+      ),
+    );
+}
+
 export function countOrganisationMemberOwner(
   organisationId: string,
   tx?: unknown,
@@ -81,6 +110,7 @@ export function countOrganisationMemberOwner(
       and(
         eq(organisationMembers.organisationId, organisationId),
         eq(organisationMembers.role, ORGANISATION_MEMBER_ROLE_OWNER),
+        isNotNull(organisationMembers.userId),
       ),
     )
     .then((res) => res[0]?.count ?? 0);

@@ -12,8 +12,8 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       orgId: z.uuid(),
-      userId: z.uuid(),
-    }).safeParse
+      memberId: z.uuid(),
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       .object({
         role: z.enum(ORGANISATION_MEMBER_ROLES),
       })
-      .partial().safeParse
+      .partial().safeParse,
   );
   if (!body.success) {
     throw createError({
@@ -54,19 +54,17 @@ export default defineEventHandler(async (event) => {
       .where(
         and(
           eq(organisationMembers.organisationId, params.data.orgId),
-          eq(organisationMembers.userId, params.data.userId)
-        )
+          eq(organisationMembers.id, params.data.memberId),
+        ),
       );
 
     // check if organisation has at least one owner
     const ownerCount = await countOrganisationMemberOwner(
       params.data.orgId,
-      tx
+      tx,
     );
 
     if (ownerCount < 1) {
-      // rollback transaction
-      tx.rollback();
       throw createError({
         statusCode: 400,
         message: 'Organisation must have at least one owner',

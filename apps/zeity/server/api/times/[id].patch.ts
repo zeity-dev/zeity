@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
         projectId: z.uuid().optional(),
         notes: z.string().optional(),
       })
-      .partial().safeParse
+      .partial().safeParse,
   );
 
   if (!body.success) {
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
   if (body.data.projectId) {
     const isOrganisationProject = await doesProjectsBelongsToOrganisation(
       body.data.projectId,
-      organisation.value
+      organisation.value,
     );
     if (!isOrganisationProject) {
       throw createError({
@@ -67,11 +67,14 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const organisationMemberId = await getOrganisationMemberByUserId(
+    organisation.value,
+    session.user.id,
+  ).then((member) => member?.id);
+
   if (
-    !(
-      existing.userId === session.user.id ||
-      existing.organisationId === organisation.value
-    )
+    existing.organisationId !== organisation.value ||
+    existing.organisationMemberId !== organisationMemberId
   ) {
     throw createError({
       statusCode: 403,

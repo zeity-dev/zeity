@@ -7,5 +7,8 @@ export type LocalUser = Pick<User, 'id' | 'name' | 'email' | 'image'> & {
 };
 
 export type LocalOrganisation = Pick<Organisation, 'id' | 'name' | 'image'> & {
-  role: OrganisationMemberRole;
+  member: {
+    id: string;
+    role: OrganisationMemberRole;
+  };
 };
