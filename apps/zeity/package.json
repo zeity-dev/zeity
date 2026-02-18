@@ -8,6 +8,7 @@
     "typecheck:broken": "nuxt typecheck",
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
