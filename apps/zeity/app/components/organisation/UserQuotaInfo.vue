@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { OrganisationWithMembersAndInvites } from '~/types/organisation';
+import type { OrganisationWithStats } from '~/types/organisation';
 
 const props = defineProps({
   org: {
-    type: Object as PropType<OrganisationWithMembersAndInvites>,
+    type: Object as PropType<OrganisationWithStats>,
     required: true,
   },
 });
 
 const count = computed(() => {
-  return props.org.members.length + props.org.invites.length;
+  return (props.org.stats.members || 0) + (props.org.stats.invites || 0);
 });
 
 const quotaExceeded = computed(() => {

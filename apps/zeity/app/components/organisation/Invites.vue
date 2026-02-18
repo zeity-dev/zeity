@@ -17,12 +17,12 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  invites: {
-    type: Array as PropType<OrganisationInvite[]>,
-    default: () => [],
-  },
 });
 const emit = defineEmits(['refresh']);
+
+const { status, data, refresh } = await useFetch<OrganisationInvite[]>(
+  () => `/api/organisation/${props.organisationId}/invite`,
+);
 
 const invitesColumns: TableColumn<OrganisationInvite>[] = [
   {
@@ -118,6 +118,7 @@ function createInvite(event: FormSubmitEvent<InviteSchema>) {
         color: 'success',
         title: t('organisations.invites.createSuccess'),
       });
+      refresh();
       emit('refresh');
       toggleCreateModal();
     })
@@ -139,6 +140,7 @@ function resendInvite(id: string) {
         color: 'success',
         title: t('organisations.invites.resendSuccess'),
       });
+      refresh();
     })
     .catch((error) => {
       console.error(error);
@@ -158,6 +160,7 @@ function deleteInvite(id: string) {
         color: 'success',
         title: t('organisations.invites.deleteSuccess'),
       });
+      refresh();
       emit('refresh');
     })
     .catch((error) => {
@@ -275,7 +278,8 @@ function copy(text: string) {
       </UButton>
     </div>
     <UTable
-      :data="invites"
+      :loading="status === 'pending'"
+      :data="data"
       :columns="invitesColumns"
       :empty="$t('organisations.invites.empty')"
     />

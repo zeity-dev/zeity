@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { OrganisationWithMembersAndInvites } from '~/types/organisation';
+import type { OrganisationWithStats } from '~/types/organisation';
 
 defineProps({
   org: {
-    type: Object as PropType<OrganisationWithMembersAndInvites>,
+    type: Object as PropType<OrganisationWithStats>,
     required: true,
   },
 });
@@ -23,10 +23,6 @@ const emit = defineEmits(['refresh']);
 
     <USeparator />
 
-    <OrganisationInvites
-      :organisation-id="org.id"
-      :invites="org?.invites || []"
-      @refresh="emit('refresh')"
-    />
+    <OrganisationInvites :organisation-id="org.id" @refresh="emit('refresh')" />
   </div>
 </template>

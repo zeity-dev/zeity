@@ -1,6 +1,5 @@
 import type { Organisation } from '@zeity/database/organisation';
 import type { OrganisationMember } from '@zeity/database/organisation-member';
-import type { OrganisationInvite } from '@zeity/database/organisation-invite';
 
 export type OrganisationMemberWithUser = Pick<
   OrganisationMember,
@@ -15,7 +14,6 @@ export type OrganisationMemberWithUser = Pick<
   };
 };
 
-export type OrganisationWithMembersAndInvites = Organisation & {
-  members: OrganisationMember[];
-  invites: OrganisationInvite[];
+export type OrganisationWithStats = Organisation & {
+  stats: Record<string, number>;
 };
