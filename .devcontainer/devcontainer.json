@@ -23,12 +23,12 @@
         "Vue.volar",
         "bradlc.vscode-tailwindcss",
         "vitest.explorer",
-        "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "mhutchie.git-graph",
         "redhat.vscode-yaml",
         "github.vscode-github-actions",
-        "cweijan.vscode-database-client2"
+        "cweijan.vscode-database-client2",
+        "oxc.oxc-vscode"
       ]
     }
   }

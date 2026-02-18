@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
     "typecheck:broken": "nuxt typecheck",
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -38,7 +38,6 @@
     "@iconify-json/lucide": "^1.2.91",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.71",
-    "@nuxt/eslint": "^1.15.1",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.0",
