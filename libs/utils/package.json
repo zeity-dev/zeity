@@ -7,7 +7,7 @@
     "./*": "./src/*/index.ts"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "oxlint .",
     "test": "vitest"
   },
   "dependencies": {
@@ -15,9 +15,6 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "eslint": "^9.39.2",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.0"
+    "typescript": "^5.9.3"
   }
 }

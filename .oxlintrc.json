@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "vue", "vitest"],
+  "jsPlugins": ["@e18e/eslint-plugin", "eslint-plugin-regexp"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "jest/no-disabled-tests": "warn",
+  },
+  "ignorePatterns": [
+    ".output/**",
+    ".data/**",
+    ".nuxt/**",
+    ".nitro/**",
+    ".cache/**",
+    "dist/**",
+    "node_modules/**",
+    "coverage/**",
+    "playwright-report/**",
+    "test-results/**"
+  ]
+}

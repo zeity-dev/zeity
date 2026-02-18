@@ -19,9 +19,13 @@
     "nanoid": "^5.1.6"
   },
   "devDependencies": {
+    "@e18e/eslint-plugin": "^0.2.0",
     "@types/node": "^24.10.13",
     "@vitest/coverage-v8": "^4.0.18",
+    "eslint-plugin-regexp": "^3.0.0",
     "knip": "^5.84.0",
+    "oxfmt": "^0.33.0",
+    "oxlint": "^1.48.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
