@@ -14,9 +14,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.4",
+    "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.5",
     "@internationalized/date": "^3.11.0",
-    "@number-flow/vue": "^0.4.9",
+    "@number-flow/vue": "^0.4.10",
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^0.11.3",
     "@simplewebauthn/browser": "^13.2.2",
@@ -35,9 +35,9 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.90",
+    "@iconify-json/lucide": "^1.2.91",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.70",
+    "@iconify-json/simple-icons": "^1.2.71",
     "@nuxt/eslint": "^1.15.1",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/image": "^2.0.0",
@@ -49,9 +49,9 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.9",
-    "happy-dom": "^20.6.1",
+    "happy-dom": "^20.6.2",
     "nuxt": "^4.3.1",
-    "nuxt-auth-utils": "^0.5.28",
+    "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.5.1",
     "vue-i18n": "^11.2.8",
     "vue-tsc": "^3.2.4"
