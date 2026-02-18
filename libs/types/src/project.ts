@@ -14,7 +14,7 @@ export interface Project {
   status: ProjectStatus;
   notes: string;
 
-  userId?: string;
+  userId?: string | null;
   organisationId?: string;
 
   createdAt?: string;
