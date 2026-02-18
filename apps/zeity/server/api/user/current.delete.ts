@@ -13,5 +13,7 @@ export default defineEventHandler(async (event) => {
 
   await useDrizzle().delete(users).where(eq(users.id, session.user.id));
 
+  await clearUserSession(event);
+
   return sendNoContent(event);
 });
