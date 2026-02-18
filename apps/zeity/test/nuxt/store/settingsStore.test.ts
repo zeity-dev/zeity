@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { mockNuxtImport } from '@nuxt/test-utils/runtime';
 
-import { useSettingsStore } from '../../app/stores/settingsStore';
+import { useSettingsStore } from '../../../app/stores/settingsStore';
 
 const { useColorMode } = vi.hoisted(() => ({
   useColorMode: () => ({

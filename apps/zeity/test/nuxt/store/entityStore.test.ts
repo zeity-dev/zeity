@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
-import { useEntityStore } from '../../app/stores/entityStore';
+import { useEntityStore } from '../../../app/stores/entityStore';
 
 describe('entityStore', () => {
     beforeEach(() => {

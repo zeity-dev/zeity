@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parseAbsolute } from '@internationalized/date';
-import { timeSchema } from '../../app/schemas/time-form';
+import { timeSchema } from '../../../app/schemas/time-form';
 
 describe('time form schema', () => {
   it('should parse time with default values', () => {

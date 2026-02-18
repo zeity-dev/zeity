@@ -15,7 +15,7 @@ export default defineVitestConfig({
       enabled: true,
       provider: 'v8',
     },
-    include: ['test/**/*.(test|spec).ts'],
+    include: ['test/nuxt/**/*.(test|spec).ts'],
     globals: true,
   },
   // any custom Vitest config you require
