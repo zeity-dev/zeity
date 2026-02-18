@@ -9,7 +9,7 @@
     "preview": "nuxt preview --extends docus"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.90",
+    "@iconify-json/lucide": "^1.2.91",
     "@iconify-json/ri": "^1.2.10",
     "@nuxt/content": "^3.11.2",
     "@nuxt/eslint": "^1.15.1",
@@ -19,7 +19,7 @@
     "@nuxt/ui": "^4.4.0",
     "@nuxtjs/i18n": "^10.2.3",
     "@nuxtjs/seo": "^3.4.0",
-    "docus": "^5.5.0",
+    "docus": "^5.6.0",
     "nuxt": "^4.3.1"
   }
 }

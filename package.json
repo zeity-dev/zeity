@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/node": "^24.10.13",
     "@vitest/coverage-v8": "^4.0.18",
-    "knip": "^5.83.1",
+    "knip": "^5.84.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
@@ -35,5 +35,5 @@
     "zod": "^4.3.6",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@10.29.3"
+  "packageManager": "pnpm@10.30.0"
 }
