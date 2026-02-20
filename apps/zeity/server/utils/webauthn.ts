@@ -1,3 +1,4 @@
+import { eq } from '@zeity/database';
 import { authChallenge } from '@zeity/database/auth-challenge';
 
 export async function storeChallenge(
@@ -16,6 +17,7 @@ export async function getChallenge(attemptId: string): Promise<string> {
     .select({ challenge: authChallenge.challenge })
     .from(authChallenge)
     .where(eq(authChallenge.id, attemptId))
+    .limit(1)
     .then((rows) => rows[0]?.challenge)
     .catch(() => undefined);
 
