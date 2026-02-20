@@ -13,7 +13,10 @@ export default defineWebAuthnAuthenticateEventHandler({
 
   async allowCredentials(event, username) {
     const user = await useDrizzle()
-      .select({ credentials: userCredentials })
+      .select({ credentials: {
+        id: userCredentials.id,
+        trasports: userCredentials.transports,
+      } })
       .from(users)
       .rightJoin(userCredentials, eq(userCredentials.userId, users.id))
       .where(eq(users.email, username));
