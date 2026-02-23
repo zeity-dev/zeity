@@ -20,8 +20,19 @@ const props = defineProps({
 });
 const emit = defineEmits(['refresh']);
 
-const { status, data, refresh } = await useFetch<OrganisationInvite[]>(
+const pagination = ref({
+  pageIndex: 0,
+  pageSize: 20,
+});
+
+const { status, data, refresh } = await useFetch<PaginatedResponse<OrganisationInvite>>(
   () => `/api/organisation/${props.organisationId}/invite`,
+  {
+    query: computed(() => ({
+      offset: pagination.value.pageIndex * pagination.value.pageSize,
+      limit: pagination.value.pageSize,
+    })),
+  },
 );
 
 const invitesColumns: TableColumn<OrganisationInvite>[] = [
@@ -122,7 +133,7 @@ function createInvite(event: FormSubmitEvent<InviteSchema>) {
       emit('refresh');
       toggleCreateModal();
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         color: 'error',
@@ -142,7 +153,7 @@ function resendInvite(id: string) {
       });
       refresh();
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         color: 'error',
@@ -163,7 +174,7 @@ function deleteInvite(id: string) {
       refresh();
       emit('refresh');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         color: 'error',
@@ -176,9 +187,7 @@ async function generateJoinLink() {
   if (inviteLink.value) {
     return;
   }
-  const link = await $fetch(
-    `/api/organisation/${props.organisationId}/invite-link`,
-  );
+  const link = await $fetch(`/api/organisation/${props.organisationId}/invite-link`);
   if (link) {
     console.log('Generated invite link:', link);
     inviteLink.value = link;
@@ -201,7 +210,7 @@ function copy(text: string) {
         title: t('common.copiedToClipboard'),
       });
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('Failed to copy text: ', error);
       toast.add({
         color: 'error',
@@ -213,10 +222,7 @@ function copy(text: string) {
 
 <template>
   <div>
-    <UModal
-      v-model:open="createModalOpen"
-      :title="$t('organisations.invites.create')"
-    >
+    <UModal v-model:open="createModalOpen" :title="$t('organisations.invites.create')">
       <template #body>
         <div v-if="inviteLink">
           <QrcodeVue
@@ -241,11 +247,7 @@ function copy(text: string) {
 
         <USeparator :label="$t('common.or')" class="my-3" />
 
-        <UForm
-          :schema="inviteSchema"
-          :state="inviteState"
-          @submit="createInvite"
-        >
+        <UForm :schema="inviteSchema" :state="inviteState" @submit="createInvite">
           <UFormField :label="$t('user.email')" name="email" size="xl">
             <UInput v-model="inviteState.email" class="w-full" />
           </UFormField>
@@ -268,20 +270,28 @@ function copy(text: string) {
       <h3 class="text-lg font-semibold leading-6">
         {{ $t('organisations.invites.title') }}
       </h3>
-      <UButton
-        color="primary"
-        variant="ghost"
-        icon="i-lucide-plus"
-        @click="toggleCreateModal"
-      >
+      <UButton color="primary" variant="ghost" icon="i-lucide-plus" @click="toggleCreateModal">
         {{ $t('organisations.invites.create') }}
       </UButton>
     </div>
     <UTable
       :loading="status === 'pending'"
-      :data="data"
+      :data="data?.items"
       :columns="invitesColumns"
       :empty="$t('organisations.invites.empty')"
     />
+
+    <div
+      class="flex items-center justify-center md:justify-end gap-3 border-t border-default pt-4 mt-auto"
+    >
+      <div class="flex items-center gap-1.5">
+        <UPagination
+          :default-page="(pagination.pageIndex || 0) + 1"
+          :items-per-page="pagination.pageSize"
+          :total="data?.total || 0"
+          @update:page="(page: number) => (pagination.pageIndex = page - 1)"
+        />
+      </div>
+    </div>
   </div>
 </template>

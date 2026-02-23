@@ -23,6 +23,6 @@ const emit = defineEmits(['refresh']);
 
     <USeparator />
 
-    <OrganisationInvites :organisation-id="org.id" @refresh="emit('refresh')" />
+    <OrganisationInvitesTable :organisation-id="org.id" @refresh="emit('refresh')" />
   </div>
 </template>
