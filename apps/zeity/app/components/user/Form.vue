@@ -107,7 +107,7 @@ function handleUserImageUpload() {
             <UFormField :label="$t('user.email')" loading>
                 <UInput :value="user?.email" disabled readonly class="w-full" />
             </UFormField>
-            <UFormField name="name" :label="$t('user.name')">
+            <UFormField name="name" :label="$t('user.fullName')">
                 <UInput v-model="userState.name"  class="w-full" />
             </UFormField>
 

@@ -118,7 +118,7 @@ async function registerPasskey() {
         />
       </UFormField>
 
-      <UFormField name="name" :label="$t('user.name')">
+      <UFormField name="name" :label="$t('user.fullName')">
         <UInput v-model="state.name" class="w-full" />
       </UFormField>
 
