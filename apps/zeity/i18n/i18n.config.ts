@@ -249,6 +249,7 @@ export default defineI18nConfig(() => ({
         members: {
           title: 'Members',
           count: 'No Members|{n} Member|{n} Members',
+          addedAt: 'Added At',
           role: {
             owner: 'Owner',
             admin: 'Admin',
@@ -324,7 +325,8 @@ export default defineI18nConfig(() => ({
       },
       user: {
         title: 'User',
-        name: 'Full Name',
+        name: 'Name',
+        fullName: 'Full Name',
         email: 'Email',
         password: 'Password',
         confirmPassword: 'Confirm Password',
@@ -657,6 +659,7 @@ export default defineI18nConfig(() => ({
         members: {
           title: 'Mitglieder',
           count: 'Keine Mitglieder|{n} Mitglied|{n} Mitglieder',
+          addedAt: 'Hinzugefügt am',
           role: {
             owner: 'Besitzer',
             admin: 'Admin',
@@ -732,7 +735,8 @@ export default defineI18nConfig(() => ({
       },
       user: {
         title: 'Benutzer',
-        name: 'Vollständiger Name',
+        name: 'Name',
+        fullName: 'Vollständiger Name',
         email: 'Email',
         password: 'Passwort',
         confirmPassword: 'Passwort bestätigen',

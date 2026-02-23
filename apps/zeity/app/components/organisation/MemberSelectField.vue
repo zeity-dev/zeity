@@ -44,7 +44,7 @@ function openChange(value: boolean) {
 
 
 <template>
-    <UInputMenu v-model="model" v-model:search-term="query" :loading="pending" :items="data" multiple size="xl"
+    <UInputMenu v-model="model" v-model:search-term="query" :loading="pending" :items="data?.items" multiple size="xl"
         value-key="id" label-key="user.name" @update:open="openChange">
         <template #item="{ item }">
             <div class="flex items-center gap-3">

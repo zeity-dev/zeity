@@ -27,7 +27,7 @@ const { pending, data } = await useLazyFetch(
 );
 
 const sortedMembers = computed(() => {
-  const members = data.value || [];
+  const members = data.value?.items || [];
   if (!members) return [];
   // Sort the current user to the top of the list
   return members.toSorted((member) =>
