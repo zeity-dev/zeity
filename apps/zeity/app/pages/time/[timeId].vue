@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid py-3 my-3 h-full">
-    <TimeForm v-if="time" v-model="time" />
+  <div class="flex flex-col py-3 my-3 h-full">
+    <TimeForm v-if="time" v-model="time" class="h-full" />
   </div>
 </template>

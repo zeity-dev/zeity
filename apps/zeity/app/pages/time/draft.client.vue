@@ -3,7 +3,7 @@ const draft = storeToRefs(useTimerStore()).draft;
 </script>
 
 <template>
-  <div class="grid py-3 my-3 h-full">
+  <div class="flex flex-col py-3 my-3 h-full">
     <div v-if="!draft">
       <UAlert
         icon="i-lucide-octagon-alert"
@@ -21,6 +21,6 @@ const draft = storeToRefs(useTimerStore()).draft;
       />
     </div>
 
-    <TimeForm v-if="draft" v-model="draft" />
+    <TimeForm v-if="draft" v-model="draft" class="h-full" />
   </div>
 </template>
