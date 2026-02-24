@@ -86,18 +86,15 @@ export default defineI18nConfig(() => ({
         button: 'Sync Now',
         times: {
           successTitle: 'Times Synced',
-          successMessage:
-            '{n} of your time entries have been synced successfully.',
+          successMessage: '{n} of your time entries have been synced successfully.',
           errorTitle: 'Error Syncing Times',
-          errorMessage:
-            'There was an error syncing your time entries. Please try again.',
+          errorMessage: 'There was an error syncing your time entries. Please try again.',
         },
         projects: {
           successTitle: 'Projects Synced',
           successMessage: '{n} of your projects have been synced successfully.',
           errorTitle: 'Error Syncing Projects',
-          errorMessage:
-            'There was an error syncing your projects. Please try again.',
+          errorMessage: 'There was an error syncing your projects. Please try again.',
         },
       },
       times: {
@@ -163,6 +160,10 @@ export default defineI18nConfig(() => ({
           title: 'No Projects',
           description: 'You have no projects yet. Create one to get started.',
         },
+        filter: {
+          all: 'All Projects',
+          allDescription: 'All active projects',
+        },
       },
       reports: {
         summary: 'Summary',
@@ -200,8 +201,7 @@ export default defineI18nConfig(() => ({
       },
       offline: {
         title: 'Offline',
-        description:
-          'You are currently offline. Some features may be unavailable.',
+        description: 'You are currently offline. Some features may be unavailable.',
       },
       organisations: {
         title: 'Organisations',
@@ -245,6 +245,10 @@ export default defineI18nConfig(() => ({
             deleteSuccess: 'Member removed successfully',
             deleteError: 'Error removing member',
           },
+          filter: {
+            all: 'All Teams',
+            allDescription: 'All teams of the organisation',
+          },
         },
         members: {
           title: 'Members',
@@ -260,6 +264,10 @@ export default defineI18nConfig(() => ({
           roleUpdateError: 'Error updating role',
           deleteSuccess: 'Member deleted successfully',
           deleteError: 'Error deleting member',
+          filter: {
+            all: 'All Members',
+            allDescription: 'All members of the organisation',
+          },
         },
         invites: {
           title: 'Invitations',
@@ -287,12 +295,10 @@ export default defineI18nConfig(() => ({
           invalidLink: 'Invalid or expired invitation link',
           request: {
             title: 'Send Join Request',
-            description:
-              'Enter a message below to send a join request to the organisation.',
+            description: 'Enter a message below to send a join request to the organisation.',
             messageLabel: 'Message',
             messagePlaceholder: 'Enter your message (optional)',
-            pending:
-              'You have already sent a join request to this organisation.',
+            pending: 'You have already sent a join request to this organisation.',
             success: 'Join request sent successfully',
             error: 'Error sending join request',
           },
@@ -316,8 +322,7 @@ export default defineI18nConfig(() => ({
           members: 'Members & Invitations Quota',
           exceeded: {
             title: 'Quota Exceeded',
-            description:
-              'You have exceeded your organisation quota. Please contact support.',
+            description: 'You have exceeded your organisation quota. Please contact support.',
           },
         },
         role: 'Role',
@@ -364,8 +369,7 @@ export default defineI18nConfig(() => ({
           title: 'Change Password',
           currentPassword: 'Current Password',
           newPassword: 'New Password',
-          newPasswordSameAsCurrent:
-            'New password must be different from current password',
+          newPasswordSameAsCurrent: 'New password must be different from current password',
           success: 'Password changed successfully',
           error: 'Error changing password',
         },
@@ -388,8 +392,7 @@ export default defineI18nConfig(() => ({
         title: 'Authentication',
         forgotPassword: {
           title: 'Forgot Password',
-          description:
-            'Enter your email to receive password reset instructions.',
+          description: 'Enter your email to receive password reset instructions.',
           success: 'Password reset instructions sent successfully',
           error: 'Error sending password reset instructions',
         },
@@ -427,8 +430,7 @@ export default defineI18nConfig(() => ({
       error: {
         general: {
           title: 'An Error Occurred',
-          description:
-            'Sorry, an unexpected error has occurred. Please try again later.',
+          description: 'Sorry, an unexpected error has occurred. Please try again later.',
         },
         notFound: {
           title: 'Not Found',
@@ -437,13 +439,11 @@ export default defineI18nConfig(() => ({
         },
         serverError: {
           title: 'Server Error',
-          description:
-            'Sorry, there was a problem with the server. Please try again later.',
+          description: 'Sorry, there was a problem with the server. Please try again later.',
         },
         serviceUnavailable: {
           title: 'Service Unavailable',
-          description:
-            'Sorry, the service is currently unavailable. Please try again later.',
+          description: 'Sorry, the service is currently unavailable. Please try again later.',
         },
       },
     },
@@ -523,8 +523,7 @@ export default defineI18nConfig(() => ({
         },
         projects: {
           successTitle: 'Projekte synchronisiert',
-          successMessage:
-            '{n} Ihrer Projekte wurden erfolgreich synchronisiert.',
+          successMessage: '{n} Ihrer Projekte wurden erfolgreich synchronisiert.',
           errorTitle: 'Fehler beim Synchronisieren der Projekte',
           errorMessage:
             'Beim Synchronisieren Ihrer Projekte ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
@@ -591,8 +590,11 @@ export default defineI18nConfig(() => ({
         offline: 'Projekt ist nicht synchronisiert',
         empty: {
           title: 'Keine Projekte',
-          description:
-            'Sie haben noch keine Projekte. Erstellen Sie eines, um zu beginnen.',
+          description: 'Sie haben noch keine Projekte. Erstellen Sie eines, um zu beginnen.',
+        },
+        filter: {
+          all: 'Alle Projekte',
+          allDescription: 'Alle aktiven Projekte',
         },
       },
       reports: {
@@ -655,6 +657,10 @@ export default defineI18nConfig(() => ({
             deleteSuccess: 'Mitglied erfolgreich entfernt',
             deleteError: 'Fehler beim Entfernen des Mitglieds',
           },
+          fileter: {
+            all: 'Alle Teams',
+            allDescription: 'Alle Teams der Organisation',
+          },
         },
         members: {
           title: 'Mitglieder',
@@ -670,6 +676,10 @@ export default defineI18nConfig(() => ({
           roleUpdateError: 'Fehler beim Aktualisieren der Rolle',
           deleteSuccess: 'Mitglied erfolgreich gelöscht',
           deleteError: 'Fehler beim Löschen des Mitglieds',
+          filter: {
+            all: 'Alle Mitglieder',
+            allDescription: 'Alle Mitglieder der Organisation',
+          },
         },
         invites: {
           title: 'Einladungen',
@@ -701,8 +711,7 @@ export default defineI18nConfig(() => ({
               'Geben Sie unten eine Nachricht ein, um eine Beitrittsanfrage an die Organisation zu senden.',
             messageLabel: 'Nachricht',
             messagePlaceholder: 'Geben Sie Ihre Nachricht ein (optional)',
-            pending:
-              'Sie haben bereits eine Beitrittsanfrage an diese Organisation gesendet.',
+            pending: 'Sie haben bereits eine Beitrittsanfrage an diese Organisation gesendet.',
             success: 'Beitrittsanfrage erfolgreich gesendet',
             error: 'Fehler beim Senden der Beitrittsanfrage',
           },
@@ -774,8 +783,7 @@ export default defineI18nConfig(() => ({
           title: 'Passwort ändern',
           currentPassword: 'Aktuelles Passwort',
           newPassword: 'Neues Passwort',
-          newPasswordSameAsCurrent:
-            'Neues Passwort muss sich vom aktuellen Passwort unterscheiden',
+          newPasswordSameAsCurrent: 'Neues Passwort muss sich vom aktuellen Passwort unterscheiden',
           success: 'Passwort erfolgreich geändert',
           error: 'Fehler beim Ändern des Passworts',
         },
@@ -800,10 +808,8 @@ export default defineI18nConfig(() => ({
           title: 'Passwort vergessen',
           description:
             'Geben Sie Ihre E-Mail-Adresse ein, um Anweisungen zum Zurücksetzen des Passworts zu erhalten.',
-          success:
-            'Anweisungen zum Zurücksetzen des Passworts erfolgreich gesendet',
-          error:
-            'Fehler beim Senden der Anweisungen zum Zurücksetzen des Passworts',
+          success: 'Anweisungen zum Zurücksetzen des Passworts erfolgreich gesendet',
+          error: 'Fehler beim Senden der Anweisungen zum Zurücksetzen des Passworts',
         },
         resetPassword: {
           title: 'Passwort zurücksetzen',
@@ -853,8 +859,7 @@ export default defineI18nConfig(() => ({
       },
       about: {
         title: 'Zeity',
-        description:
-          'Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.',
+        description: 'Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.',
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
       },

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { OrganisationMemberWithUser } from '~/types/organisation';
 
-const model = defineModel<OrganisationMemberWithUser[]>();
+const model = defineModel<OrganisationMemberWithUser[]>({
+  default: [],
+});
 
 const props = defineProps({
   teamIds: {
@@ -14,87 +16,88 @@ const teamIds = computed(() => props.teamIds || []);
 
 const { user } = useUser();
 const { currentOrganisationId } = useOrganisation();
-const { pending, data } = await useLazyFetch(
+
+const contentSearch = shallowRef('');
+
+const requestFilters = computed(() => {
+  return {
+    team: teamIds.value.length ? teamIds.value : undefined,
+    search: contentSearch.value ? contentSearch.value : undefined,
+  };
+});
+
+const { status, data } = await useLazyFetch<PaginatedResponse<OrganisationMemberWithUser>>(
   () => `/api/organisation/${currentOrganisationId.value}/member`,
   {
-    method: 'GET',
-    query: {
-      team: teamIds.value,
-    },
-    server: false,
-    watch: [currentOrganisationId, teamIds],
+    query: requestFilters,
+    watch: [currentOrganisationId, contentSearch, teamIds],
   },
 );
 
-const sortedMembers = computed(() => {
+const sortedMembers = computed<OrganisationMemberWithUser[]>(() => {
   const members = data.value?.items || [];
   if (!members) return [];
   // Sort the current user to the top of the list
-  return members.toSorted((member) =>
-    member.userId === user.value?.id ? -1 : 1,
-  );
+  return members.toSorted(member => (member.userId === user.value?.id ? -1 : 1));
 });
 
-const selectedIds = computed(() =>
-  (model.value || []).map((member) => member.id),
-);
-const noSelected = computed(() => selectedIds.value.length === 0);
-
-function toggleSelected(id: string) {
-  const set = new Set(selectedIds.value);
-  if (set.has(id)) {
-    set.delete(id);
-  } else {
-    set.add(id);
-  }
-  model.value = sortedMembers.value.filter((member) => set.has(member.id));
-}
-
-function isSelected(id: string) {
-  const ids = selectedIds.value;
-  return ids.includes(id);
-}
-function deselectAll() {
-  if (!noSelected.value) {
-    model.value = [];
-  }
-}
+type SelectItem = OrganisationMemberWithUser & { onSelect?: (e: Event) => void };
+const items = computed<Partial<SelectItem>[]>(() => {
+  return [
+    {
+      id: 'all',
+      onSelect: e => {
+        e.preventDefault();
+        model.value = [];
+      },
+    },
+    ...sortedMembers.value,
+  ];
+});
 </script>
 
 <template>
   <section class="flex flex-col gap-1">
-    <span class="text-sm text-muted">{{
-      $t('organisations.members.title')
-    }}</span>
-    <div class="scrollable flex gap-2 pb-1">
-      <UButton
-        :label="$t('common.all')"
-        :icon="noSelected ? 'i-lucide-check' : undefined"
-        :color="noSelected ? 'primary' : 'neutral'"
-        variant="subtle"
-        class="rounded-full max-w-60"
-        @click="deselectAll()"
-      />
-      <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
-      <USkeleton v-if="pending" class="h-8 w-16 rounded-full" />
-      <UButton
-        v-for="value of sortedMembers"
-        :key="value.id"
-        :label="value.user?.name || $t('user.deleted')"
-        :avatar="{ src: getUserImagePath(value.user), alt: value.user?.name }"
-        :icon="isSelected(value.id) ? 'i-lucide-check' : undefined"
-        :color="isSelected(value.id) ? 'primary' : 'neutral'"
-        variant="subtle"
-        class="rounded-full max-w-60"
-        @click="toggleSelected(value.id)"
-      />
-    </div>
+    <span class="text-sm text-muted">
+      {{ $t('organisations.members.title') }}
+    </span>
+    <USelectMenu
+      v-model:model-value="model"
+      v-model:search-term="contentSearch"
+      :items="items"
+      :loading="status === 'pending'"
+      :placeholder="$t('common.all')"
+      icon="i-lucide-search"
+      label-key="user.name"
+      virtualize
+      multiple
+      class="w-full"
+    >
+      <template #item-trailing="{ item }">
+        <UIcon
+          v-if="item['id'] === 'all' && model.length < 1"
+          name="i-lucide-check"
+          class="size-5"
+        />
+      </template>
+
+      <template #item-label="{ item }">
+        <span v-if="item?.['id'] === 'all'">
+          {{ $t('organisations.members.filter.all') }}
+        </span>
+        <span v-else>
+          {{ item?.user?.name || $t('user.deleted') }}
+        </span>
+      </template>
+
+      <template #item-description="{ item }">
+        <span v-if="item?.['id'] === 'all'">
+          {{ $t('organisations.members.filter.allDescription') }}
+        </span>
+        <span v-else-if="item?.role">
+          {{ $t(`organisations.members.role.${item.role}`) }}
+        </span>
+      </template>
+    </USelectMenu>
   </section>
 </template>
-
-<style scoped>
-.scrollable {
-  overflow: auto;
-  scroll-behavior: smooth;
-}
-</style>

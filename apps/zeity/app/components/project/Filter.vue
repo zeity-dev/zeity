@@ -1,55 +1,81 @@
 <script setup lang="ts">
-import type { Project } from '@zeity/types/project';
+import type { SelectMenuItem } from '@nuxt/ui';
+import { watchDebounced } from '@vueuse/core';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
-const model = defineModel<string[]>();
+const model = defineModel<string[]>({ default: [] });
 
-const { getOrganisationProjects } = useProject();
+const { t } = useI18n();
+const { getOrganisationProjects, loadProjects } = useProject();
 
 const projects = getOrganisationProjects();
-const activeProjects = computed(() => projects.value.filter((project) => project.status === PROJECT_STATUS_ACTIVE));
-const noSelected = computed(() => model.value?.length === 0);
+const activeProjects = computed(() =>
+  projects.value.filter(project => project.status === PROJECT_STATUS_ACTIVE),
+);
 
-function toggleSelected(item: Project) {
-    const set = new Set(model.value || []);
-    if (set.has(item.id)) {
-        set.delete(item.id);
-    } else {
-        set.add(item.id);
-    }
-    model.value = Array.from(set);
-}
+const items = computed(
+  () =>
+    [
+      {
+        value: 'all',
+        label: t('projects.filter.all'),
+        description: t('projects.filter.allDescription'),
+        onSelect: e => {
+          e.preventDefault();
+          model.value = [];
+        },
+      },
+      ...activeProjects.value.map(project => ({
+        value: project.id,
+        label: project.name,
+        description: project.notes,
+      })),
+    ] satisfies SelectMenuItem[],
+);
 
-function isSelected(item: Project) {
-    const data = model.value || [];
-    return data.includes(item.id);
-}
+const loading = ref(false);
+const contentSearch = shallowRef('');
 
-function deselectAll() {
-    if (!noSelected.value) {
-        model.value = [];
-    }
-}
+watchDebounced(
+  contentSearch,
+  async () => {
+    loading.value = true;
+    loadProjects({
+      search: contentSearch.value,
+      status: [PROJECT_STATUS_ACTIVE],
+    }).finally(() => {
+      loading.value = false;
+    });
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
-    <section class="flex flex-col gap-1">
-        <span class="text-sm text-muted">{{ $t('projects.title') }}</span>
-        <div class="scrollable flex gap-2 pb-1">
-            <UButton :label="$t('common.all')" :icon="noSelected ? 'i-lucide-check' : undefined"
-                :color="noSelected ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
-                @click="deselectAll()" />
-            <UButton v-for="value of activeProjects" :key=value.id :label="value.name"
-                :icon="isSelected(value) ? 'i-lucide-check' : undefined"
-                :color="isSelected(value) ? 'primary' : 'neutral'" variant="subtle" class="rounded-full max-w-60"
-                @click="toggleSelected(value)" />
-        </div>
-    </section>
+  <section class="flex flex-col gap-1">
+    <span class="text-sm text-muted">
+      {{ $t('projects.title') }}
+    </span>
+    <USelectMenu
+      v-model:model-value="model"
+      v-model:search-term="contentSearch"
+      :items="items"
+      :loading="loading"
+      :placeholder="$t('common.all')"
+      icon="i-lucide-search"
+      value-key="value"
+      label-key="label"
+      virtualize
+      multiple
+      class="w-full"
+    >
+      <template #item-trailing="{ item }">
+        <UIcon
+          v-if="item.value === 'all' && model.length < 1"
+          name="i-lucide-check"
+          class="size-5"
+        />
+      </template>
+    </USelectMenu>
+  </section>
 </template>
-
-<style scoped>
-.scrollable {
-    overflow: auto;
-    scroll-behavior: smooth;
-}
-</style>
