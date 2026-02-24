@@ -11,7 +11,7 @@ const orgTimes = getOrganisationTimes();
 // show all times of the current user and offline times
 const userTimes = computed(() =>
   orgTimes.value.filter(
-    (item) =>
+    item =>
       !item.organisationMemberId ||
       item.organisationMemberId === currentOrganisation.value?.member.id,
   ),
@@ -21,14 +21,16 @@ const sortedTimes = computed(() =>
 );
 const isEmpty = computed(() => userTimes.value.length < 1);
 
-const offset = ref(0);
-const limit = ref(40);
+const pagination = ref({
+  offset: 0,
+  limit: 40,
+});
 const isLoading = ref(false);
 const hasOrg = computed(() => !!currentOrganisation.value);
 const endReached = ref(true);
 
 function reloadAll() {
-  offset.value = 0;
+  pagination.value.offset = 0;
   endReached.value = false;
   loadMore();
 }
@@ -38,13 +40,12 @@ function loadMore() {
   isLoading.value = true;
 
   loadTimes({
-    offset: offset.value,
-    limit: limit.value,
+    ...pagination.value,
     organisationMemberId: currentOrganisation.value?.member.id,
   })
-    .then((data) => {
-      offset.value += data?.length || 0;
-      if ((data?.length ?? 0) < limit.value) {
+    .then(data => {
+      pagination.value.offset += data?.length || 0;
+      if ((data?.length ?? 0) < pagination.value.limit) {
         endReached.value = true;
       }
     })
