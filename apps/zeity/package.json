@@ -17,11 +17,11 @@
   "dependencies": {
     "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.5",
     "@internationalized/date": "^3.11.0",
-    "@number-flow/vue": "^0.4.10",
+    "@number-flow/vue": "^0.4.12",
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^0.11.3",
     "@simplewebauthn/browser": "^13.2.2",
-    "@simplewebauthn/server": "^13.2.2",
+    "@simplewebauthn/server": "^13.2.3",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
     "@vueuse/core": "^14.2.1",
@@ -36,7 +36,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.91",
+    "@iconify-json/lucide": "^1.2.93",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.71",
     "@nuxt/hints": "1.0.0-alpha.6",
@@ -49,11 +49,11 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
     "drizzle-kit": "^0.31.9",
-    "happy-dom": "^20.6.2",
+    "happy-dom": "^20.7.0",
     "nuxt": "^4.3.1",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.5.1",
     "vue-i18n": "^11.2.8",
-    "vue-tsc": "^3.2.4"
+    "vue-tsc": "^3.2.5"
   }
 }

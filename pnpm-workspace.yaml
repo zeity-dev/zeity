@@ -16,8 +16,7 @@ ignoredBuiltDependencies:
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - chokidar@4.0.3
-  - nuxt-component-meta@0.14.2
-  - undici-types@6.21.0
+  - rollup@2.80.0
   - semver@6.3.1
 
 onlyBuiltDependencies:
