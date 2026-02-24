@@ -39,7 +39,7 @@
     "@iconify-json/lucide": "^1.2.93",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.71",
-    "@nuxt/hints": "1.0.0-alpha.6",
+    "@nuxt/hints": "1.0.0-alpha.8",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.0",
     "@nuxt/ui": "^4.4.0",

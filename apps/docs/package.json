@@ -12,7 +12,7 @@
     "@iconify-json/lucide": "^1.2.93",
     "@iconify-json/ri": "^1.2.10",
     "@nuxt/content": "^3.11.2",
-    "@nuxt/hints": "1.0.0-alpha.6",
+    "@nuxt/hints": "1.0.0-alpha.8",
     "@nuxt/icon": "^2.2.1",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.4.0",
