@@ -62,7 +62,7 @@ watchDebounced(
       :items="items"
       :loading="loading"
       :placeholder="$t('common.all')"
-      icon="i-lucide-search"
+      icon="i-lucide-list-todo"
       value-key="value"
       label-key="label"
       virtualize

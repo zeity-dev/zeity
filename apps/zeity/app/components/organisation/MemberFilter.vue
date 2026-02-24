@@ -67,7 +67,7 @@ const items = computed<Partial<SelectItem>[]>(() => {
       :items="items"
       :loading="status === 'pending'"
       :placeholder="$t('common.all')"
-      icon="i-lucide-search"
+      icon="i-lucide-users"
       label-key="user.name"
       virtualize
       multiple
