@@ -4,7 +4,6 @@ import {
   type Time,
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_OWNER,
-  PROJECT_STATUS_ACTIVE,
   TIME_TYPE_BREAK,
 } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
@@ -14,7 +13,6 @@ import type { DateRange } from '~/types/date-filter';
 
 const { user } = useUser();
 const { isLoggedIn } = useAuth();
-const { loadProjects } = useProject();
 const { loadTimes, getOrganisationTimes, calculateBreakTime } = useTime();
 const { currentOrganisationId, currentOrganisation } = useOrganisation();
 const settingsStore = useSettingsStore();
@@ -26,7 +24,7 @@ const memberFilters = ref<OrganisationMemberWithUser[]>([]);
 
 const orgTimes = getOrganisationTimes();
 const filteredTeamIds = computed(() => {
-  return teamFilters.value.map((team) => team.id);
+  return teamFilters.value.map(team => team.id);
 });
 const filteredMemberIds = computed(() => {
   // user is not set if the user is not logged in
@@ -34,7 +32,7 @@ const filteredMemberIds = computed(() => {
     return [];
   }
   // if filters are set, return the filtered user ids
-  return memberFilters.value.map((member) => member.id);
+  return memberFilters.value.map(member => member.id);
 });
 const filteredTimes = computed(() => {
   const dFilter = dateFilter.value;
@@ -46,29 +44,24 @@ const filteredTimes = computed(() => {
   // filter times by member ids
   if (memberIds.length) {
     times = times.filter(
-      (item) =>
-        item.organisationMemberId &&
-        memberIds.includes(item.organisationMemberId),
+      item => item.organisationMemberId && memberIds.includes(item.organisationMemberId),
     );
   }
 
   // filter times by date range
   if (dFilter && dFilter.start && dFilter.end) {
-    times = times.filter((item) => {
+    times = times.filter(item => {
       const timeStart = parseDate(item.start);
 
       return (
-        isAfter(timeStart, parseDate(dFilter.start)) &&
-        isBefore(timeStart, parseDate(dFilter.end))
+        isAfter(timeStart, parseDate(dFilter.start)) && isBefore(timeStart, parseDate(dFilter.end))
       );
     });
   }
 
   // filter times by project ids
   if (pFilters.length) {
-    times = times.filter((item) =>
-      pFilters?.some((project) => item.projectId?.includes(project)),
-    );
+    times = times.filter(item => pFilters?.some(project => item.projectId?.includes(project)));
   }
 
   return times;
@@ -117,7 +110,7 @@ function applyTimeBreaks(times: Time[]): Time[] {
 }
 
 const workedTimes = computed(() =>
-  filteredTimes.value.filter((time) => time.type !== TIME_TYPE_BREAK),
+  filteredTimes.value.filter(time => time.type !== TIME_TYPE_BREAK),
 );
 
 const timeSum = computed(() => calculateDiffSum(workedTimes.value));
@@ -126,9 +119,7 @@ const orgRole = computed(() => currentOrganisation.value?.member.role);
 const showAdminControls = computed(
   () =>
     orgRole.value &&
-    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(
-      orgRole.value,
-    ),
+    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value),
 );
 
 async function loadAllTimes(
@@ -156,38 +147,13 @@ async function loadAllTimes(
   }
 }
 
-async function loadAllActiveProjects(
-  status = [PROJECT_STATUS_ACTIVE],
-  limit = 100,
-) {
-  let offset = 0;
-  let endReached = false;
-  while (!endReached) {
-    const projects = await loadProjects({
-      limit,
-      offset,
-      status,
-    });
-
-    offset += limit;
-    if ((projects?.length ?? 0) < limit) {
-      endReached = true;
-    }
-  }
-}
-
 async function reloadAll() {
   if (!isLoggedIn.value) {
     return;
   }
 
-  await loadAllActiveProjects();
   if (dateFilter.value) {
-    await loadAllTimes(
-      dateFilter.value,
-      projectFilters.value,
-      filteredMemberIds.value,
-    );
+    await loadAllTimes(dateFilter.value, projectFilters.value, filteredMemberIds.value);
   }
 }
 
@@ -199,14 +165,11 @@ watch(currentOrganisationId, async () => {
   await reloadAll();
 });
 
-watch(
-  [dateFilter, projectFilters, filteredMemberIds],
-  async ([dateRange, projects, members]) => {
-    if (dateRange && dateRange.start && dateRange.end) {
-      await loadAllTimes(dateRange, projects, members);
-    }
-  },
-);
+watch([dateFilter, projectFilters, filteredMemberIds], async ([dateRange, projects, members]) => {
+  if (dateRange && dateRange.start && dateRange.end) {
+    await loadAllTimes(dateRange, projects, members);
+  }
+});
 </script>
 
 <template>
@@ -214,10 +177,9 @@ watch(
     <section class="flex flex-col gap-1">
       <DateFilter v-model="dateFilter" />
       <ProjectFilter v-model="projectFilters" />
-      <OrganisationTeamFilter
-        v-if="user && showAdminControls"
-        v-model="teamFilters"
-      />
+
+      <OrganisationTeamFilter v-if="user && showAdminControls" v-model="teamFilters" />
+
       <OrganisationMemberFilter
         v-if="user && showAdminControls"
         v-model="memberFilters"
@@ -230,10 +192,7 @@ watch(
         <h2>{{ $t('reports.summary') }}</h2>
       </template>
 
-      <TimeDurationFlowing
-        v-model="timeSum"
-        class="flex justify-center text-xl font-mono"
-      />
+      <TimeDurationFlowing v-model="timeSum" class="flex justify-center text-xl font-mono" />
     </UCard>
 
     <UCard as="section">
