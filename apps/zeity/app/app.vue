@@ -41,11 +41,12 @@ useHead({
   ],
 });
 
+const auth = useAuth();
 const visibility = useDocumentVisibility();
 watch(visibility, current => {
   // keep user session alive by refreshing it when the user comes back to the app
   if (current === 'visible') {
-    useAuth().refresh();
+    auth.refresh();
   }
 });
 </script>
