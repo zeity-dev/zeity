@@ -238,7 +238,9 @@ export default defineNuxtConfig({
       },
     },
     session: {
-      password: crypto.randomUUID(),
+      name: 'zeity_session',
+      password:
+        process.env.ZEITY_SESSION_PASSWORD || process.env.SESSION_PASSWORD || crypto.randomUUID(),
       maxAge: 60 * 60 * 24 * 7, // 7 days
     },
     jwtSecret: 'supersecret',
