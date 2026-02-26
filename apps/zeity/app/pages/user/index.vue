@@ -21,16 +21,13 @@ const user = ref<User>(props.user);
 
 const { t } = useI18n();
 const toast = useToast();
+const { logout } = useAuth();
 const { deleteUser } = useUser();
 const deleteModalOpen = ref(false);
 
 const noOrganisations = computed(() => {
   return (props.organisations.length ?? 0) < 1;
 });
-
-function logout() {
-  useAuth().logout();
-}
 
 async function handleDeleteUser() {
   await deleteUser()
@@ -41,7 +38,7 @@ async function handleDeleteUser() {
       });
       await navigateTo('/auth');
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         color: 'error',
@@ -80,12 +77,7 @@ async function handleDeleteUser() {
         <UserForm v-model="user" :loading="pending" />
 
         <div class="flex flex-col gap-2 justify-between">
-          <UButton
-            color="neutral"
-            block
-            icon="i-lucide-arrow-left-from-line"
-            @click="logout"
-          >
+          <UButton color="neutral" block icon="i-lucide-arrow-left-from-line" @click="logout">
             {{ $t('auth.logout') }}
           </UButton>
         </div>
@@ -117,11 +109,7 @@ async function handleDeleteUser() {
 
         <template #footer>
           <div class="flex justify-between w-full">
-            <UButton
-              type="button"
-              variant="subtle"
-              @click="deleteModalOpen = false"
-            >
+            <UButton type="button" variant="subtle" @click="deleteModalOpen = false">
               {{ $t('common.cancel') }}
             </UButton>
 

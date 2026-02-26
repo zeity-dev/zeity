@@ -390,6 +390,10 @@ export default defineI18nConfig(() => ({
       },
       auth: {
         title: 'Authentication',
+        expired: {
+          title: 'Session expired',
+          description: 'Your session has expired. Please log in again to continue.',
+        },
         forgotPassword: {
           title: 'Forgot Password',
           description: 'Enter your email to receive password reset instructions.',
@@ -804,6 +808,11 @@ export default defineI18nConfig(() => ({
       },
       auth: {
         title: 'Authentifizierung',
+        expired: {
+          title: 'Session abgelaufen',
+          description:
+            'Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren.',
+        },
         forgotPassword: {
           title: 'Passwort vergessen',
           description:
