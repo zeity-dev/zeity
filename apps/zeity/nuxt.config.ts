@@ -237,6 +237,10 @@ export default defineNuxtConfig({
         members: undefined,
       },
     },
+    session: {
+      password: crypto.randomUUID(),
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    },
     jwtSecret: 'supersecret',
     public: {
       appName: 'zeity',
