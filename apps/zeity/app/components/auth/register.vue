@@ -17,13 +17,10 @@ const baseSchema = z.object({
   password: z.string().min(8),
   confirmPassword: z.string(),
 });
-const schema = baseSchema.refine(
-  (data) => data.password === data.confirmPassword,
-  {
-    message: t('user.passwordsDoNotMatch'),
-    path: ['confirmPassword'], // Highlights the confirm password field
-  },
-);
+const schema = baseSchema.refine(data => data.password === data.confirmPassword, {
+  message: t('user.passwordsDoNotMatch'),
+  path: ['confirmPassword'], // Highlights the confirm password field
+});
 type Schema = z.output<typeof schema>;
 const state = ref<Partial<Schema>>({
   name: '',
@@ -56,7 +53,7 @@ async function registerPassword(event: FormSubmitEvent<Schema>) {
       });
       emits('submit');
     })
-    .catch((error) => {
+    .catch(error => {
       if (error.data?.message === 'User already exists') {
         toast.add({
           title: t('auth.register.userExists'),
@@ -75,9 +72,7 @@ async function registerPassword(event: FormSubmitEvent<Schema>) {
 }
 
 async function registerPasskey() {
-  const event = baseSchema
-    .pick({ email: true, name: true })
-    .safeParse(state.value);
+  const event = baseSchema.pick({ email: true, name: true }).safeParse(state.value);
   if (!event.success) {
     return;
   }
@@ -88,7 +83,7 @@ async function registerPasskey() {
       displayName: event.data.name,
     })
     .then(() => emits('submit'))
-    .catch((error) => {
+    .catch(error => {
       toast.add({
         title: error.data?.message || error.message,
         description: error.data?.data?.issues[0]?.message || error.data?.data,
@@ -102,12 +97,7 @@ async function registerPasskey() {
 </script>
 
 <template>
-  <UForm
-    class="space-y-4"
-    :schema="schema"
-    :state="state"
-    @submit.prevent="registerPassword"
-  >
+  <UForm class="space-y-4" :schema="schema" :state="state" @submit.prevent="registerPassword">
     <div v-show="showPasswordStep" class="slide space-y-4">
       <UFormField name="email" :label="$t('user.email')">
         <UInput
@@ -122,12 +112,7 @@ async function registerPasskey() {
         <UInput v-model="state.name" class="w-full" />
       </UFormField>
 
-      <UButton
-        block
-        type="button"
-        :label="$t('common.continue')"
-        @click="toggleShowPasswordStep"
-      />
+      <UButton block type="button" :label="$t('common.continue')" @click="toggleShowPasswordStep" />
     </div>
     <div v-show="!showPasswordStep" class="slide space-y-4">
       <UFormField name="password" :label="$t('user.password')">
@@ -142,15 +127,9 @@ async function registerPasskey() {
               color="neutral"
               variant="link"
               size="sm"
-              :icon="
-                passwordVisibility.password
-                  ? 'i-lucide-eye-off'
-                  : 'i-lucide-eye'
-              " 
+              :icon="passwordVisibility.password ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.password"
-              @click="
-                passwordVisibility.password = !passwordVisibility.password
-              "
+              @click="passwordVisibility.password = !passwordVisibility.password"
             />
           </template>
         </UInput>
@@ -168,16 +147,9 @@ async function registerPasskey() {
               color="neutral"
               variant="link"
               size="sm"
-              :icon="
-                passwordVisibility.confirmPassword
-                  ? 'i-lucide-eye-off'
-                  : 'i-lucide-eye'
-              "
+              :icon="passwordVisibility.confirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.confirmPassword"
-              @click="
-                passwordVisibility.confirmPassword =
-                  !passwordVisibility.confirmPassword
-              "
+              @click="passwordVisibility.confirmPassword = !passwordVisibility.confirmPassword"
             />
           </template>
         </UInput>
@@ -186,17 +158,13 @@ async function registerPasskey() {
       <div class="flex gap-2">
         <UButton
           :title="$t('common.back')"
+          :aria-label="$t('common.back')"
           icon="i-lucide-chevron-left"
           color="neutral"
           variant="subtle"
           @click="toggleShowPasswordStep"
         />
-        <UButton
-          block
-          type="submit"
-          :label="$t('auth.register.title')"
-          :loading="pending"
-        />
+        <UButton block type="submit" :label="$t('auth.register.title')" :loading="pending" />
       </div>
     </div>
 
