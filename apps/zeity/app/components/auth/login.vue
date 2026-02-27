@@ -148,6 +148,7 @@ async function loginPasskey() {
       <div class="flex gap-2">
         <UButton
           :title="$t('common.back')"
+          :aria-label="$t('common.back')"
           icon="i-lucide-chevron-left"
           color="neutral"
           variant="subtle"
