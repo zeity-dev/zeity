@@ -93,6 +93,9 @@ export default defineEventHandler(async event => {
 
         role: organisationMembers.role,
         user: users,
+
+        createdAt: organisationMembers.createdAt,
+        updatedAt: organisationMembers.updatedAt,
       })
       .from(organisationMembers)
       .leftJoin(users, eq(users.id, organisationMembers.userId))
