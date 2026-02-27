@@ -15,7 +15,7 @@ const UButton = resolveComponent('UButton');
 const UDropdownMenu = resolveComponent('UDropdownMenu');
 const NuxtTime = resolveComponent('NuxtTime');
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const toast = useToast();
 
 const params = defineProps({
@@ -73,7 +73,11 @@ const membersColumns: TableColumn<OrganisationMember>[] = [
     accessorKey: 'createdAt',
     header: ({ column }) => getHeader(column, t('organisations.members.addedAt')),
     cell: ({ row }) => {
-      return h(NuxtTime, { datetime: row.original.createdAt });
+      return h(NuxtTime, {
+        datetime: row.original.createdAt,
+        locale: locale.value,
+        relative: true,
+      });
     },
   },
   {
