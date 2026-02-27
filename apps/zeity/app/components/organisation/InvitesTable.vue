@@ -44,11 +44,11 @@ const invitesColumns: TableColumn<OrganisationInvite>[] = [
     accessorKey: 'createdAt',
     header: t('organisations.invitationDate'),
     cell: ({ row }) => {
-      const createdAt = row.getValue('createdAt');
+      const createdAt = row.original.createdAt;
       return h(NuxtTime, {
         datetime: createdAt,
-        relative: true,
         locale: locale.value,
+        relative: true,
       });
     },
   },
