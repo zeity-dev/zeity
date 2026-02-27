@@ -24,33 +24,6 @@ export function useOrganisation() {
       });
   }
 
-  function fetchOrganisationTeams(orgId: MaybeRef<string | null | undefined>) {
-    const orgIdRef = toRef(orgId);
-    return useFetch(() => `/api/organisation/${orgIdRef.value}/team`);
-  }
-
-  function fetchOrganisationTeam(
-    orgId: MaybeRef<string | null | undefined>,
-    teamId: MaybeRef<string | null | undefined>,
-  ) {
-    const orgIdRef = toRef(orgId);
-    const teamIdRef = toRef(teamId);
-    return useFetch(
-      () => `/api/organisation/${orgIdRef.value}/team/${teamIdRef.value}`,
-    );
-  }
-
-  function fetchOrganisationMembers(
-    orgId: MaybeRef<string | null | undefined>,
-  ) {
-    const id = toRef(orgId);
-    return useFetch(() => `/api/organisation/${id.value}/member`, {
-      lazy: true,
-      watch: [id],
-      default: () => [],
-    });
-  }
-
   async function createOrganisationTeam(
     orgId: string,
     data: Partial<NewOrganisationTeam>,
@@ -108,11 +81,7 @@ export function useOrganisation() {
     createOrganisation,
     uploadOrganisationImage,
 
-    fetchOrganisationTeams,
-    fetchOrganisationTeam,
     createOrganisationTeam,
-
-    fetchOrganisationMembers,
 
     getAllOrganisations,
     findOrganisationById: store.findOrganisationById,

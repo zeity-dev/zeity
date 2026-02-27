@@ -7,9 +7,9 @@ import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '
 const { t } = useI18n()
 const toast = useToast()
 
-const { uploadOrganisationImage } = useOrganisation();
 const organisationId = useRoute().params.orgId as string;
-const isOrgAdmin = useOrganisation().userHasOrganisationRole(organisationId, [ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER]);
+const { uploadOrganisationImage, userHasOrganisationRole } = useOrganisation();
+const isOrgAdmin = userHasOrganisationRole(organisationId, [ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER]);
 
 const props = defineProps({
     org: {
