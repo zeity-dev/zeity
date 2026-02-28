@@ -34,7 +34,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
         console.error(error);
         useToast().add({
             color: 'error',
-            title: t('common.errorOccurred'),
+            title: t('organisations.teams.createError'),
         });
     });
 }
