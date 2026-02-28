@@ -73,7 +73,7 @@ async function loginPasskey() {
     .authenticate(event.data.email)
     .then(() => {
       toast.add({
-        title: t('auth.loginSuccess'),
+        title: t('auth.login.success'),
         color: 'success',
       });
       emits('submit');
