@@ -282,7 +282,7 @@ describe('Login Component', () => {
 
       expect(authenticateMock).toHaveBeenCalledWith('test@example.com');
       expect(addToastMock).toHaveBeenCalledWith({
-        title: 'auth.loginSuccess',
+        title: 'auth.login.success',
         color: 'success',
       });
     });
