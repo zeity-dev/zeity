@@ -661,7 +661,7 @@ export default defineI18nConfig(() => ({
             deleteSuccess: 'Mitglied erfolgreich entfernt',
             deleteError: 'Fehler beim Entfernen des Mitglieds',
           },
-          fileter: {
+          filter: {
             all: 'Alle Teams',
             allDescription: 'Alle Teams der Organisation',
           },
