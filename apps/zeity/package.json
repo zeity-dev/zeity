@@ -36,10 +36,10 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.94",
+    "@iconify-json/lucide": "^1.2.95",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.71",
-    "@nuxt/hints": "1.0.0-alpha.8",
+    "@nuxt/hints": "1.0.0-alpha.10",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.0",
     "@nuxt/ui": "^4.5.0",
