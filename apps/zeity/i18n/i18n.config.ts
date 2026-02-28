@@ -461,6 +461,7 @@ export default defineI18nConfig(() => ({
         cancel: 'Abbrechen',
         close: 'Schließen',
         continue: 'Weiter',
+        copyToClipboard: 'In Zwischenablage kopieren',
         copiedToClipboard: 'In Zwischenablage kopiert',
         copyFailed: 'Kopieren fehlgeschlagen',
         custom: 'Benutzerdefiniert',
