@@ -109,9 +109,9 @@ watch(
           </h3>
 
           <div class="flex items-center gap-2">
-            <UTooltip v-if="loggedIn && !isOnlineProject(project)" :text="$t('projects.offline')">
+            <LazyUTooltip v-if="loggedIn && !isOnlineProject(project)" :text="$t('projects.offline')">
               <UIcon name="i-lucide-cloud-off" />
-            </UTooltip>
+            </LazyUTooltip>
             <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">
               {{ $t(`projects.status.${project.status}`) }}
             </UBadge>
