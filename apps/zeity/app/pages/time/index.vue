@@ -68,7 +68,7 @@ watch(currentOrganisation, () => {
 <template>
   <div class="flex flex-col justify-between h-full">
     <section class="grow my-3">
-      <SyncAlert v-if="hasOrg && !!user" class="mb-4" />
+      <LazySyncAlert v-if="hasOrg && !!user" class="mb-4" />
 
       <TimeList
         default-open
