@@ -36,7 +36,7 @@ watch(
 
     <USlideover v-model:open="openMoreMenu" title="Menu" side="right">
       <template #body>
-        <AppAsideNavigation />
+        <LazyAppAsideNavigation />
       </template>
     </USlideover>
   </div>
