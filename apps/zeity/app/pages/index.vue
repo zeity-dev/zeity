@@ -1,9 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'page-root',
-})
+  middleware: 'page-root',
+});
 </script>
 
-<template>
-    <div />
-</template>
+<template></template>
