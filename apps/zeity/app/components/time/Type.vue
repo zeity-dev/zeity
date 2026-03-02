@@ -21,7 +21,7 @@ const icon = computed(() => {
 </script>
 
 <template>
-    <UTooltip v-if="time" :text="$t('times.type.' + time?.type)">
+    <LazyUTooltip v-if="time" :text="$t('times.type.' + time?.type)">
         <UIcon :name="icon" />
-    </UTooltip>
+    </LazyUTooltip>
 </template>
