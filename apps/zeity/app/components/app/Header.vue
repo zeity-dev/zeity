@@ -22,17 +22,14 @@ const orgItems = computed(() =>
 
 <template>
   <header
-    class="bg-(--ui-bg)/75 backdrop-blur border-b border-(--ui-border) h-(--ui-header-height) sticky top-0 z-50"
-    :class="$attrs.class"
+    class="bg-(--ui-bg)/75 backdrop-blur border-b border-default h-(--ui-header-height) sticky top-0 z-50"
   >
     <div
       class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 h-full"
     >
       <div class="lg:flex-1 flex items-center gap-1.5 min-w-0">
         <UButton to="/" icon="i-zeity-logo" variant="ghost">
-          <span
-            class="font-bold text-xl text-neutral-900 dark:text-white min-w-0"
-          >
+          <span class="font-bold text-xl text-neutral-900 dark:text-white min-w-0">
             {{ appConfig.public.appName }}
           </span>
         </UButton>
