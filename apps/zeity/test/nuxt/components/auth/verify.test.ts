@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
+import { flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { readBody } from 'h3';
 import VerifyComponent from '~/components/auth/verify.vue';
@@ -72,7 +73,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         color: 'success',
@@ -98,7 +99,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeTruthy();
     });
@@ -121,7 +122,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         color: 'error',
@@ -147,7 +148,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeFalsy();
     });
@@ -173,7 +174,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(requestBody).toEqual({ code: '123456' });
     });
@@ -193,7 +194,7 @@ describe('Verify Component', () => {
       await resendButton?.trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         color: 'success',
@@ -214,7 +215,7 @@ describe('Verify Component', () => {
       await resendButton?.trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         color: 'error',
@@ -235,7 +236,7 @@ describe('Verify Component', () => {
       await resendButton?.trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       // Resend should not emit submit
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -260,7 +261,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -285,7 +286,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -309,7 +310,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       // Should successfully submit
       expect(wrapper.emitted('submit')).toBeTruthy();
@@ -335,7 +336,7 @@ describe('Verify Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(consoleErrorSpy).toHaveBeenCalled();
     });
@@ -353,7 +354,7 @@ describe('Verify Component', () => {
       await resendButton?.trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(consoleErrorSpy).toHaveBeenCalled();
     });

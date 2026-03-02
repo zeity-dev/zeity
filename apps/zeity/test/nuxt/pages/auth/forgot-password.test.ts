@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
+import { flushPromises } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
 import ForgotPasswordPage from '~/pages/auth/forgot-password.vue';
 
@@ -101,7 +102,7 @@ describe('Forgot Password Page', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.forgotPassword.success',
@@ -125,7 +126,7 @@ describe('Forgot Password Page', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.forgotPassword.error',
@@ -151,7 +152,7 @@ describe('Forgot Password Page', () => {
       const submitPromise = wrapper.find('form').trigger('submit.prevent');
 
       // Give it a tiny bit of time for the pending state to be set
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await flushPromises();
 
       // Check that pending state is set
       const submitButton = wrapper.findComponent({ name: 'UButton', props: { type: 'submit' } });
@@ -160,7 +161,7 @@ describe('Forgot Password Page', () => {
       // Resolve the request
       resolveForgotPassword!(new Response(null, { status: 200 }));
       await submitPromise;
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       // Pending state should be cleared
       expect(submitButton.props('loading')).toBe(false);
@@ -179,7 +180,7 @@ describe('Forgot Password Page', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(addToastMock).not.toHaveBeenCalled();
@@ -195,7 +196,7 @@ describe('Forgot Password Page', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(addToastMock).not.toHaveBeenCalled();

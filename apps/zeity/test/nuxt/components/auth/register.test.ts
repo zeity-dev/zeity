@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
+import { flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import RegisterComponent from '~/components/auth/register.vue';
 
@@ -186,7 +187,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.register.success',
@@ -220,7 +221,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.register.userExists',
@@ -251,7 +252,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.register.error',
@@ -282,7 +283,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeTruthy();
     });
@@ -314,7 +315,7 @@ describe('Register Component', () => {
       const submitPromise = wrapper.find('form').trigger('submit.prevent');
 
       // Give it a tiny bit of time for the pending state to be set
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await flushPromises();
 
       // Check that pending state is set
       const submitButton = buttons.find(btn => btn.props('type') === 'submit')!;
@@ -323,7 +324,7 @@ describe('Register Component', () => {
       // Resolve the registration
       resolveRegister!(new Response(null, { status: 200 }));
       await submitPromise;
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       // After completion, pending should be false
       expect(submitButton.props('loading')).toBe(false);
@@ -348,7 +349,7 @@ describe('Register Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(registerWebAuthnMock).toHaveBeenCalledWith({
         userName: 'test@example.com',
@@ -373,7 +374,7 @@ describe('Register Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeTruthy();
     });
@@ -404,7 +405,7 @@ describe('Register Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(registerWebAuthnMock).toHaveBeenCalledWith({
         userName: 'test@example.com',
@@ -428,7 +429,7 @@ describe('Register Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       expect(registerWebAuthnMock).not.toHaveBeenCalled();
     });
@@ -447,7 +448,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -464,7 +465,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -494,7 +495,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -524,7 +525,7 @@ describe('Register Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to password mismatch
       expect(wrapper.emitted('submit')).toBeFalsy();

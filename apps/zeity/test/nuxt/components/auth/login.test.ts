@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
+import { flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import LoginComponent from '~/components/auth/login.vue';
 
@@ -159,7 +160,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.login.success',
@@ -187,7 +188,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'auth.login.error',
@@ -215,7 +216,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeTruthy();
     });
@@ -246,7 +247,7 @@ describe('Login Component', () => {
       const submitPromise = wrapper.find('form').trigger('submit.prevent');
 
       // Give it a tiny bit of time for the pending state to be set
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await flushPromises();
 
       // Check that pending state is set during the login
       expect(submitButton.props('loading')).toBe(true);
@@ -254,7 +255,7 @@ describe('Login Component', () => {
       // Resolve the login
       resolveLogin!(new Response(null, { status: 200 }));
       await submitPromise;
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       // After completion, pending should be false
       expect(submitButton.props('loading')).toBe(false);
@@ -278,7 +279,7 @@ describe('Login Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(authenticateMock).toHaveBeenCalledWith('test@example.com');
       expect(addToastMock).toHaveBeenCalledWith({
@@ -310,7 +311,7 @@ describe('Login Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(addToastMock).toHaveBeenCalledWith({
         title: 'Invalid passkey',
@@ -330,7 +331,7 @@ describe('Login Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       expect(authenticateMock).not.toHaveBeenCalled();
     });
@@ -351,7 +352,7 @@ describe('Login Component', () => {
       await passkeyButtonComponent.find('button').trigger('click');
 
       // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await flushPromises();
 
       expect(wrapper.emitted('submit')).toBeTruthy();
     });
@@ -369,7 +370,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
@@ -396,7 +397,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await flushPromises();
 
       // Should not submit due to validation
       expect(wrapper.emitted('submit')).toBeFalsy();
