@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UChip from '@nuxt/ui/components/Chip.vue';
+const UChip = resolveComponent('UChip');
 
 const { openMoreMenu, horizontalMenu } = useNavigation();
 
