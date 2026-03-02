@@ -178,9 +178,9 @@ watch([dateFilter, projectFilters, filteredMemberIds], async ([dateRange, projec
       <DateFilter v-model="dateFilter" />
       <ProjectFilter v-model="projectFilters" />
 
-      <OrganisationTeamFilter v-if="user && showAdminControls" v-model="teamFilters" />
+      <LazyOrganisationTeamFilter v-if="user && showAdminControls" v-model="teamFilters" />
 
-      <OrganisationMemberFilter
+      <LazyOrganisationMemberFilter
         v-if="user && showAdminControls"
         v-model="memberFilters"
         :team-ids="filteredTeamIds"
