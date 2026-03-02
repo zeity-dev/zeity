@@ -12,10 +12,12 @@
           <AppAsideNavigation />
         </aside>
 
-        <main class="grow shrink min-w-0 pt-2 pb-17 md:py-3">
-          <LazyAppHints />
+        <main class="relative flex flex-col grow min-w-0 pt-2 pb-17 md:py-3">
+          <LazyAppHints class="shrink-0" />
 
-          <slot />
+          <div class="grow shrink-0">
+            <slot />
+          </div>
         </main>
       </div>
     </UContainer>
