@@ -93,14 +93,14 @@ async function handleSync() {
             {{ project.name }}
         </h2>
 
-        <div class="my-4 flex justify-between gap-2">
+        <div class="my-4 flex flex-col sm:flex-row justify-between gap-2">
             <div class="flex items-center gap-2">
                 <ProjectStatusSelect v-model="project.status" class="min-w-40" @update:model-value="updateStatus" />
                 <UTooltip v-if="isProjectOffline" :text="$t('projects.offline')">
                     <UIcon name="i-lucide-cloud-off" class="align-middle" />
                 </UTooltip>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
                 <UButton v-if="isProjectOffline" icon="i-lucide-cloud-upload" @click="handleSync">
                     {{ $t('common.sync') }}
                 </UButton>
