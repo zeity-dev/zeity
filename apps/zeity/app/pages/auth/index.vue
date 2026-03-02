@@ -26,7 +26,7 @@ const active = computed({
 async function auth() {
   await fetch()
     .then(handleRedirect)
-    .catch((error) => {
+    .catch(error => {
       toast.add({
         title: error.data?.message || error.message,
         description: error.data?.data?.issues[0]?.message || error.data?.data,
@@ -70,30 +70,22 @@ const items = ref([
 </script>
 
 <template>
-  <div class="my-3 space-y-6">
-    <UCard v-if="!user" class="max-w-md m-auto">
-      <template #header>
-        <h3 class="text-lg font-semibold leading-6">
-          {{ $t('auth.title') }}
-        </h3>
-      </template>
+  <UPageCard :title="$t('auth.title')" class="max-w-md m-auto my-3">
+    <div class="flex flex-col gap-2 justify-between">
+      <UTabs v-model="active" :items="items">
+        <template #login>
+          <div class="py-6">
+            <AuthLogin @submit="auth" />
+          </div>
+        </template>
+        <template #register>
+          <div class="py-6">
+            <AuthRegister @submit="auth" />
+          </div>
+        </template>
+      </UTabs>
 
-      <div class="flex flex-col gap-2 justify-between">
-        <UTabs v-model="active" :items="items">
-          <template #login>
-            <div class="py-6">
-              <AuthLogin @submit="auth" />
-            </div>
-          </template>
-          <template #register>
-            <div class="py-6">
-              <AuthRegister @submit="auth" />
-            </div>
-          </template>
-        </UTabs>
-
-        <AuthOauth />
-      </div>
-    </UCard>
-  </div>
+      <AuthOauth />
+    </div>
+  </UPageCard>
 </template>
