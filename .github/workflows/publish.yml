@@ -65,7 +65,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           # use the dynamically determined image name
           images: ${{ env.image }}
