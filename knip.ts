@@ -1,6 +1,12 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
+  ignoreDependencies: [
+    'oxfmt',
+    // 'oxlint',
+    '@e18e/eslint-plugin',
+    'eslint-plugin-regexp',
+  ],
   workspaces: {
     'apps/zeity': {
       entry: [
@@ -33,6 +39,8 @@ const config: KnipConfig = {
         'reka-ui',
         '@tanstack/vue-table',
         'sharp',
+        'vite',
+        'workbox-*',
       ],
     },
     'apps/docs': {
