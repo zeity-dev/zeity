@@ -56,9 +56,29 @@ export const myTable = pgTable('my_table', {
 ### Modifying Tables
 
 1. Edit table definition in `src/`
-2. Generate migration: `pnpm db:generate`
-3. Review migration in migrations folder
-4. Migrations will be applied automatically
+2. Generate migration
+3. Review migration in `migrations/` folder
+4. Migrations will be applied automatically on server start
+
+### Migration Workflow
+
+#### Generating Migrations
+
+After making schema changes, generate a migration from the **monorepo root**:
+
+```bash
+pnpm generate:migration
+```
+
+This command:
+- Runs `drizzle-kit generate` in the database package
+- Analyzes schema changes in `src/schema.ts`
+- Creates SQL migration files in `migrations/` folder
+- Generates migration metadata in `migrations/meta/`
+
+#### Applying Migrations
+
+Migrations are applied automatically on server start.
 
 ## Schema Export
 

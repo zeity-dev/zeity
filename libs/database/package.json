@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "oxlint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "generate:migration": "drizzle-kit generate"
   },
   "dependencies": {
     "@zeity/types": "workspace:^",
