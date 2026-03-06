@@ -1,10 +1,8 @@
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'pathe';
 import { createConsola } from 'consola';
 
-import {
-  createDrizzle,
-  createDrizzleMigration,
-  createPool,
-} from '@zeity/database';
+import { createDrizzle, createDrizzleMigration, createPool } from '@zeity/database';
 import { setReady } from './readyness';
 
 export { sql, gte, lte, gt, lt, eq, and, or, asc, desc } from '@zeity/database';
@@ -31,7 +29,8 @@ export async function checkConnection() {
 
 export function useDrizzleMigration() {
   const migrationsPath =
-    process.env.MIGRATIONS_PATH || './server/database/migrations';
+    process.env.MIGRATIONS_PATH ||
+    resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../../libs/database/migrations');
 
   return {
     async run() {

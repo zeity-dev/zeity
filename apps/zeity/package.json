@@ -9,7 +9,6 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "e2e": "playwright test",
-    "db:generate": "drizzle-kit generate",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -48,7 +47,6 @@
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/test-utils": "^2.4.6",
-    "drizzle-kit": "^0.31.9",
     "happy-dom": "^20.8.3",
     "nuxt": "^4.3.1",
     "nuxt-auth-utils": "^0.5.29",

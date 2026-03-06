@@ -22,7 +22,6 @@ zeity/
 │   └── utils/           # Frontend utilities
 ├── server/              # Backend API
 │   ├── api/             # API endpoints
-│   ├── database/        # Database migrations
 │   ├── mail/            # Email templates
 │   ├── plugins/         # Server plugins
 │   ├── routes/          # Server routes
@@ -103,9 +102,6 @@ The application will be available at http://localhost:3000
 # Development
 pnpm dev                # Start development server
 
-# Database
-pnpm db:generate        # Generate migration from schema changes
-
 # Build
 pnpm build              # Build for production
 pnpm preview            # Preview production build
@@ -130,17 +126,3 @@ pnpm test --watch       # Run tests in watch mode
 - **Testing**: Vitest
 
 See [API Documentation](../../docs/API.md) for complete reference.
-
-## Database
-
-### Migrations
-
-Migrations are stored in `server/database/migrations/`.
-
-Generate a new migration:
-
-```bash
-pnpm db:generate
-```
-
-Migrations will be applied automatically on server start.

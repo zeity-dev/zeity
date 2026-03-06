@@ -10,7 +10,8 @@
     "start:docs": "pnpm run --filter zeity-docs dev",
     "build": "pnpm run -r build",
     "lint": "pnpm run -r lint",
-    "test": "vitest"
+    "test": "vitest",
+    "generate:migration": "pnpm --filter ./libs/database run generate:migration"
   },
   "keywords": [],
   "author": "",

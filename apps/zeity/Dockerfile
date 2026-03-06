@@ -25,14 +25,14 @@ RUN pnpm --filter ./apps/zeity build
 # prod stage
 FROM node-alpine AS prod
 
-ENV MIGRATIONS_PATH=./app/database/migrations
+ENV MIGRATIONS_PATH=./migrations
 USER node
 WORKDIR /home/node/
 
 RUN mkdir -p /home/node/app
 
 COPY --from=builder --chown=node:node /home/node/apps/zeity/.output ./app
-COPY --from=builder --chown=node:node /home/node/apps/zeity/server/database/migrations $MIGRATIONS_PATH
+COPY --from=builder --chown=node:node /home/node/libs/database/migrations $MIGRATIONS_PATH
 
 
 EXPOSE 3000
