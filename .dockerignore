@@ -7,5 +7,9 @@
 .output
 Dockerfile
 node_modules
-dist
+**/node_modules
+**/.nuxt
+**/.output
+**/dist
 tmp
+coverage
