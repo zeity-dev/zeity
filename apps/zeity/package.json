@@ -35,7 +35,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.95",
+    "@iconify-json/lucide": "^1.2.96",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.72",
     "@nuxt/hints": "1.0.0-alpha.10",
@@ -51,7 +51,7 @@
     "nuxt": "^4.3.1",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.5.1",
-    "vue-i18n": "^11.2.8",
+    "vue-i18n": "^11.3.0",
     "vue-tsc": "^3.2.5"
   }
 }

@@ -22,11 +22,11 @@
   "devDependencies": {
     "@e18e/eslint-plugin": "^0.2.0",
     "@playwright/test": "^1.58.2",
-    "@types/node": "^24.11.0",
+    "@types/node": "^24.12.0",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
     "eslint-plugin-regexp": "^3.0.0",
-    "knip": "^5.85.0",
+    "knip": "^5.86.0",
     "oxfmt": "^0.36.0",
     "oxlint": "^1.51.0",
     "typescript": "^5.9.3",
