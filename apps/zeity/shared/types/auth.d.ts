@@ -7,4 +7,4 @@ declare module '#auth-utils' {
     verified: boolean;
   }
 }
-export {};
+
