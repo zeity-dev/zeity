@@ -6,9 +6,13 @@ import { organisations } from '@zeity/database/organisation';
 import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
 import { organisationMembers } from '@zeity/database/organisation-member';
+import { users } from '@zeity/database/user';
 
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
-import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
+import {
+  ORGANISATION_MEMBER_ROLE_ADMIN,
+  ORGANISATION_MEMBER_ROLE_OWNER,
+} from '@zeity/types/organisation';
 import { nonEmptyString } from './zod';
 
 export function doesOrganisationExist(organisationId: string) {
@@ -94,6 +98,30 @@ export function getOrganisationMembersByMemberIds(
       and(
         inArray(organisationMembers.id, memberIds),
         eq(organisationMembers.organisationId, organisationId),
+      ),
+    );
+}
+
+export function getOrganisationAdmins(organisationId: string) {
+  return useDrizzle()
+    .select({
+      id: organisationMembers.id,
+      role: organisationMembers.role,
+      userId: organisationMembers.userId,
+      user: {
+        name: users.name,
+        email: users.email,
+      }
+    })
+    .from(organisationMembers)
+    .innerJoin(users, eq(organisationMembers.userId, users.id))
+    .where(
+      and(
+        eq(organisationMembers.organisationId, organisationId),
+        inArray(organisationMembers.role, [
+          ORGANISATION_MEMBER_ROLE_OWNER,
+          ORGANISATION_MEMBER_ROLE_ADMIN,
+        ]),
       ),
     );
 }
