@@ -135,10 +135,7 @@ export default defineEventHandler(async event => {
         ],
       ),
     ),
-  ).catch(err => {
-    // Log the error but don't fail the request if email sending fails
-    console.error('Failed to send join request notification emails:', err);
-  });
+  );
 
   return result;
 });
