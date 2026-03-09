@@ -11,10 +11,10 @@ import {
   getOrganisationMemberByUserId,
 } from './organisation';
 
-const privilegedRoles = [
+const privilegedRoles = new Set([
   ORGANISATION_MEMBER_ROLE_OWNER,
   ORGANISATION_MEMBER_ROLE_ADMIN,
-];
+]);
 
 export function isUserOrganisationMember(
   user: Pick<User, 'id'>,
@@ -56,7 +56,7 @@ export function canUserUpdateOrganisation(
 ) {
   return organisationMembers.some(
     (member) =>
-      member.userId === user.id && privilegedRoles.includes(member.role),
+      member.userId === user.id && privilegedRoles.has(member.role),
   );
 }
 
@@ -97,5 +97,5 @@ export function canUserDeleteOrganisationByOrgId(
 export function isPrivilegedOrganisationMember(
   member: Pick<OrganisationMember, 'role'>,
 ) {
-  return privilegedRoles.includes(member.role);
+  return privilegedRoles.has(member.role);
 }
