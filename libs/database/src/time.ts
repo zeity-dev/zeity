@@ -9,6 +9,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 import { projects } from './project';
+import { tasks } from './task';
 import { organisations } from './organisation';
 import { organisationMembers } from './organisation-member';
 import { type TimeType, TIME_TYPE_MANUAL } from '@zeity/types';
@@ -41,6 +42,10 @@ export const times = pgTable(
       () => organisationMembers.id,
       { onDelete: 'cascade' },
     ),
+
+    taskId: uuid('task_id').references(() => tasks.id, {
+      onDelete: 'set null',
+    }),
 
     ...timestampColumns(),
   },

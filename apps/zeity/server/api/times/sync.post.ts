@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
         duration: z.coerce.number().nonnegative().default(0),
         // tags: z.array(z.number()).optional(),
         projectId: z.uuid().optional(),
+        taskId: z.uuid().optional(),
         notes: z.string().optional(),
       }),
     ).safeParse,

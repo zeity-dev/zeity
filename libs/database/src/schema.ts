@@ -7,6 +7,8 @@ export { userCredentials } from './user-credential';
 
 export { times } from './time';
 export { projects } from './project';
+export { tasks } from './task';
+export { taskAssignments } from './task-assignment';
 
 export { organisations } from './organisation';
 export { organisationTeams } from './organisation-team';

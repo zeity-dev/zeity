@@ -39,6 +39,7 @@ export default defineI18nConfig(() => ({
         or: 'or',
         refresh: 'Refresh',
         save: 'Save',
+        selectDate: 'Select date',
         send: 'Send',
         start: 'Start',
         stop: 'Stop',
@@ -50,6 +51,7 @@ export default defineI18nConfig(() => ({
       navigation: {
         timer: 'Timer',
         projects: 'Projects',
+        tasks: 'Tasks',
         reports: 'Reports',
         settings: 'Settings',
         organisations: 'Organisations',
@@ -163,6 +165,65 @@ export default defineI18nConfig(() => ({
         filter: {
           all: 'All Projects',
           allDescription: 'All active projects',
+        },
+      },
+      tasks: {
+        title: 'Tasks',
+        create: {
+          title: 'Create Task',
+        },
+        edit: {
+          title: 'Edit Task',
+        },
+        form: {
+          name: 'Name',
+          start: 'Start Date',
+          end: 'End Date',
+          recurrence: 'Recurrence',
+          frequency: 'Frequency',
+          weekdays: 'Weekdays',
+          dayOfMonth: 'Day of Month',
+          recurrenceEnd: 'Recurrence End',
+          timeTemplate: 'Time Template',
+          defaultDuration: 'Default Duration (minutes)',
+          durationPlaceholder: 'e.g. 60',
+        },
+        recurrence: {
+          daily: 'Daily',
+          weekly: 'Weekly',
+          monthly: 'Monthly',
+        },
+        weekdays: {
+          sun: 'Sunday',
+          mon: 'Monday',
+          tue: 'Tuesday',
+          wed: 'Wednesday',
+          thu: 'Thursday',
+          fri: 'Friday',
+          sat: 'Saturday',
+          short: {
+            0: 'Sun',
+            1: 'Mon',
+            2: 'Tue',
+            3: 'Wed',
+            4: 'Thu',
+            5: 'Fri',
+            6: 'Sat',
+          },
+        },
+        assignments: {
+          title: 'Assigned Members',
+          add: 'Assign',
+          empty: 'No members assigned',
+          searchMember: 'Search member...',
+          noMembers: 'No members available',
+        },
+        filter: {
+          myTasks: 'My Tasks',
+        },
+        empty: {
+          title: 'No Tasks',
+          description: 'You have no tasks yet.',
         },
       },
       reports: {
@@ -474,6 +535,7 @@ export default defineI18nConfig(() => ({
         or: 'oder',
         refresh: 'Aktualisieren',
         save: 'Speichern',
+        selectDate: 'Datum auswählen',
         send: 'Senden',
         start: 'Start',
         stop: 'Stop',
@@ -485,6 +547,7 @@ export default defineI18nConfig(() => ({
       navigation: {
         timer: 'Timer',
         projects: 'Projekte',
+        tasks: 'Aufgaben',
         reports: 'Berichte',
         settings: 'Einstellungen',
         organisations: 'Organisationen',
@@ -600,6 +663,65 @@ export default defineI18nConfig(() => ({
         filter: {
           all: 'Alle Projekte',
           allDescription: 'Alle aktiven Projekte',
+        },
+      },
+      tasks: {
+        title: 'Aufgaben',
+        create: {
+          title: 'Aufgabe erstellen',
+        },
+        edit: {
+          title: 'Aufgabe bearbeiten',
+        },
+        form: {
+          name: 'Name',
+          start: 'Startdatum',
+          end: 'Enddatum',
+          recurrence: 'Wiederholung',
+          frequency: 'Häufigkeit',
+          weekdays: 'Wochentage',
+          dayOfMonth: 'Tag im Monat',
+          recurrenceEnd: 'Wiederholungsende',
+          timeTemplate: 'Zeitvorlage',
+          defaultDuration: 'Standarddauer (Minuten)',
+          durationPlaceholder: 'z.B. 60',
+        },
+        recurrence: {
+          daily: 'Täglich',
+          weekly: 'Wöchentlich',
+          monthly: 'Monatlich',
+        },
+        weekdays: {
+          sun: 'Sonntag',
+          mon: 'Montag',
+          tue: 'Dienstag',
+          wed: 'Mittwoch',
+          thu: 'Donnerstag',
+          fri: 'Freitag',
+          sat: 'Samstag',
+          short: {
+            0: 'So',
+            1: 'Mo',
+            2: 'Di',
+            3: 'Mi',
+            4: 'Do',
+            5: 'Fr',
+            6: 'Sa',
+          },
+        },
+        assignments: {
+          title: 'Zugewiesene Mitglieder',
+          add: 'Zuweisen',
+          empty: 'Keine Mitglieder zugewiesen',
+          searchMember: 'Mitglied suchen...',
+          noMembers: 'Keine Mitglieder verfügbar',
+        },
+        filter: {
+          myTasks: 'Meine Aufgaben',
+        },
+        empty: {
+          title: 'Keine Aufgaben',
+          description: 'Sie haben noch keine Aufgaben.',
         },
       },
       reports: {

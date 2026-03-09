@@ -11,14 +11,17 @@ export function useNavigation() {
         label: t('navigation.timer'),
         to: '/time',
         icon: 'i-lucide-clock',
-        badge: isStarted.value
-          ? { color: 'primary', variant: 'solid' }
-          : undefined,
+        badge: isStarted.value ? { color: 'primary', variant: 'solid' } : undefined,
       },
       {
         label: t('navigation.projects'),
         to: '/projects',
         icon: 'i-lucide-list-todo',
+      },
+      {
+        label: t('navigation.tasks'),
+        to: '/tasks',
+        icon: 'i-lucide-clipboard-check',
       },
       // {
       //     label: 'Tags',
@@ -50,9 +53,7 @@ export function useNavigation() {
       label: t('navigation.timer'),
       to: '/time',
       icon: 'i-lucide-clock',
-      chip: isStarted.value
-        ? { color: 'primary', variant: 'solid' }
-        : undefined,
+      chip: isStarted.value ? { color: 'primary', variant: 'solid' } : undefined,
     },
     {
       label: t('navigation.projects'),

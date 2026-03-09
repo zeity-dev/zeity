@@ -14,6 +14,7 @@ export interface Time {
   notes: string;
 
   projectId?: string | null;
+  taskId?: string | null;
 
   organisationId?: string | null;
   organisationMemberId?: string | null;
