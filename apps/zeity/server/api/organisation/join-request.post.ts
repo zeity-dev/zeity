@@ -4,13 +4,14 @@ import { organisations } from '@zeity/database/organisation';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { JOIN_REQUEST_STATUS_PENDING } from '@zeity/types';
+import { getOrganisationAdmins } from '~~/server/utils/organisation';
 
 const invalidTokenError = createError({
   statusCode: 400,
   message: 'Invalid or expired invite link',
 });
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const body = await readValidatedBody(
@@ -33,11 +34,7 @@ export default defineEventHandler(async (event) => {
 
   const payload = await verifyToken(await useJwtSecret(event), body.data.token);
 
-  if (
-    !payload ||
-    payload.type !== 'organisation-invite' ||
-    !payload.organisationId
-  ) {
+  if (!payload || payload.type !== 'organisation-invite' || !payload.organisationId) {
     throw invalidTokenError;
   }
 
@@ -47,7 +44,7 @@ export default defineEventHandler(async (event) => {
     .from(organisations)
     .where(eq(organisations.id, payload.organisationId as string))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!organisation) {
     throw invalidTokenError;
@@ -66,7 +63,7 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => !!res[0]);
+    .then(res => !!res[0]);
 
   if (existingMember) {
     throw createError({
@@ -87,7 +84,7 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => !!res[0]);
+    .then(res => !!res[0]);
 
   if (existingRequest) {
     throw createError({
@@ -106,7 +103,39 @@ export default defineEventHandler(async (event) => {
       status: JOIN_REQUEST_STATUS_PENDING,
     })
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
+
+  // Notify org admins and owners about the new join request
+  const admins = await getOrganisationAdmins(organisationId);
+  const baseUrl = getRequestURL(event).origin;
+  const joinRequestsUrl = `${baseUrl}/organisations/${organisationId}/invite`;
+
+  const mailer = useMailer(event);
+  const userName = session.user.name || session.user.email;
+
+  await Promise.allSettled(
+    admins.map(admin =>
+      mailer.sendMessageMail(
+        { email: admin.user.email, name: admin.user.name },
+        `New join request for ${organisation.name}`,
+        [
+          `${userName} has requested to join ${organisation.name}.`,
+          ...(body.data.message ? [`Message: "${body.data.message}"`] : []),
+        ],
+        [
+          {
+            class: 'text-center',
+            children: [
+              {
+                url: joinRequestsUrl,
+                text: 'Review Join Requests',
+              },
+            ],
+          },
+        ],
+      ),
+    ),
+  );
 
   return result;
 });
