@@ -71,8 +71,11 @@ describe('Login Component', () => {
     it('should show passkey login button', async () => {
       const wrapper = await mountSuspended(LoginComponent, { attachTo: document.body });
 
-      // The button text is translated, so check for "Login with Passkey"
-      expect(wrapper.html()).toContain('Login with Passkey');
+      const buttons = wrapper.findAllComponents({ name: 'UButton' });
+      const passkeyButton = buttons.find(btn => btn.props('label') === 'Login with Passkey');
+
+      expect(passkeyButton).toBeDefined();
+      expect(passkeyButton?.isVisible()).toBe(true);
     });
   });
 
