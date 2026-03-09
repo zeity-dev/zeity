@@ -67,7 +67,11 @@ describe('Register Component', () => {
     it('should show register with passkey button', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      expect(wrapper.html()).toContain('Register with Passkey');
+      const buttons = wrapper.findAllComponents({ name: 'UButton' });
+      const passkeyButton = buttons.find(btn => btn.props('label') === 'Register with Passkey');
+
+      expect(passkeyButton).toBeDefined();
+      expect(passkeyButton?.isVisible()).toBe(true);
     });
   });
 
