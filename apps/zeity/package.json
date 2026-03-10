@@ -19,7 +19,7 @@
     "@number-flow/vue": "^0.5.0",
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^0.11.3",
-    "@simplewebauthn/browser": "^13.2.2",
+    "@simplewebauthn/browser": "^13.3.0",
     "@simplewebauthn/server": "^13.2.3",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
@@ -28,16 +28,16 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "^4.1.0",
-    "jose": "^6.2.0",
+    "jose": "^6.2.1",
     "qrcode.vue": "^3.8.0",
     "unemail": "^0.3.0",
-    "vue": "^3.5.29",
+    "vue": "^3.5.30",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.95",
+    "@iconify-json/lucide": "^1.2.96",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.72",
+    "@iconify-json/simple-icons": "^1.2.73",
     "@nuxt/hints": "1.0.0-alpha.10",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.0",
@@ -51,7 +51,7 @@
     "nuxt": "^4.3.1",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.5.1",
-    "vue-i18n": "^11.2.8",
+    "vue-i18n": "^11.3.0",
     "vue-tsc": "^3.2.5"
   }
 }
