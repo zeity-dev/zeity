@@ -35,7 +35,7 @@ const membersColumns: TableColumn<TeamMemberData>[] = [
     header: 'Name',
   },
   {
-    id: 'action',
+    id: 'actions',
   },
 ];
 
@@ -187,17 +187,24 @@ function deleteMembers(memberIds: string[]) {
 
     <USeparator />
 
-    <UTable :data="members?.data?.value || []" :columns="membersColumns">
-      <template #action-header>
+    <UTable
+      :data="members?.data?.value || []"
+      :columns="membersColumns"
+      :column-pinning="{ right: ['actions'] }"
+    >
+      <template #actions-header>
         <div class="text-right">
           <UModal
             v-model:open="addMemberModalOpen"
             :title="$t('organisations.teams.members.add')"
             @update:open="cleanupAddMemberModal()"
           >
-            <UButton icon="i-lucide-plus" color="primary" variant="subtle">
-              {{ $t('organisations.teams.members.add') }}
-            </UButton>
+            <UButton
+              color="primary"
+              variant="subtle"
+              icon="i-lucide-plus"
+              :aria-label="$t('organisations.teams.members.add')"
+            />
 
             <template #body>
               <UForm :schema="addMemberSchema" :state="addMemberState" @submit="createTeamMembers">
@@ -229,13 +236,12 @@ function deleteMembers(memberIds: string[]) {
           </UModal>
         </div>
       </template>
-      <template #action-cell="{ row }">
+      <template #actions-cell="{ row }">
         <div class="text-right">
           <UButton
             icon="i-lucide-x"
             variant="ghost"
             color="error"
-            size="xs"
             :aria-label="$t('organisations.teams.members.delete')"
             @click="deleteMembers([row.original.memberId])"
           />
