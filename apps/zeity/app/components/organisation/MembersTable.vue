@@ -236,7 +236,7 @@ function setMemberRole(memberId: string, role: OrganisationMemberRole) {
         <div class="flex items-center gap-3">
           <UAvatar :src="getUserImagePath(row.original.user)" :alt="`${row.original.user?.name}`" />
           <p class="font-medium text-highlighted">
-            {{ row.original.user?.name || t('user.deleted') }}
+            {{ row.original.user?.name || $t('user.deleted') }}
           </p>
         </div>
       </template>
