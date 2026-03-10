@@ -99,7 +99,7 @@ const membersColumns: TableColumn<OrganisationMember>[] = [
               icon: 'i-lucide-ellipsis-vertical',
               color: 'neutral',
               variant: 'ghost',
-              class: 'ml-auto',
+              ariaLabel: t('common.actions'),
             }),
         ),
       );
@@ -225,12 +225,13 @@ function setMemberRole(memberId: string, role: OrganisationMemberRole) {
 </script>
 
 <template>
-  <UPageCard :title="$t('organisations.members.title')">
+  <UPageCard :title="$t('organisations.members.title')" variant="naked" class="block">
     <UTable
       v-model:sorting="sorting"
       :loading="status === 'pending'"
       :data="data?.items"
       :columns="membersColumns"
+      :column-pinning="{ right: ['actions'] }"
     >
       <template #name-cell="{ row }">
         <div class="flex items-center gap-3">
