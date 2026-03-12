@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Task, type TaskAssignment } from '@zeity/types';
+import type { Task } from '@zeity/types';
 
 const props = defineProps({
   task: {
@@ -12,25 +12,15 @@ const props = defineProps({
   },
 });
 
-const { loadAssignments, addAssignment, removeAssignment } = useTask();
+const { addAssignment, removeAssignment } = useTask();
 
-const assignments = ref<TaskAssignment[]>([]);
-const isLoading = ref(false);
-
-async function load() {
-  isLoading.value = true;
-  try {
-    const data = await loadAssignments(props.task.id);
-    assignments.value = (data || []) as TaskAssignment[];
-  } finally {
-    isLoading.value = false;
-  }
-}
+const { data, refresh } = await useFetch(() => `/api/tasks/${props.task.id}/assignments`);
+const assignedMemberIds = computed(() => data.value?.map(a => a.organisationMemberId) || []);
 
 async function handleAdd(memberId: string) {
   try {
     await addAssignment(props.task.id, memberId);
-    await load();
+    await refresh();
   } catch {
     // handled by caller
   }
@@ -39,15 +29,11 @@ async function handleAdd(memberId: string) {
 async function handleRemove(memberId: string) {
   try {
     await removeAssignment(props.task.id, memberId);
-    assignments.value = assignments.value.filter(a => a.organisationMemberId !== memberId);
+    await refresh();
   } catch {
     // handled by caller
   }
 }
-
-onMounted(() => {
-  load();
-});
 </script>
 
 <template>
@@ -59,20 +45,18 @@ onMounted(() => {
       <TaskAssignmentAdd
         v-if="isAdmin"
         :task="task"
-        :existing-member-ids="assignments.map(a => a.organisationMemberId)"
+        :existing-member-ids="assignedMemberIds"
         @add="handleAdd"
       />
     </div>
 
-    <div v-if="isLoading" class="text-sm text-muted">{{ $t('common.loadMore') }}...</div>
-
-    <div v-else-if="assignments.length === 0" class="text-sm text-muted">
+    <div v-if="assignedMemberIds.length === 0" class="text-sm text-muted">
       {{ $t('tasks.assignments.empty') }}
     </div>
 
     <div v-else class="space-y-2">
       <div
-        v-for="assignment in assignments"
+        v-for="assignment in data"
         :key="assignment.organisationMemberId"
         class="flex items-center justify-between gap-2 p-2 rounded-md border border-default"
       >
@@ -88,6 +72,7 @@ onMounted(() => {
             </p>
           </div>
         </div>
+
         <UButton
           v-if="isAdmin"
           icon="i-lucide-x"

@@ -1,21 +1,23 @@
 import type { NewOrganisationTeam } from '@zeity/database/organisation-team';
-import type {
-  NewOrganisation,
-  Organisation,
-  OrganisationMemberRole,
+import {
+  type NewOrganisation,
+  type Organisation,
+  type OrganisationMemberRole,
+  ORGANISATION_MEMBER_ROLE_ADMIN,
+  ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types/organisation';
 
 export function useOrganisation() {
   const store = useOrganisationStore();
   const { currentOrganisation, currentOrganisationId } = storeToRefs(store);
 
-  async function createOrganisation(data: Organisation | NewOrganisation) {
+  async function createOrganisation(body: Organisation | NewOrganisation) {
     store.setLoading(true);
     return $fetch('/api/organisation', {
       method: 'POST',
-      body: data,
+      body,
     })
-      .then(async (data) => {
+      .then(async data => {
         await useUser().reloadUser();
         return data;
       })
@@ -24,10 +26,7 @@ export function useOrganisation() {
       });
   }
 
-  async function createOrganisationTeam(
-    orgId: string,
-    data: Partial<NewOrganisationTeam>,
-  ) {
+  async function createOrganisationTeam(orgId: string, data: Partial<NewOrganisationTeam>) {
     store.setLoading(true);
     return (
       $fetch(`/api/organisation/${orgId}/team`, {
@@ -60,16 +59,20 @@ export function useOrganisation() {
     return store.getAllOrganisations();
   }
 
-  function userHasOrganisationRole(
-    orgId: string | number,
-    roles: OrganisationMemberRole[],
-  ) {
+  function userHasOrganisationRole(orgId: string | number, roles: OrganisationMemberRole[]) {
     const organisation = store.findOrganisationById(orgId);
     return computed(() => {
       if (!organisation.value) return false;
 
       return roles.includes(organisation.value.member.role);
     });
+  }
+
+  function userHasPrivilegedOrganisationRole(orgId: string | number) {
+    return userHasOrganisationRole(orgId, [
+      ORGANISATION_MEMBER_ROLE_OWNER,
+      ORGANISATION_MEMBER_ROLE_ADMIN,
+    ]);
   }
 
   return {
@@ -87,5 +90,6 @@ export function useOrganisation() {
     findOrganisationById: store.findOrganisationById,
 
     userHasOrganisationRole,
+    userHasPrivilegedOrganisationRole,
   };
 }

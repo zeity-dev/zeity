@@ -1,22 +1,10 @@
 <script setup lang="ts">
 import type { OrganisationMemberWithUser } from '~/types/organisation';
-import {
-  ORGANISATION_MEMBER_ROLE_OWNER,
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-} from '@zeity/types/organisation';
 import { formatDuration } from '@zeity/utils/date';
 
-const { currentOrganisationId, currentOrganisation } = useOrganisation();
-const { loadTasks, getOrganisationTasks } = useTask();
-
-const tasks = getOrganisationTasks();
-const isEmpty = computed(() => tasks.value.length === 0);
-
-const orgRole = computed(() => currentOrganisation.value?.member.role);
+const { currentOrganisation, userHasPrivilegedOrganisationRole } = useOrganisation();
 const isAdmin = computed(
-  () =>
-    orgRole.value &&
-    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value),
+  () => userHasPrivilegedOrganisationRole(currentOrganisation.value?.id ?? '').value,
 );
 
 // Filter state
@@ -44,56 +32,16 @@ const pagination = ref({
   offset: 0,
   limit: 40,
 });
-const isLoading = ref(false);
-const endReached = ref(true);
-const hasOrg = computed(() => !!currentOrganisationId.value);
-
-function reloadAll() {
-  pagination.value.offset = 0;
-  endReached.value = false;
-  loadMore();
-}
-
-function loadMore() {
-  if (isLoading.value) return;
-  isLoading.value = true;
-
-  loadTasks({
-    ...pagination.value,
-    assignedTo: assignedToFilter.value,
-  })
-    .then(data => {
-      pagination.value.offset += data?.length || 0;
-      if ((data?.length ?? 0) < pagination.value.limit) {
-        endReached.value = true;
-      }
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
-}
-
-onMounted(() => {
-  if (hasOrg.value) {
-    loadMore();
-  }
+const queryParams = computed(() => ({
+  assignedTo: assignedToFilter.value,
+  offset: pagination.value.offset,
+  limit: pagination.value.limit,
+}));
+const { status, data } = await useLazyFetch('/api/tasks', {
+  query: queryParams,
 });
-
-watch(
-  currentOrganisationId,
-  () => {
-    reloadAll();
-  },
-  { immediate: true },
-);
-
-watch(showMyTasks, () => {
-  reloadAll();
-});
-
-watch(memberFilters, () => {
-  reloadAll();
-});
+const isLoading = computed(() => status.value === 'pending');
+const isEmpty = computed(() => data.value?.length === 0);
 </script>
 
 <template>
@@ -118,7 +66,7 @@ watch(memberFilters, () => {
       <LazyOrganisationMemberFilter v-if="isAdmin && !showMyTasks" v-model="memberFilters" />
 
       <UPageCard
-        v-for="task in tasks"
+        v-for="task in data"
         :key="task.id"
         :title="task.name"
         :ui="{
@@ -140,9 +88,7 @@ watch(memberFilters, () => {
         <p class="inline-flex items-center text-sm text-muted gap-0.5">
           <UIcon name="i-lucide-clock" size="sm" />
           <nuxt-time :datetime="task.start" time-style="medium" />
-          <template v-if="task.duration">
-            ({{ formatDuration(task.duration) }})
-          </template>
+          <template v-if="task.duration"> ({{ formatDuration(task.duration) }}) </template>
         </p>
       </UPageCard>
 
@@ -166,17 +112,13 @@ watch(memberFilters, () => {
         "
       />
 
-      <UButton
-        v-if="hasOrg && !endReached"
-        block
-        class="mt-2"
-        variant="subtle"
+      <UPagination
+        v-if="(data?.length ?? 0) >= pagination.limit"
+        :page.sync="pagination.offset"
+        :page-size="pagination.limit"
         :loading="isLoading"
-        :disabled="isLoading"
-        @click="loadMore"
-      >
-        {{ $t('common.loadMore') }}
-      </UButton>
+        @update:page="pagination.offset = $event"
+      />
     </section>
   </div>
 </template>

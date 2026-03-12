@@ -228,6 +228,10 @@ export default defineI18nConfig(() => ({
           title: 'No Tasks',
           description: 'You have no tasks yet.',
         },
+        loginPrompt: {
+          title: 'Login to create tasks',
+          description: 'Tasks can be created and managed when you are logged in.',
+        },
       },
       reports: {
         summary: 'Summary',
@@ -728,6 +732,10 @@ export default defineI18nConfig(() => ({
         empty: {
           title: 'Keine Aufgaben',
           description: 'Sie haben noch keine Aufgaben.',
+        },
+        loginPrompt: {
+          title: 'Anmelden, um Aufgaben zu erstellen',
+          description: 'Aufgaben können erstellt und verwaltet werden, wenn Sie angemeldet sind.',
         },
       },
       reports: {

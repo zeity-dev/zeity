@@ -1,19 +1,12 @@
 <script setup lang="ts">
 import { TASK_RECURRENCE_ONCE, type NewTask } from '@zeity/types/task';
-import {
-  ORGANISATION_MEMBER_ROLE_OWNER,
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-} from '@zeity/types/organisation';
 import { nowWithoutMillis } from '@zeity/utils/date';
 
-const { currentOrganisation } = useOrganisation();
+const { currentOrganisationId, userHasPrivilegedOrganisationRole } = useOrganisation();
 const { createTask } = useTask();
 
-const orgRole = computed(() => currentOrganisation.value?.member.role);
 const isAdmin = computed(
-  () =>
-    orgRole.value &&
-    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value),
+  () => userHasPrivilegedOrganisationRole(currentOrganisationId.value ?? '').value,
 );
 
 watch(

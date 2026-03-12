@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import type { Task } from '@zeity/types/task';
-import {
-  ORGANISATION_MEMBER_ROLE_OWNER,
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-} from '@zeity/types/organisation';
 
 definePageMeta({
   validate: async route => {
@@ -12,15 +8,17 @@ definePageMeta({
 });
 
 const route = useRoute();
-const { currentOrganisation } = useOrganisation();
-const { loadTask, findTaskById, updateTask } = useTask();
+const { updateTask } = useTask();
+const { userHasPrivilegedOrganisationRole } = useOrganisation();
 
-const orgRole = computed(() => currentOrganisation.value?.member.role);
-const isAdmin = computed(
-  () =>
-    orgRole.value &&
-    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN].includes(orgRole.value),
-);
+const taskId = route.params.id as string;
+const { data } = await useFetch(() => `/api/tasks/${taskId}`);
+
+const isAdmin = computed(() => {
+  const orgId = data?.value?.organisationId;
+  if (!orgId) return false;
+  return userHasPrivilegedOrganisationRole(orgId).value;
+});
 
 watch(
   isAdmin,
@@ -30,15 +28,8 @@ watch(
   { immediate: true },
 );
 
-const taskId = route.params.id as string;
-const task = findTaskById(taskId);
-
-onMounted(() => {
-  loadTask(taskId);
-});
-
-async function save(data: Partial<Task>) {
-  await updateTask(taskId, data);
+async function save(updated: Partial<Task>) {
+  await updateTask(taskId, updated);
   return navigateTo(`/tasks/${taskId}`);
 }
 </script>
@@ -51,6 +42,6 @@ async function save(data: Partial<Task>) {
     >
       {{ $t('tasks.edit.title') }}
     </h2>
-    <TaskForm v-if="task" :data="task" class="mt-4" @submit="save" />
+    <TaskForm v-if="data" :data="data" class="mt-4" @submit="save" />
   </div>
 </template>

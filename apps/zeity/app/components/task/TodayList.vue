@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
-import { set } from 'date-fns';
+import { isAfter, isBefore, set } from 'date-fns';
 
 import {
   type Task,
@@ -18,25 +18,37 @@ import {
   sortDatesAscending,
 } from '@zeity/utils/date';
 
-const { loadTasks, getOrganisationTasks } = useTask();
 const { currentOrganisation } = useOrganisation();
 const { startDraft, createTime } = useTime();
 const timerStore = useTimerStore();
 
-const now = nowWithoutMillis();
-const isLoading = ref(false);
+const now = ref(nowWithoutMillis());
+const queryParams = computed(() => ({
+  assignedTo: [currentOrganisation.value?.member.id],
+}));
+const { data } = await useLazyFetch(() => `/api/tasks`, {
+  query: queryParams,
+  server: false,
+});
 
-const orgTasks = getOrganisationTasks();
-
+const filteredTasks = computed(() => {
+  return data.value?.filter(task => isTaskForToday(task)) || [];
+});
 const todayTasks = computed(() => {
-  return orgTasks.value.filter(task => isTaskForToday(task)).map(applyTodayStart);
+  return filteredTasks.value.map(applyTodayStart) || [];
 });
 const tasks = computed(() =>
   todayTasks.value.toSorted((a, b) => sortDatesAscending(a.start, b.start)),
 );
 
-const tasksDone = timerStore.findTimes(time => {
-  if (time.taskId && isSameDay(time.start, now)) return true;
+const todaysTaskTimes = timerStore.findTimes(time => {
+  // Only consider times that are linked to a task and started today
+  const isToday = isSameDay(time.start, now.value);
+  // Only consider times that belong to the current user
+  const belongsToCurrentUser = time.organisationMemberId === currentOrganisation.value?.member.id;
+  // Get the task for this time and check if it's in today's tasks
+  if (time.taskId && isToday && belongsToCurrentUser) return true;
+
   return false;
 });
 
@@ -56,24 +68,28 @@ function applyTodayStart(task: Task) {
 }
 
 function isTaskForToday(task: Task): boolean {
-  if (tasksDone.value.find(t => t.taskId === task.id)) {
+  if (todaysTaskTimes.value.find(t => t.taskId === task.id)) {
     // Don't show tasks that already have a started draft time
     return false;
   }
 
   const taskStart = new Date(task.start);
   // Task is in the future → not today
-  if (toStartOfDay(taskStart) > toStartOfDay(now)) return false;
+  if (isAfter(toStartOfDay(taskStart), toStartOfDay(now.value))) {
+    return false;
+  }
 
   if (task.recurrence.endDate) {
     const endDate = new Date(task.recurrence.endDate);
-    if (toStartOfDay(endDate) < toStartOfDay(now)) return false;
+    if (isBefore(toStartOfDay(endDate), toStartOfDay(now.value))) {
+      return false;
+    }
   }
 
   const { frequency, weekdays, dayOfMonth } = task.recurrence;
 
   if (frequency === TASK_RECURRENCE_ONCE) {
-    return isSameDay(taskStart, now);
+    return isSameDay(taskStart, now.value);
   }
 
   if (frequency === TASK_RECURRENCE_DAILY) {
@@ -81,26 +97,14 @@ function isTaskForToday(task: Task): boolean {
   }
 
   if (frequency === TASK_RECURRENCE_WEEKLY) {
-    return weekdays?.includes(now.getDay()) ?? false;
+    return weekdays?.includes(now.value.getDay()) ?? false;
   }
 
   if (frequency === TASK_RECURRENCE_MONTHLY) {
-    return dayOfMonth === now.getDate();
+    return dayOfMonth === now.value.getDate();
   }
 
   return false;
-}
-
-async function loadData() {
-  if (!currentOrganisation.value) return;
-  isLoading.value = true;
-  try {
-    await loadTasks({
-      assignedTo: [currentOrganisation.value.member.id],
-    });
-  } finally {
-    isLoading.value = false;
-  }
 }
 
 async function handleTaskAction(task: Task) {
@@ -124,14 +128,6 @@ async function handleTaskAction(task: Task) {
     await startDraft(baseTime);
   }
 }
-
-onMounted(() => {
-  loadData();
-});
-
-watch(currentOrganisation, () => {
-  loadData();
-});
 </script>
 
 <template>
