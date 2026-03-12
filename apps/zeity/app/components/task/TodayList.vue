@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid';
+import { set } from 'date-fns';
 
 import {
   type Task,
@@ -9,28 +10,52 @@ import {
   TASK_RECURRENCE_MONTHLY,
 } from '@zeity/types/task';
 import { TIME_TYPE_MANUAL } from '@zeity/types/time';
-import { formatDuration, isSameDay, nowWithoutMillis, toStartOfDay } from '@zeity/utils/date';
+import {
+  formatDuration,
+  isSameDay,
+  nowWithoutMillis,
+  toStartOfDay,
+  sortDatesAscending,
+} from '@zeity/utils/date';
 
 const { loadTasks, getOrganisationTasks } = useTask();
 const { currentOrganisation } = useOrganisation();
 const { startDraft, createTime } = useTime();
 const timerStore = useTimerStore();
 
+const now = nowWithoutMillis();
 const isLoading = ref(false);
 
 const orgTasks = getOrganisationTasks();
 
 const todayTasks = computed(() => {
-  const now = new Date();
-  return orgTasks.value.filter(task => isTaskForToday(task, now));
+  return orgTasks.value.filter(task => isTaskForToday(task)).map(applyTodayStart);
 });
+const tasks = computed(() =>
+  todayTasks.value.toSorted((a, b) => sortDatesAscending(a.start, b.start)),
+);
 
 const tasksDone = timerStore.findTimes(time => {
-  if (time.taskId && isSameDay(time.start, new Date())) return true;
+  if (time.taskId && isSameDay(time.start, now)) return true;
   return false;
 });
 
-function isTaskForToday(task: Task, now: Date): boolean {
+function applyTodayStart(task: Task) {
+  const taskStart = new Date(task.start);
+
+  const today = set(new Date(), {
+    hours: taskStart.getHours(),
+    minutes: taskStart.getMinutes(),
+    seconds: taskStart.getSeconds(),
+  });
+
+  return {
+    ...task,
+    start: today.toISOString(),
+  };
+}
+
+function isTaskForToday(task: Task): boolean {
   if (tasksDone.value.find(t => t.taskId === task.id)) {
     // Don't show tasks that already have a started draft time
     return false;
@@ -117,7 +142,7 @@ watch(currentOrganisation, () => {
 
     <div class="flex flex-col gap-2">
       <div
-        v-for="task in todayTasks"
+        v-for="task in tasks"
         :key="task.id"
         class="flex items-center justify-between gap-3 p-3 rounded-lg border border-neutral-200 dark:border-neutral-800"
       >
@@ -130,6 +155,7 @@ watch(currentOrganisation, () => {
             <UIcon name="i-lucide-clock" size="sm" />
             <nuxt-time
               :datetime="task.start"
+              :locale="$i18n.locale"
               time-style="medium"
               relative
               class="text-sm text-muted"

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { NewTask } from '@zeity/types/task';
+import { TASK_RECURRENCE_ONCE, type NewTask } from '@zeity/types/task';
 import {
   ORGANISATION_MEMBER_ROLE_OWNER,
   ORGANISATION_MEMBER_ROLE_ADMIN,
 } from '@zeity/types/organisation';
+import { nowWithoutMillis } from '@zeity/utils/date';
 
 const { currentOrganisation } = useOrganisation();
 const { createTask } = useTask();
@@ -25,13 +26,15 @@ watch(
 
 const data = ref<NewTask>({
   name: '',
-  start: new Date().toISOString(),
-  recurrence: { frequency: 'weekly' },
-  timeTemplate: {},
+  start: nowWithoutMillis().toISOString(),
+  recurrence: { frequency: TASK_RECURRENCE_ONCE },
 });
 
 async function handleSubmit(formData: NewTask) {
-  await createTask(formData);
+  const task = await createTask(formData);
+  if (task) {
+    return navigateTo(`/tasks/${encodeURIComponent(task.id)}`);
+  }
   return navigateTo('/tasks');
 }
 </script>

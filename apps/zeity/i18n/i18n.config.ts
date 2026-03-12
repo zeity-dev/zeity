@@ -184,9 +184,6 @@ export default defineI18nConfig(() => ({
           weekdays: 'Weekdays',
           dayOfMonth: 'Day of Month',
           recurrenceEnd: 'Recurrence End',
-          timeTemplate: 'Time Template',
-          defaultDuration: 'Default Duration (minutes)',
-          durationPlaceholder: 'e.g. 60',
         },
         recurrence: {
           once: 'Once',
@@ -688,9 +685,6 @@ export default defineI18nConfig(() => ({
           weekdays: 'Wochentage',
           dayOfMonth: 'Tag im Monat',
           recurrenceEnd: 'Wiederholungsende',
-          timeTemplate: 'Zeitvorlage',
-          defaultDuration: 'Standarddauer (Minuten)',
-          durationPlaceholder: 'z.B. 60',
         },
         recurrence: {
           once: 'Einmalig',

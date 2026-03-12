@@ -30,8 +30,6 @@ watch(
   { immediate: true },
 );
 
-
-
 const taskId = route.params.id as string;
 const task = findTaskById(taskId);
 
