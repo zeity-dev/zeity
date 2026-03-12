@@ -224,3 +224,14 @@ function getRoundingMethod(method?: RoundingMethod) {
       return Math.round;
   }
 }
+
+export function isSameDay(a: DateLike, b: DateLike) {
+  const dateA = parseDate(a);
+  const dateB = parseDate(b);
+
+  return (
+    dateA.getFullYear() === dateB.getFullYear() &&
+    dateA.getMonth() === dateB.getMonth() &&
+    dateA.getDate() === dateB.getDate()
+  );
+}

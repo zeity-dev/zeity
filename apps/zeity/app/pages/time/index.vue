@@ -70,6 +70,8 @@ watch(currentOrganisation, () => {
     <section class="grow my-3">
       <LazySyncAlert v-if="hasOrg && !!user" class="mb-4" />
 
+      <TaskTodayList v-if="hasOrg" />
+
       <TimeList
         default-open
         :times="sortedTimes"
