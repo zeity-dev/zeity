@@ -1,7 +1,18 @@
-import { index, jsonb, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
+
 import { timestampColumns } from './common';
+import { projects } from './project';
 import { organisations } from './organisation';
-import type { TaskRecurrence, TaskTimeTemplate } from '@zeity/types';
+import type { TaskRecurrence } from '@zeity/types';
 
 export const tasks = pgTable(
   'task',
@@ -14,14 +25,11 @@ export const tasks = pgTable(
       withTimezone: true,
       mode: 'date',
     }).notNull(),
-    end: timestamp('end', {
-      withTimezone: true,
-      mode: 'date',
-    }),
+    duration: integer('duration'),
+    projectId: uuid('project_id').references(() => projects.id, { onDelete: 'set null' }),
+    notes: text('notes').notNull().default(''),
 
     recurrence: jsonb('recurrence').notNull().$type<TaskRecurrence>(),
-
-    timeTemplate: jsonb('time_template').notNull().default({}).$type<TaskTimeTemplate>(),
 
     organisationId: uuid('organisation_id')
       .notNull()

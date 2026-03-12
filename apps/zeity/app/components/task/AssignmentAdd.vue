@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { refDebounced } from '@vueuse/core';
 
+import type { Task } from '@zeity/types';
+
 const props = defineProps<{
-  taskId: string;
+  task?: Task;
   existingMemberIds: string[];
 }>();
 const emits = defineEmits(['add']);
 
-const { currentOrganisationId } = useOrganisation();
-
+const open = shallowRef(false);
 const query = shallowRef('');
 const queryDebounced = refDebounced(query, 300);
-const open = shallowRef(false);
 
 const queryParams = computed(() => ({
   search: queryDebounced.value,
 }));
 
 const { data, pending, refresh } = await useLazyFetch(
-  () => `/api/organisation/${currentOrganisationId.value}/member`,
+  () => `/api/organisation/${props.task?.organisationId}/member`,
   {
     query: queryParams,
     server: false,
@@ -28,7 +28,7 @@ const { data, pending, refresh } = await useLazyFetch(
 
 const availableMembers = computed(() => {
   if (!data.value?.items) return [];
-  return data.value.items.filter((m: any) => !props.existingMemberIds.includes(m.id));
+  return data.value.items.filter(m => !props.existingMemberIds.includes(m.id));
 });
 
 function handleOpen(value: boolean) {
@@ -38,8 +38,8 @@ function handleOpen(value: boolean) {
   }
 }
 
-function handleSelect(member: any) {
-  emits('add', member.id);
+function handleSelect(id: string) {
+  emits('add', id);
   open.value = false;
 }
 </script>
@@ -72,7 +72,7 @@ function handleSelect(member: any) {
             v-for="member in availableMembers"
             :key="member.id"
             class="flex items-center gap-2 w-full p-2 rounded-md hover:bg-elevated text-left"
-            @click="handleSelect(member)"
+            @click="handleSelect(member.id)"
           >
             <UAvatar :src="getUserImagePath(member.user)" :alt="member.user?.name" size="xs" />
             <span class="text-sm truncate">{{ member.user?.name }}</span>

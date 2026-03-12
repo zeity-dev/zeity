@@ -4,6 +4,7 @@ import {
   ORGANISATION_MEMBER_ROLE_OWNER,
   ORGANISATION_MEMBER_ROLE_ADMIN,
 } from '@zeity/types/organisation';
+import { formatDuration } from '@zeity/utils/date';
 
 const { currentOrganisationId, currentOrganisation } = useOrganisation();
 const { loadTasks, getOrganisationTasks } = useTask();
@@ -136,10 +137,11 @@ watch(memberFilters, () => {
           </UBadge>
         </template>
 
-        <p class="text-sm text-muted">
-          <nuxt-time :datetime="task.start" :format-options="{ dateStyle: 'medium' }" />
-          <template v-if="task.end">
-            – <nuxt-time :datetime="task.end" :format-options="{ dateStyle: 'medium' }" />
+        <p class="inline-flex items-center text-sm text-muted gap-0.5">
+          <UIcon name="i-lucide-clock" size="sm" />
+          <nuxt-time :datetime="task.start" time-style="medium" />
+          <template v-if="task.duration">
+            ({{ formatDuration(task.duration) }})
           </template>
         </p>
       </UPageCard>

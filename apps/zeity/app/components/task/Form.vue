@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { z } from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import { TASK_RECURRENCE_FREQUENCIES } from '@zeity/types/task';
-import { getLocalTimeZone, parseAbsolute, type ZonedDateTime } from '@internationalized/date';
+import { type ZonedDateTime, getLocalTimeZone, parseAbsolute } from '@internationalized/date';
+import { z } from 'zod';
 
-const { t } = useI18n();
+import { TASK_RECURRENCE_FREQUENCIES } from '@zeity/types/task';
+import { sortDatesAscending, timeDiff } from '@zeity/utils/date';
+import { pick } from '@zeity/utils/object';
 
 const props = defineProps({
   data: {
@@ -13,6 +14,8 @@ const props = defineProps({
   },
 });
 const emits = defineEmits(['submit']);
+
+const { t } = useI18n();
 
 const startDateRef = useTemplateRef('startDateRef');
 const recurrenceEndDateRef = useTemplateRef('recurrenceEndDateRef');
@@ -24,27 +27,25 @@ const recurrenceSchema = z.object({
   endDate: z.string().nullable().optional(),
 });
 
-const timeTemplateSchema = z.object({
-  duration: z.coerce.number().nonnegative().optional(),
-  notes: z.string().optional(),
-  projectId: z.string().nullable().optional(),
-});
-
 const schema = z.object({
   name: z.string().min(3).max(200).default(''),
+
   start: z.iso.datetime(),
-  end: z.iso.datetime().nullable().optional(),
+  duration: z.number().nullable().optional(),
+  projectId: z.string().nullable().optional(),
+  notes: z.string().optional(),
+
   recurrence: recurrenceSchema.default({ frequency: 'weekly' }),
-  timeTemplate: timeTemplateSchema.default({}),
 });
 type Schema = z.output<typeof schema>;
 
 const state = ref<Partial<Schema>>({
   name: '',
   start: '',
-  end: '',
+  duration: undefined,
+  projectId: undefined,
+  notes: '',
   recurrence: { frequency: 'weekly' },
-  timeTemplate: {},
 });
 
 const startDate = computed<ZonedDateTime>({
@@ -56,6 +57,7 @@ const startDate = computed<ZonedDateTime>({
     state.value.start = value.toAbsoluteString();
   },
 });
+const endDate = ref<ZonedDateTime | null>(null);
 
 const recurrenceEndDate = computed<ZonedDateTime | null>({
   get: () => {
@@ -73,10 +75,35 @@ watch(
   data => {
     if (data) {
       state.value = Object.assign({}, data);
+
+      if (data.duration) {
+        endDate.value = startDate.value
+          .copy()
+          .add({ milliseconds: data.duration })
+          .set({ millisecond: 0 });
+      } else {
+        endDate.value = null;
+      }
     }
   },
   { immediate: true },
 );
+
+watch([startDate, endDate], ([newStart, newEnd]) => {
+  if (newStart && newEnd) {
+    const start = newStart.toAbsoluteString();
+    const end = newStart
+      .copy()
+      // take start date and set time to end time to avoid issues with end times
+      .set(pick(newEnd, ['hour', 'minute', 'second']))
+      .toAbsoluteString();
+    // sort before calculating duration to avoid negative durations when end time is past midnight compared to start time
+    const sorted = [start, end].toSorted(sortDatesAscending);
+    state.value.duration = timeDiff(sorted[1]!, sorted[0]!);
+  } else {
+    state.value.duration = null;
+  }
+});
 
 const frequencyItems = computed(() =>
   TASK_RECURRENCE_FREQUENCIES.map(freq => ({
@@ -95,13 +122,6 @@ const weekdayItems = computed(() => [
   { value: 6, label: t('tasks.weekdays.sat') },
 ]);
 
-const { getOrganisationProjects } = useProject();
-const projects = getOrganisationProjects();
-const projectItems = computed(() => [
-  { value: null, label: t('times.noProject') },
-  ...projects.value.map(p => ({ value: p.id, label: p.name })),
-]);
-
 function handleSubmit(event: FormSubmitEvent<Schema>) {
   emits('submit', event.data);
 }
@@ -113,36 +133,52 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
       <UInput v-model="state.name" class="w-full" />
     </UFormField>
 
-    <div class="grid grid-cols-2 gap-2">
-      <UFormField ref="startDateRef" :label="$t('times.form.startDate')" name="start">
-        <UInputDate v-model="startDate" hide-time-zone granularity="day" class="w-full">
-          <template #trailing>
-            <UPopover :reference="startDateRef?.$el">
-              <UButton
-                color="neutral"
-                variant="link"
-                size="sm"
-                icon="i-lucide-calendar"
-                aria-label="Select a date"
-                class="px-0"
-              />
+    <UFormField ref="startDateRef" :label="$t('times.form.startDate')" name="start">
+      <UInputDate v-model="startDate" hide-time-zone granularity="day" class="w-full">
+        <template #trailing>
+          <UPopover :reference="startDateRef?.$el">
+            <UButton
+              color="neutral"
+              variant="link"
+              size="sm"
+              icon="i-lucide-calendar"
+              aria-label="Select a date"
+              class="px-0"
+            />
 
-              <template #content>
-                <UCalendar v-model="startDate" class="p-2" />
-              </template>
-            </UPopover>
-          </template>
-        </UInputDate>
-      </UFormField>
+            <template #content>
+              <UCalendar v-model="startDate" class="p-2" />
+            </template>
+          </UPopover>
+        </template>
+      </UInputDate>
+    </UFormField>
 
-      <UFormField :label="$t('times.form.startTime')" name="start">
-        <UInputTime v-model="startDate" hide-time-zone granularity="second" class="w-full" />
-      </UFormField>
-    </div>
+    <UFormField :label="$t('times.form.startTime')" name="start">
+      <UInputTime v-model="startDate" hide-time-zone granularity="second" class="w-full" />
+    </UFormField>
 
-    <!-- <UFormField :label="$t('tasks.form.end')" name="end">
-      <UInput v-model="state.end" type="date" class="w-full" />
-    </UFormField> -->
+    <UFormField :label="$t('times.form.endTime')" name="end">
+      <UInputTime v-model="endDate" hide-time-zone granularity="second" class="w-full">
+        <template #trailing>
+          <UButton
+            color="neutral"
+            variant="link"
+            size="sm"
+            icon="i-lucide-x"
+            @click="endDate = null"
+          />
+        </template>
+      </UInputTime>
+    </UFormField>
+
+    <UFormField :label="$t('times.form.project')" name="projectId">
+      <ProjectSelect v-model="state.projectId" allow-null class="w-full" />
+    </UFormField>
+
+    <UFormField :label="$t('times.form.notes')" name="notes">
+      <UTextarea v-model="state.notes" class="w-full" autoresize />
+    </UFormField>
 
     <fieldset class="space-y-3">
       <legend class="text-sm font-medium">{{ $t('tasks.form.recurrence') }}</legend>
@@ -219,32 +255,6 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
             </UPopover>
           </template>
         </UInputDate>
-      </UFormField>
-    </fieldset>
-
-    <fieldset class="space-y-3">
-      <legend class="text-sm font-medium">{{ $t('tasks.form.timeTemplate') }}</legend>
-
-      <UFormField :label="$t('times.form.project')" name="timeTemplate.projectId">
-        <ProjectSelect
-          v-model="state.timeTemplate!.projectId!"
-          :items="projectItems"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UFormField :label="$t('tasks.form.defaultDuration')" name="timeTemplate.duration">
-        <UInput
-          v-model.number="state.timeTemplate!.duration"
-          type="number"
-          :min="0"
-          :placeholder="$t('tasks.form.durationPlaceholder')"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UFormField :label="$t('times.form.notes')" name="timeTemplate.notes">
-        <UTextarea v-model="state.timeTemplate!.notes" class="w-full" autoresize />
       </UFormField>
     </fieldset>
 

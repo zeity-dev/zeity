@@ -3,8 +3,16 @@ import type { SelectMenuItem } from '@nuxt/ui';
 import { watchDebounced } from '@vueuse/core';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
 
-const model = defineModel<string>({ default: null });
+const model = defineModel<string | undefined | null>({ default: undefined });
 
+const props = defineProps({
+  allowNull: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const { t } = useI18n();
 const { getOrganisationProjects, loadProjects } = useProject();
 
 const projects = getOrganisationProjects();
@@ -12,14 +20,14 @@ const activeProjects = computed(() =>
   projects.value.filter(project => project.status === PROJECT_STATUS_ACTIVE),
 );
 
-const items = computed(
-  () =>
-    activeProjects.value.map(project => ({
-      value: project.id,
-      label: project.name,
-      description: project.notes,
-    })) satisfies SelectMenuItem[],
-);
+const items = computed(() => [
+  ...(props.allowNull ? [{ value: null, label: t('times.noProject') }] : []),
+  ...(activeProjects.value.map(project => ({
+    value: project.id,
+    label: project.name,
+    description: project.notes,
+  })) satisfies SelectMenuItem[]),
+]);
 
 const loading = ref(false);
 const contentSearch = shallowRef('');

@@ -1,11 +1,26 @@
 import { eq, and } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
 import { taskAssignments } from '@zeity/database/task-assignment';
+import { projects } from '@zeity/database/project';
 
 export function findTaskById(taskId: string) {
   return useDrizzle()
-    .select()
+    .select({
+      id: tasks.id,
+      name: tasks.name,
+      start: tasks.start,
+      duration: tasks.duration,
+      notes: tasks.notes,
+      projectId: tasks.projectId,
+      recurrence: tasks.recurrence,
+      organisationId: tasks.organisationId,
+      project: {
+        id: projects.id,
+        name: projects.name,
+      },
+    })
     .from(tasks)
+    .leftJoin(projects, eq(tasks.projectId, projects.id))
     .where(eq(tasks.id, taskId))
     .limit(1)
     .then(res => res[0]);

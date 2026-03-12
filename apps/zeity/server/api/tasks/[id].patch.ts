@@ -30,19 +30,14 @@ export default defineEventHandler(async event => {
       .object({
         name: z.string().max(200),
         start: z.coerce.date(),
-        end: z.coerce.date().nullable(),
+        duration: z.number().nonnegative().nullable().optional(),
+        notes: z.string().optional(),
+        projectId: z.uuid().nullable().optional(),
         recurrence: z.object({
           frequency: z.enum(TASK_RECURRENCE_FREQUENCIES),
           weekdays: z.array(z.number().int().min(0).max(6)).optional(),
           dayOfMonth: z.number().int().min(1).max(31).optional(),
           endDate: z.string().nullable().optional(),
-        }),
-        timeTemplate: z.object({
-          type: z.string().optional(),
-          start: z.string().optional(),
-          duration: z.number().nonnegative().optional(),
-          notes: z.string().optional(),
-          projectId: z.uuid().nullable().optional(),
         }),
       })
       .partial().safeParse,

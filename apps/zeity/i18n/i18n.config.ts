@@ -189,6 +189,7 @@ export default defineI18nConfig(() => ({
           durationPlaceholder: 'e.g. 60',
         },
         recurrence: {
+          once: 'Once',
           daily: 'Daily',
           weekly: 'Weekly',
           monthly: 'Monthly',
@@ -220,6 +221,11 @@ export default defineI18nConfig(() => ({
         },
         filter: {
           myTasks: 'My Tasks',
+        },
+        today: {
+          title: "Today's Tasks",
+          startTimer: 'Start',
+          done: 'Done',
         },
         empty: {
           title: 'No Tasks',
@@ -687,6 +693,7 @@ export default defineI18nConfig(() => ({
           durationPlaceholder: 'z.B. 60',
         },
         recurrence: {
+          once: 'Einmalig',
           daily: 'Täglich',
           weekly: 'Wöchentlich',
           monthly: 'Monatlich',
@@ -718,6 +725,11 @@ export default defineI18nConfig(() => ({
         },
         filter: {
           myTasks: 'Meine Aufgaben',
+        },
+        today: {
+          title: 'Heutige Aufgaben',
+          startTimer: 'Starten',
+          done: 'Erledigt',
         },
         empty: {
           title: 'Keine Aufgaben',

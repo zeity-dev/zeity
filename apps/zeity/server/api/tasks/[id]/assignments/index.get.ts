@@ -45,7 +45,6 @@ export default defineEventHandler(async event => {
       user: {
         id: users.id,
         name: users.name,
-        email: users.email,
         image: users.image,
       },
     })

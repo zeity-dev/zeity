@@ -1,23 +1,27 @@
 <script setup lang="ts">
-const props = defineProps<{
-  taskId: string;
-}>();
+import { type Task, type TaskAssignment } from '@zeity/types';
+
+const props = defineProps({
+  task: {
+    type: Object as PropType<Task>,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const { loadAssignments, addAssignment, removeAssignment } = useTask();
-const { userHasOrganisationRole, currentOrganisationId } = useOrganisation();
 
-const assignments = ref<any[]>([]);
+const assignments = ref<TaskAssignment[]>([]);
 const isLoading = ref(false);
-
-const canManage = computed(() =>
-  userHasOrganisationRole(currentOrganisationId.value!, ['owner', 'admin']),
-);
 
 async function load() {
   isLoading.value = true;
   try {
-    const data = await loadAssignments(props.taskId);
-    assignments.value = data || [];
+    const data = await loadAssignments(props.task.id);
+    assignments.value = (data || []) as TaskAssignment[];
   } finally {
     isLoading.value = false;
   }
@@ -25,7 +29,7 @@ async function load() {
 
 async function handleAdd(memberId: string) {
   try {
-    await addAssignment(props.taskId, memberId);
+    await addAssignment(props.task.id, memberId);
     await load();
   } catch {
     // handled by caller
@@ -34,7 +38,7 @@ async function handleAdd(memberId: string) {
 
 async function handleRemove(memberId: string) {
   try {
-    await removeAssignment(props.taskId, memberId);
+    await removeAssignment(props.task.id, memberId);
     assignments.value = assignments.value.filter(a => a.organisationMemberId !== memberId);
   } catch {
     // handled by caller
@@ -53,8 +57,8 @@ onMounted(() => {
         {{ $t('tasks.assignments.title') }}
       </h4>
       <TaskAssignmentAdd
-        v-if="canManage"
-        :task-id="taskId"
+        v-if="isAdmin"
+        :task="task"
         :existing-member-ids="assignments.map(a => a.organisationMemberId)"
         @add="handleAdd"
       />
@@ -85,7 +89,7 @@ onMounted(() => {
           </div>
         </div>
         <UButton
-          v-if="canManage"
+          v-if="isAdmin"
           icon="i-lucide-x"
           color="error"
           variant="ghost"
