@@ -1,4 +1,5 @@
 import {
+  date,
   index,
   integer,
   jsonb,
@@ -9,10 +10,10 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
+import { type TaskRecurrenceFrequency, TASK_RECURRENCE_ONCE } from '@zeity/types/task';
 import { timestampColumns } from './common';
 import { projects } from './project';
 import { organisations } from './organisation';
-import type { TaskRecurrence } from '@zeity/types';
 
 export const tasks = pgTable(
   'task',
@@ -29,7 +30,15 @@ export const tasks = pgTable(
     projectId: uuid('project_id').references(() => projects.id, { onDelete: 'set null' }),
     notes: text('notes').notNull().default(''),
 
-    recurrence: jsonb('recurrence').notNull().$type<TaskRecurrence>(),
+    recurrenceFrequency: varchar('recurrence_frequency', { length: 40 })
+      .notNull()
+      .default(TASK_RECURRENCE_ONCE)
+      .$type<TaskRecurrenceFrequency>(),
+    recurrenceWeekdays: jsonb('recurrence_weekdays').notNull().default([]).$type<number[]>(),
+    recurrenceDayOfMonth: integer('recurrence_day_of_month'),
+    recurrenceEnd: date('recurrence_end', {
+      mode: 'date',
+    }),
 
     organisationId: uuid('organisation_id')
       .notNull()
@@ -37,7 +46,12 @@ export const tasks = pgTable(
 
     ...timestampColumns(),
   },
-  table => [index().on(table.organisationId), index().on(table.start)],
+  table => [
+    index().on(table.organisationId, table.createdAt),
+    index().on(table.organisationId, table.recurrenceFrequency, table.start),
+    index().on(table.organisationId, table.recurrenceFrequency, table.recurrenceEnd),
+    index().on(table.organisationId, table.recurrenceFrequency, table.recurrenceDayOfMonth, table.recurrenceEnd),
+  ],
 );
 
 export type Task = typeof tasks.$inferSelect;

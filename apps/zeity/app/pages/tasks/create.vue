@@ -20,7 +20,7 @@ watch(
 const data = ref<NewTask>({
   name: '',
   start: nowWithoutMillis().toISOString(),
-  recurrence: { frequency: TASK_RECURRENCE_ONCE },
+  recurrenceFrequency: TASK_RECURRENCE_ONCE,
 });
 
 async function handleSubmit(formData: NewTask) {

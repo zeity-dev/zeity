@@ -169,6 +169,7 @@ export default defineI18nConfig(() => ({
       },
       tasks: {
         title: 'Tasks',
+        ended: 'Ended',
         create: {
           title: 'Create Task',
         },
@@ -674,6 +675,7 @@ export default defineI18nConfig(() => ({
       },
       tasks: {
         title: 'Aufgaben',
+        ended: 'Beendet',
         create: {
           title: 'Aufgabe erstellen',
         },

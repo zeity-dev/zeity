@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { isBefore } from 'date-fns';
+
+import { type Task, TASK_RECURRENCE_ONCE } from '@zeity/types';
+import { formatDuration, toStartOfDay } from '@zeity/utils/date';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
-import { formatDuration } from '@zeity/utils/date';
 
 const { currentOrganisation, userHasPrivilegedOrganisationRole } = useOrganisation();
 const isAdmin = computed(
@@ -42,6 +45,23 @@ const { status, data } = await useLazyFetch('/api/tasks', {
 });
 const isLoading = computed(() => status.value === 'pending');
 const isEmpty = computed(() => data.value?.length === 0);
+
+function hasEnded(task: Task) {
+  const now = new Date();
+
+  if (task.recurrenceFrequency === TASK_RECURRENCE_ONCE && isBefore(task.start, now)) {
+    return true;
+  }
+
+  if (task.recurrenceEnd) {
+    const endDate = new Date(task.recurrenceEnd);
+    if (isBefore(toStartOfDay(endDate), toStartOfDay(now))) {
+      return true;
+    }
+  }
+
+  return false;
+}
 </script>
 
 <template>
@@ -53,12 +73,12 @@ const isEmpty = computed(() => data.value?.length === 0);
     </h2>
 
     <section class="flex flex-col my-3 space-y-4">
-      <div class="flex items-center justify-between gap-4">
-        <div v-if="isAdmin" class="flex items-center gap-4">
+      <div v-if="isAdmin" class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
           <USwitch v-model="showMyTasks" :label="$t('tasks.filter.myTasks')" />
         </div>
-        <div v-else />
-        <UButton v-if="isAdmin" to="/tasks/create" icon="i-lucide-plus">
+
+        <UButton to="/tasks/create" icon="i-lucide-plus">
           {{ $t('common.add') }}
         </UButton>
       </div>
@@ -69,6 +89,7 @@ const isEmpty = computed(() => data.value?.length === 0);
         v-for="task in data"
         :key="task.id"
         :title="task.name"
+        :headline="$t(`tasks.recurrence.${task.recurrenceFrequency}`)"
         :ui="{
           wrapper: 'block',
           body: '',
@@ -81,15 +102,43 @@ const isEmpty = computed(() => data.value?.length === 0);
             {{ task.name }}
           </h3>
           <UBadge variant="subtle">
-            {{ $t(`tasks.recurrence.${task.recurrence.frequency}`) }}
+            {{ $t(`tasks.recurrence.${task.recurrenceFrequency}`) }}
           </UBadge>
         </template>
 
-        <p class="inline-flex items-center text-sm text-muted gap-0.5">
-          <UIcon name="i-lucide-clock" size="sm" />
-          <nuxt-time :datetime="task.start" time-style="medium" />
-          <template v-if="task.duration"> ({{ formatDuration(task.duration) }}) </template>
-        </p>
+        <template #description>
+          <div class="text-sm text-muted">
+            <p class="flex items-center gap-1">
+              <UIcon name="i-lucide-clock" size="sm" />
+              <nuxt-time :datetime="task.start" time-style="medium" />
+              <template v-if="task.duration"> ({{ formatDuration(task.duration) }}) </template>
+            </p>
+            <p
+              v-if="task.recurrenceFrequency === TASK_RECURRENCE_ONCE"
+              class="flex items-center gap-1"
+            >
+              <UIcon name="i-lucide-calendar" size="sm" />
+              <nuxt-time :datetime="task.start" date-style="medium" />
+              <UBadge
+                v-if="hasEnded(task)"
+                variant="subtle"
+                :label="$t('tasks.ended')"
+                color="error"
+              />
+            </p>
+
+            <p v-if="task.recurrenceEnd" class="flex items-center gap-1">
+              {{ $t('tasks.form.recurrenceEnd') }}:
+              <nuxt-time :datetime="task.recurrenceEnd" date-style="medium" />
+              <UBadge
+                v-if="hasEnded(task)"
+                variant="subtle"
+                :label="$t('tasks.ended')"
+                color="error"
+              />
+            </p>
+          </div>
+        </template>
       </UPageCard>
 
       <UEmpty

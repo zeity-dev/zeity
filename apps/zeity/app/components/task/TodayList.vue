@@ -24,6 +24,7 @@ const timerStore = useTimerStore();
 
 const now = ref(nowWithoutMillis());
 const queryParams = computed(() => ({
+  today: true,
   assignedTo: [currentOrganisation.value?.member.id],
 }));
 const { data } = await useLazyFetch(() => `/api/tasks`, {
@@ -41,7 +42,7 @@ const tasks = computed(() =>
   todayTasks.value.toSorted((a, b) => sortDatesAscending(a.start, b.start)),
 );
 
-const todaysTaskTimes = timerStore.findTimes(time => {
+const todaysTaskTimes = timerStore.findTime(time => {
   // Only consider times that are linked to a task and started today
   const isToday = isSameDay(time.start, now.value);
   // Only consider times that belong to the current user
@@ -79,29 +80,25 @@ function isTaskForToday(task: Task): boolean {
     return false;
   }
 
-  if (task.recurrence.endDate) {
-    const endDate = new Date(task.recurrence.endDate);
+  if (task.recurrenceFrequency !== TASK_RECURRENCE_ONCE && task.recurrenceEnd) {
+    const endDate = new Date(task.recurrenceEnd);
     if (isBefore(toStartOfDay(endDate), toStartOfDay(now.value))) {
       return false;
     }
   }
 
-  const { frequency, weekdays, dayOfMonth } = task.recurrence;
+  switch (task.recurrenceFrequency) {
+    case TASK_RECURRENCE_ONCE:
+      return isSameDay(taskStart, now.value);
 
-  if (frequency === TASK_RECURRENCE_ONCE) {
-    return isSameDay(taskStart, now.value);
-  }
+    case TASK_RECURRENCE_DAILY:
+      return true;
 
-  if (frequency === TASK_RECURRENCE_DAILY) {
-    return true;
-  }
+    case TASK_RECURRENCE_WEEKLY:
+      return task.recurrenceWeekdays?.includes(now.value.getDay()) ?? false;
 
-  if (frequency === TASK_RECURRENCE_WEEKLY) {
-    return weekdays?.includes(now.value.getDay()) ?? false;
-  }
-
-  if (frequency === TASK_RECURRENCE_MONTHLY) {
-    return dayOfMonth === now.value.getDate();
+    case TASK_RECURRENCE_MONTHLY:
+      return task.recurrenceDayOfMonth === now.value.getDate();
   }
 
   return false;

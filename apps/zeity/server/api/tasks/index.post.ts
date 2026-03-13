@@ -23,12 +23,10 @@ export default defineEventHandler(async event => {
       duration: z.number().nonnegative().nullable().optional(),
       notes: z.string().optional(),
       projectId: z.uuid().nullable().optional(),
-      recurrence: z.object({
-        frequency: z.enum(TASK_RECURRENCE_FREQUENCIES),
-        weekdays: z.array(z.number().int().min(0).max(6)).optional(),
-        dayOfMonth: z.number().int().min(1).max(31).optional(),
-        endDate: z.string().nullable().optional(),
-      }),
+      recurrenceFrequency: z.enum(TASK_RECURRENCE_FREQUENCIES),
+      recurrenceWeekdays: z.array(z.number().int().min(0).max(6)).default([]),
+      recurrenceDayOfMonth: z.number().int().min(1).max(31).nullable().optional(),
+      recurrenceEnd: z.coerce.date().nullable().optional(),
     }).safeParse,
   );
 

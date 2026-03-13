@@ -15,14 +15,6 @@ export const TASK_RECURRENCE_FREQUENCIES = [
 
 export type TaskRecurrenceFrequency = (typeof TASK_RECURRENCE_FREQUENCIES)[number];
 
-export interface TaskRecurrence {
-  frequency: TaskRecurrenceFrequency;
-  /** 0-6 (0 = Sunday, 1 = Monday, ..., 6 = Saturday) */
-  weekdays?: number[];
-  dayOfMonth?: number;
-  endDate?: string | null;
-}
-
 export interface Task {
   id: string;
   name: string;
@@ -33,7 +25,10 @@ export interface Task {
   project?: Project;
   notes?: string;
 
-  recurrence: TaskRecurrence;
+  recurrenceFrequency: TaskRecurrenceFrequency;
+  recurrenceWeekdays?: number[] | null;
+  recurrenceDayOfMonth?: number | null;
+  recurrenceEnd?: string | null;
 
   organisationId?: string | null;
 

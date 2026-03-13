@@ -1,6 +1,5 @@
 import { eq, and } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
-import { taskAssignments } from '@zeity/database/task-assignment';
 import { projects } from '@zeity/database/project';
 
 export function findTaskById(taskId: string) {
@@ -12,12 +11,15 @@ export function findTaskById(taskId: string) {
       duration: tasks.duration,
       notes: tasks.notes,
       projectId: tasks.projectId,
-      recurrence: tasks.recurrence,
-      organisationId: tasks.organisationId,
+      recurrenceFrequency: tasks.recurrenceFrequency,
+      recurrenceWeekdays: tasks.recurrenceWeekdays,
+      recurrenceDayOfMonth: tasks.recurrenceDayOfMonth,
+      recurrenceEnd: tasks.recurrenceEnd,
       project: {
         id: projects.id,
         name: projects.name,
       },
+      organisationId: tasks.organisationId,
     })
     .from(tasks)
     .leftJoin(projects, eq(tasks.projectId, projects.id))
@@ -31,6 +33,7 @@ export function doesTaskExist(taskId: string): Promise<boolean> {
     .select({ id: tasks.id })
     .from(tasks)
     .where(eq(tasks.id, taskId))
+    .limit(1)
     .then(res => res[0]?.id === taskId);
 }
 
@@ -42,16 +45,6 @@ export function doesTaskBelongToOrganisation(
     .select({ id: tasks.id })
     .from(tasks)
     .where(and(eq(tasks.id, taskId), eq(tasks.organisationId, organisationId)))
+    .limit(1)
     .then(res => res.length > 0);
-}
-
-export function getTaskAssignments(taskId: string) {
-  return useDrizzle().select().from(taskAssignments).where(eq(taskAssignments.taskId, taskId));
-}
-
-export function getTasksByOrganisationMemberId(organisationMemberId: string) {
-  return useDrizzle()
-    .select({ taskId: taskAssignments.taskId })
-    .from(taskAssignments)
-    .where(eq(taskAssignments.organisationMemberId, organisationMemberId));
 }

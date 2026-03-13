@@ -1,11 +1,21 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui';
-import { type ZonedDateTime, getLocalTimeZone, parseAbsolute } from '@internationalized/date';
+import {
+  type ZonedDateTime,
+  getLocalTimeZone,
+  parseAbsolute,
+  toZoned,
+} from '@internationalized/date';
 import { z } from 'zod';
 
-import { TASK_RECURRENCE_FREQUENCIES } from '@zeity/types/task';
-import { sortDatesAscending, timeDiff } from '@zeity/utils/date';
+import {
+  TASK_RECURRENCE_FREQUENCIES,
+  TASK_RECURRENCE_MONTHLY,
+  TASK_RECURRENCE_ONCE,
+  TASK_RECURRENCE_WEEKLY,
+} from '@zeity/types/task';
 import { pick } from '@zeity/utils/object';
+import { sortDatesAscending, timeDiff } from '@zeity/utils/date';
 
 const props = defineProps({
   data: {
@@ -20,13 +30,6 @@ const { t } = useI18n();
 const startDateRef = useTemplateRef('startDateRef');
 const recurrenceEndDateRef = useTemplateRef('recurrenceEndDateRef');
 
-const recurrenceSchema = z.object({
-  frequency: z.enum(TASK_RECURRENCE_FREQUENCIES).default('weekly'),
-  weekdays: z.array(z.number().int().min(0).max(6)).optional(),
-  dayOfMonth: z.number().int().min(1).max(31).optional(),
-  endDate: z.string().nullable().optional(),
-});
-
 const schema = z.object({
   name: z.string().min(3).max(200).default(''),
 
@@ -35,7 +38,10 @@ const schema = z.object({
   projectId: z.string().nullable().optional(),
   notes: z.string().optional(),
 
-  recurrence: recurrenceSchema.default({ frequency: 'weekly' }),
+  recurrenceFrequency: z.enum(TASK_RECURRENCE_FREQUENCIES).default(TASK_RECURRENCE_WEEKLY),
+  recurrenceWeekdays: z.array(z.number().int().min(0).max(6)).default([]),
+  recurrenceDayOfMonth: z.number().int().min(1).max(31).nullable().optional(),
+  recurrenceEnd: z.string().nullable().optional(),
 });
 type Schema = z.output<typeof schema>;
 
@@ -45,30 +51,15 @@ const state = ref<Partial<Schema>>({
   duration: undefined,
   projectId: undefined,
   notes: '',
-  recurrence: { frequency: 'weekly' },
+  recurrenceFrequency: TASK_RECURRENCE_WEEKLY,
+  recurrenceWeekdays: [],
+  recurrenceDayOfMonth: undefined,
+  recurrenceEnd: undefined,
 });
 
-const startDate = computed<ZonedDateTime>({
-  get: () => {
-    const tz = getLocalTimeZone();
-    return parseAbsolute(state.value.start || new Date().toISOString(), tz).set({ millisecond: 0 });
-  },
-  set: value => {
-    state.value.start = value.toAbsoluteString();
-  },
-});
-const endDate = ref<ZonedDateTime | null>(null);
-
-const recurrenceEndDate = computed<ZonedDateTime | null>({
-  get: () => {
-    if (!state.value.recurrence?.endDate) return null;
-    const tz = getLocalTimeZone();
-    return parseAbsolute(state.value.recurrence.endDate, tz);
-  },
-  set: value => {
-    state.value.recurrence!.endDate = value ? value.toAbsoluteString() : null;
-  },
-});
+const startDate = ref<ZonedDateTime>();
+const endDate = ref<ZonedDateTime | undefined>();
+const recurrenceEndDate = ref<ZonedDateTime | undefined>();
 
 watch(
   () => props.data,
@@ -76,22 +67,35 @@ watch(
     if (data) {
       state.value = Object.assign({}, data);
 
+      const tz = getLocalTimeZone();
+      startDate.value = parseAbsolute(data.start, tz).set({ millisecond: 0 });
+
       if (data.duration) {
         endDate.value = startDate.value
           .copy()
           .add({ milliseconds: data.duration })
           .set({ millisecond: 0 });
       } else {
-        endDate.value = null;
+        endDate.value = undefined;
+      }
+
+      if (data.recurrenceEnd) {
+        recurrenceEndDate.value = parseAbsolute(data.recurrenceEnd, tz).set({
+          millisecond: 0,
+        });
       }
     }
   },
   { immediate: true },
 );
 
-watch([startDate, endDate], ([newStart, newEnd]) => {
+watch([startDate, endDate, recurrenceEndDate], ([newStart, newEnd, newRecurrenceEnd]) => {
+  if (newStart) {
+    state.value.start = newStart.toAbsoluteString();
+  }
+
   if (newStart && newEnd) {
-    const start = newStart.toAbsoluteString();
+    const start = newStart?.toAbsoluteString();
     const end = newStart
       .copy()
       // take start date and set time to end time to avoid issues with end times
@@ -101,7 +105,13 @@ watch([startDate, endDate], ([newStart, newEnd]) => {
     const sorted = [start, end].toSorted(sortDatesAscending);
     state.value.duration = timeDiff(sorted[1]!, sorted[0]!);
   } else {
-    state.value.duration = null;
+    state.value.duration = undefined;
+  }
+
+  if (newRecurrenceEnd) {
+    state.value.recurrenceEnd = toZoned(newRecurrenceEnd, getLocalTimeZone()).toAbsoluteString();
+  } else {
+    state.value.recurrenceEnd = undefined;
   }
 });
 
@@ -166,7 +176,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
             variant="link"
             size="sm"
             icon="i-lucide-x"
-            @click="endDate = null"
+            @click="endDate = undefined"
           />
         </template>
       </UInputTime>
@@ -183,26 +193,26 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
     <fieldset class="space-y-3">
       <legend class="text-sm font-medium">{{ $t('tasks.form.recurrence') }}</legend>
 
-      <UFormField :label="$t('tasks.form.frequency')" name="recurrence.frequency">
-        <USelect v-model="state.recurrence!.frequency" :items="frequencyItems" class="w-full" />
+      <UFormField :label="$t('tasks.form.frequency')" name="recurrenceFrequency">
+        <USelect v-model="state.recurrenceFrequency" :items="frequencyItems" class="w-full" />
       </UFormField>
 
       <UFormField
-        v-if="state.recurrence?.frequency === 'weekly'"
+        v-if="state.recurrenceFrequency === TASK_RECURRENCE_WEEKLY"
         :label="$t('tasks.form.weekdays')"
-        name="recurrence.weekdays"
+        name="recurrenceWeekdays"
       >
         <div class="flex flex-wrap gap-2">
           <UButton
             v-for="day in weekdayItems"
             :key="day.value"
-            :variant="state.recurrence?.weekdays?.includes(day.value) ? 'solid' : 'subtle'"
-            :color="state.recurrence?.weekdays?.includes(day.value) ? 'primary' : 'neutral'"
+            :variant="state.recurrenceWeekdays?.includes(day.value) ? 'solid' : 'subtle'"
+            :color="state.recurrenceWeekdays?.includes(day.value) ? 'primary' : 'neutral'"
             size="sm"
             @click="
-              state.recurrence!.weekdays = state.recurrence?.weekdays?.includes(day.value)
-                ? state.recurrence.weekdays.filter(d => d !== day.value)
-                : [...(state.recurrence?.weekdays || []), day.value]
+              state.recurrenceWeekdays = state.recurrenceWeekdays?.includes(day.value)
+                ? state.recurrenceWeekdays.filter(d => d !== day.value)
+                : [...(state.recurrenceWeekdays || []), day.value]
             "
           >
             {{ day.label }}
@@ -211,12 +221,12 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <UFormField
-        v-if="state.recurrence?.frequency === 'monthly'"
+        v-if="state.recurrenceFrequency === TASK_RECURRENCE_MONTHLY"
         :label="$t('tasks.form.dayOfMonth')"
-        name="recurrence.dayOfMonth"
+        name="recurrenceDayOfMonth"
       >
         <UInput
-          v-model.number="state.recurrence!.dayOfMonth"
+          v-model.number="state.recurrenceDayOfMonth!"
           type="number"
           :min="1"
           :max="31"
@@ -225,8 +235,9 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
 
       <UFormField
+        v-if="state.recurrenceFrequency !== TASK_RECURRENCE_ONCE"
         :label="$t('tasks.form.recurrenceEnd')"
-        name="recurrence.endDate"
+        name="recurrenceEndDate"
         ref="recurrenceEndDateRef"
       >
         <UInputDate v-model="recurrenceEndDate" hide-time-zone granularity="day" class="w-full">
@@ -236,7 +247,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
               variant="link"
               size="sm"
               icon="i-lucide-x"
-              @click="recurrenceEndDate = null"
+              @click="recurrenceEndDate = undefined"
             />
 
             <UPopover :reference="recurrenceEndDateRef?.$el">

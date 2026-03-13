@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { TASK_RECURRENCE_MONTHLY, TASK_RECURRENCE_WEEKLY } from '@zeity/types/task';
+import {
+  TASK_RECURRENCE_MONTHLY,
+  TASK_RECURRENCE_ONCE,
+  TASK_RECURRENCE_WEEKLY,
+} from '@zeity/types/task';
 import { formatDuration } from '@zeity/utils/date';
 
 definePageMeta({
@@ -51,8 +55,16 @@ async function handleDelete() {
     <div class="space-y-2">
       <div class="flex items-center gap-2">
         <UBadge variant="subtle">
-          {{ $t(`tasks.recurrence.${data.recurrence.frequency}`) }}
+          {{ $t(`tasks.recurrence.${data.recurrenceFrequency}`) }}
         </UBadge>
+        <span
+          v-if="data.recurrenceFrequency === TASK_RECURRENCE_ONCE"
+          class="inline-flex items-center text-sm text-muted gap-0.5"
+        >
+          <UIcon name="i-lucide-calendar" size="sm" />
+          <nuxt-time :datetime="data.start" date-style="medium" />
+        </span>
+
         <span class="inline-flex items-center text-sm text-muted gap-0.5">
           <UIcon name="i-lucide-clock" size="sm" />
           <nuxt-time :datetime="data.start" time-style="medium" />
@@ -61,24 +73,24 @@ async function handleDelete() {
       </div>
 
       <div
-        v-if="data.recurrence.frequency === TASK_RECURRENCE_WEEKLY"
+        v-if="data.recurrenceFrequency === TASK_RECURRENCE_WEEKLY"
         class="inline-flex gap-0.5 items-center"
       >
         <span class="text-sm font-medium">{{ $t('tasks.form.weekdays') }}:</span>
-        <UBadge
-          v-for="day in data.recurrence.weekdays"
-          :key="day"
-          color="neutral"
-          variant="outline"
-        >
+        <UBadge v-for="day in data.recurrenceWeekdays" :key="day" color="neutral" variant="outline">
           {{ $t(`tasks.weekdays.short.${day}`) }}
         </UBadge>
       </div>
 
-      <div v-if="data.recurrence.frequency === TASK_RECURRENCE_MONTHLY">
+      <div v-if="data.recurrenceFrequency === TASK_RECURRENCE_MONTHLY">
         <span class="text-sm font-medium">{{ $t('tasks.form.dayOfMonth') }}:</span>
-        <span class="text-sm text-muted ml-1">{{ data.recurrence.dayOfMonth }}</span>
+        <span class="text-sm text-muted ml-1">{{ data.recurrenceDayOfMonth }}</span>
       </div>
+
+      <p v-if="data.recurrenceEnd" class="flex items-center gap-1 text-sm font-medium">
+        {{ $t('tasks.form.recurrenceEnd') }}:
+        <nuxt-time :datetime="data.recurrenceEnd" date-style="medium" class="text-muted" />
+      </p>
 
       <div v-if="data.project">
         <span class="text-sm font-medium">{{ $t('times.form.project') }}:</span>

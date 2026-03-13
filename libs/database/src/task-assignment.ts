@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core';
+import { index, pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core';
 import { timestampColumns } from './common';
 import { tasks } from './task';
 import { organisationMembers } from './organisation-member';
@@ -15,7 +15,10 @@ export const taskAssignments = pgTable(
 
     createdAt: timestampColumns().createdAt,
   },
-  table => [primaryKey({ columns: [table.taskId, table.organisationMemberId] })],
+  table => [
+    primaryKey({ columns: [table.taskId, table.organisationMemberId] }),
+    index().on(table.organisationMemberId),
+  ],
 );
 
 export type TaskAssignment = typeof taskAssignments.$inferSelect;
