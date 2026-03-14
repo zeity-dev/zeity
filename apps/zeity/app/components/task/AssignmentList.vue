@@ -79,6 +79,7 @@ async function handleRemove(memberId: string) {
           color="error"
           variant="ghost"
           size="xs"
+          :aria-label="$t('common.remove')"
           @click="handleRemove(assignment.organisationMemberId)"
         />
       </div>

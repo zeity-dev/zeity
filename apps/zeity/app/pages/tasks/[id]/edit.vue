@@ -30,7 +30,7 @@ watch(
 
 async function save(updated: Partial<Task>) {
   await updateTask(taskId, updated);
-  return navigateTo(`/tasks/${taskId}`);
+  return navigateTo(`/tasks/${encodeURIComponent(taskId)}`);
 }
 </script>
 

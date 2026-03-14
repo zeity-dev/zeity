@@ -43,12 +43,18 @@ async function handleDelete() {
       </h2>
 
       <div v-if="isAdmin" class="flex items-center gap-2 flex-wrap">
-        <UButton icon="i-lucide-edit" :to="`/tasks/${encodeURIComponent(taskId)}/edit`">
-          {{ $t('common.edit') }}
-        </UButton>
-        <UButton icon="i-lucide-trash" color="error" variant="outline" @click="handleDelete">
-          {{ $t('common.delete') }}
-        </UButton>
+        <UButton
+          icon="i-lucide-edit"
+          :to="`/tasks/${encodeURIComponent(taskId)}/edit`"
+          :label="$t('common.edit')"
+        />
+        <UButton
+          icon="i-lucide-trash"
+          color="error"
+          variant="outline"
+          :label="$t('common.delete')"
+          @click="handleDelete"
+        />
       </div>
     </div>
 
