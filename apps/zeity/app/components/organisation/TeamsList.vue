@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const { t } = useI18n()
 const toast = useToast()
 
@@ -38,7 +37,7 @@ function deleteTeam(teamId: string) {
                 {{ $t('organisations.teams.title') }}
             </h3>
 
-            <UButton :to="`/organisations/${organisationId}/team/create`" icon="i-lucide-plus" color="primary"
+            <UButton :to="`/organisations/${encodeURIComponent(organisationId)}/team/create`" icon="i-lucide-plus" color="primary"
                 variant="solid">
                 {{ $t('organisations.teams.create') }}
             </UButton>
@@ -50,7 +49,7 @@ function deleteTeam(teamId: string) {
             <UCard v-for="team in data" :key="team.id">
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex flex-col gap-2">
-                        <nuxt-link :to="`/organisations/${organisationId}/team/${team.id}`"
+                        <nuxt-link :to="`/organisations/${encodeURIComponent(organisationId)}/team/${encodeURIComponent(team.id)}`"
                             class="text-lg font-semibold text-primary">
                             {{ team.name }}
                         </nuxt-link>
@@ -63,7 +62,7 @@ function deleteTeam(teamId: string) {
                     </div>
 
                     <UFieldGroup orientation="vertical">
-                        <UButton :to="`/organisations/${organisationId}/team/${team.id}`" icon="i-lucide-eye"
+                        <UButton :to="`/organisations/${encodeURIComponent(organisationId)}/team/${encodeURIComponent(team.id)}`" icon="i-lucide-eye"
                             color="neutral" variant="subtle">
                             {{ $t('common.view') }}
                         </UButton>
