@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { eq } from '@zeity/database';
+import { and, eq } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
 import { TASK_RECURRENCE_FREQUENCIES } from '@zeity/types';
 import { doesTaskExist } from '~~/server/utils/task';
@@ -64,10 +64,18 @@ export default defineEventHandler(async event => {
     });
   }
 
+  const belongsToOrg = await doesTaskBelongToOrganisation(params.data.id, organisation.value);
+  if (!belongsToOrg) {
+    throw createError({
+      statusCode: 404,
+      message: 'Not Found',
+    });
+  }
+
   const result = await useDrizzle()
     .update(tasks)
     .set(body.data)
-    .where(eq(tasks.id, params.data.id))
+    .where(and(eq(tasks.id, params.data.id), eq(tasks.organisationId, organisation.value)))
     .returning()
     .then(res => res[0]);
 

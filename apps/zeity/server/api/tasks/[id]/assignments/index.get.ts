@@ -7,7 +7,7 @@ import { users } from '@zeity/database/user';
 import { doesTaskBelongToOrganisation } from '~~/server/utils/task';
 
 export default defineEventHandler(async event => {
-  await requireUserSession(event);
+  const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
   const params = await getValidatedRouterParams(
@@ -21,6 +21,13 @@ export default defineEventHandler(async event => {
     throw createError({
       statusCode: 404,
       message: 'Not Found',
+    });
+  }
+
+  if (!(await userIdBelongsToOrganisation(session.user.id, { id: organisation.value }))) {
+    throw createError({
+      statusCode: 403,
+      message: 'Forbidden',
     });
   }
 
