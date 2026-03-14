@@ -52,9 +52,9 @@ function handleToggle() {
 
 	<div v-if="open" :class="$props.class">
 		<UButton v-for="time in times" :key="time.id" :disabled="time.type === TIME_TYPE_BREAK" type="button"
-			variant="ghost" class="w-full flex items-center justify-between gap-2" :to="`/time/${time.id}`">
+			variant="ghost" class="w-full flex items-center justify-between gap-2" :to="`/time/${encodeURIComponent(time.id)}`">
 
-			<div class="text-xs truncate text-[var(--ui-text-dimmed)]">
+			<div class="text-xs truncate text-dimmed">
 				<span>
 					{{ time.notes || $t('times.addNotes') }}
 				</span>
