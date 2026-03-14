@@ -230,6 +230,10 @@ export default defineI18nConfig(() => ({
           title: 'No Tasks',
           description: 'You have no tasks yet.',
         },
+        noOrganisation: {
+            title: 'No Organisation',
+            description: 'You need to belong to an organisation to create and manage tasks.',
+        },
         loginPrompt: {
           title: 'Login to create tasks',
           description: 'Tasks can be created and managed when you are logged in.',
@@ -736,6 +740,10 @@ export default defineI18nConfig(() => ({
         empty: {
           title: 'Keine Aufgaben',
           description: 'Sie haben noch keine Aufgaben.',
+        },
+        noOrganisation: {
+          title: 'Keine Organisation',
+          description: 'Sie müssen einer Organisation angehören, um Aufgaben zu erstellen und zu verwalten.',
         },
         loginPrompt: {
           title: 'Anmelden, um Aufgaben zu erstellen',
