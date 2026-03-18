@@ -2,8 +2,9 @@ import z from 'zod';
 
 import { times } from '@zeity/database/time';
 import { TIME_TYPES } from '@zeity/types';
+import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -30,9 +31,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const projectIds = body.data
-    .map((time) => time.projectId)
-    .filter((id): id is string => !!id);
+  const projectIds = body.data.map(time => time.projectId).filter((id): id is string => !!id);
 
   if (projectIds.length > 0) {
     const isOrganisationProject = await doesProjectsBelongsToOrganisation(
@@ -47,10 +46,22 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  const taskIds = body.data.map(time => time.taskId).filter((id): id is string => !!id);
+
+  if (taskIds.length > 0) {
+    const isOrganisationTask = await doesTasksBelongToOrganisation(taskIds, organisation.value);
+    if (!isOrganisationTask) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+  }
+
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (!organisationMemberId) {
     throw createError({
@@ -62,7 +73,7 @@ export default defineEventHandler(async (event) => {
   const result = await useDrizzle()
     .insert(times)
     .values(
-      body.data.map((time) => ({
+      body.data.map(time => ({
         ...time,
         organisationId: organisation.value,
         organisationMemberId,

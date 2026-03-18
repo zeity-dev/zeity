@@ -19,32 +19,32 @@ const assignedToFilter = computed<string[] | undefined>(() => {
   if (!isAdmin.value) {
     return currentOrganisation.value?.member.id ? [currentOrganisation.value.member.id] : undefined;
   }
-  // Admin with member filter selected
-  if (memberFilters.value.length > 0) {
-    return memberFilters.value.map(m => m.id);
-  }
   // Admin with "My Tasks" enabled
   if (showMyTasks.value && currentOrganisation.value?.member.id) {
     return [currentOrganisation.value.member.id];
+  }
+  // Admin with member filter selected
+  if (memberFilters.value.length > 0) {
+    return memberFilters.value.map(m => m.id);
   }
   // Admin with "All" selected (no filter)
   return undefined;
 });
 
 const pagination = ref({
-  offset: 0,
-  limit: 40,
+  pageIndex: 0,
+  pageSize: 20,
 });
 const queryParams = computed(() => ({
   assignedTo: assignedToFilter.value,
-  offset: pagination.value.offset,
-  limit: pagination.value.limit,
+  offset: pagination.value.pageIndex * pagination.value.pageSize,
+  limit: pagination.value.pageSize,
 }));
 const { status, data } = await useLazyFetch('/api/tasks', {
   query: queryParams,
 });
 const isLoading = computed(() => status.value === 'pending');
-const isEmpty = computed(() => data.value?.length === 0);
+const isEmpty = computed(() => data.value?.total < 1);
 
 function hasEnded(task: Task) {
   const now = new Date();
@@ -65,7 +65,7 @@ function hasEnded(task: Task) {
 </script>
 
 <template>
-  <div class="page my-3">
+  <div class="my-3">
     <h2
       class="inline-block text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight dark:text-neutral-200"
     >
@@ -86,7 +86,7 @@ function hasEnded(task: Task) {
       <LazyOrganisationMemberFilter v-if="isAdmin && !showMyTasks" v-model="memberFilters" />
 
       <UPageCard
-        v-for="task in data"
+        v-for="task in data?.items"
         :key="task.id"
         :title="task.name"
         :headline="$t(`tasks.recurrence.${task.recurrenceFrequency}`)"
@@ -161,13 +161,18 @@ function hasEnded(task: Task) {
         "
       />
 
-      <UPagination
-        v-if="(data?.length ?? 0) >= pagination.limit"
-        :page.sync="pagination.offset"
-        :page-size="pagination.limit"
-        :loading="isLoading"
-        @update:page="pagination.offset = $event"
-      />
+      <div
+        class="flex items-center justify-center md:justify-end gap-3 border-t border-default pt-4 mt-auto"
+      >
+        <UPagination
+          v-if="!isEmpty"
+          :default-page="(pagination.pageIndex || 0) + 1"
+          :items-per-page="pagination.pageSize"
+          :total="data?.total || 0"
+          :loading="isLoading"
+          @update:page="(page: number) => (pagination.pageIndex = page - 1)"
+        />
+      </div>
     </section>
   </div>
 </template>

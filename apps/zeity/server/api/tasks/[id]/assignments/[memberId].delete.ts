@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { eq, and } from '@zeity/database';
 import { taskAssignments } from '@zeity/database/task-assignment';
-import { doesTaskBelongToOrganisation } from '~~/server/utils/task';
+import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async event => {
@@ -31,7 +31,7 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const belongsToOrg = await doesTaskBelongToOrganisation(params.data.id, organisation.value);
+  const belongsToOrg = await doesTasksBelongToOrganisation(params.data.id, organisation.value);
   if (!belongsToOrg) {
     throw createError({
       statusCode: 404,

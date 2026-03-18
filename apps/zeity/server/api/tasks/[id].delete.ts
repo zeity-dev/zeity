@@ -23,6 +23,13 @@ export default defineEventHandler(async event => {
     });
   }
 
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, organisation.value))) {
+    throw createError({
+      statusCode: 403,
+      message: 'Forbidden',
+    });
+  }
+
   const existing = await doesTaskExist(params.data.id);
   if (!existing) {
     throw createError({
@@ -31,14 +38,7 @@ export default defineEventHandler(async event => {
     });
   }
 
-  if (!(await canUserUpdateOrganisationByOrgId(session.user, organisation.value))) {
-    throw createError({
-      statusCode: 403,
-      message: 'Forbidden',
-    });
-  }
-
-  const belongsToOrg = await doesTaskBelongToOrganisation(params.data.id, organisation.value);
+  const belongsToOrg = await doesTasksBelongToOrganisation(params.data.id, organisation.value);
   if (!belongsToOrg) {
     throw createError({
       statusCode: 404,

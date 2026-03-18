@@ -13,6 +13,7 @@ import {
   between,
   gt,
   desc,
+  count,
 } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
 import { taskAssignments } from '@zeity/database/task-assignment';
@@ -94,8 +95,9 @@ export default defineEventHandler(async event => {
   }
 
   if (query.data.today) {
-    const startOfToday = startOfDay(new Date());
-    const endOfToday = endOfDay(new Date());
+    const now = new Date();
+    const startOfToday = startOfDay(now);
+    const endOfToday = endOfDay(now);
 
     whereStatements.push(
       or(
@@ -107,17 +109,20 @@ export default defineEventHandler(async event => {
         // Daily recurring tasks that haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_DAILY),
+          lt(tasks.start, now),
           or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
         ),
         // Weekly recurring tasks that occur on the current weekday and haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_WEEKLY),
+          lt(tasks.start, now),
           arrayContains(tasks.recurrenceWeekdays, [startOfToday.getDay()]),
           or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
         ),
         // Monthly recurring tasks that occur on the current day of the month and haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_MONTHLY),
+          lt(tasks.start, now),
           eq(tasks.recurrenceDayOfMonth, startOfToday.getDate()),
           or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
         ),
@@ -125,28 +130,40 @@ export default defineEventHandler(async event => {
     );
   }
 
-  const result = await useDrizzle()
-    .select({
-      id: tasks.id,
-      name: tasks.name,
-      start: tasks.start,
-      duration: tasks.duration,
-      notes: tasks.notes,
-      projectId: tasks.projectId,
+  const db = useDrizzle();
+  const [total, items] = await Promise.all([
+    db
+      .select({ count: count() })
+      .from(tasks)
+      .leftJoin(taskAssignments, eq(taskAssignments.taskId, tasks.id))
+      .where(and(...whereStatements))
+      .then(result => Number(result[0]?.count ?? 0)),
+    db
+      .select({
+        id: tasks.id,
+        name: tasks.name,
+        start: tasks.start,
+        duration: tasks.duration,
+        notes: tasks.notes,
+        projectId: tasks.projectId,
 
-      recurrenceFrequency: tasks.recurrenceFrequency,
-      recurrenceWeekdays: tasks.recurrenceWeekdays,
-      recurrenceDayOfMonth: tasks.recurrenceDayOfMonth,
-      recurrenceEnd: tasks.recurrenceEnd,
+        recurrenceFrequency: tasks.recurrenceFrequency,
+        recurrenceWeekdays: tasks.recurrenceWeekdays,
+        recurrenceDayOfMonth: tasks.recurrenceDayOfMonth,
+        recurrenceEnd: tasks.recurrenceEnd,
 
-      organisationId: tasks.organisationId,
-    })
-    .from(tasks)
-    .leftJoin(taskAssignments, eq(taskAssignments.taskId, tasks.id))
-    .where(and(...whereStatements))
-    .orderBy(desc(tasks.createdAt))
-    .limit(query.data.limit)
-    .offset(query.data.offset);
+        organisationId: tasks.organisationId,
+      })
+      .from(tasks)
+      .leftJoin(taskAssignments, eq(taskAssignments.taskId, tasks.id))
+      .where(and(...whereStatements))
+      .orderBy(desc(tasks.createdAt))
+      .limit(query.data.limit)
+      .offset(query.data.offset),
+  ]);
 
-  return result;
+  return {
+    total,
+    items,
+  };
 });

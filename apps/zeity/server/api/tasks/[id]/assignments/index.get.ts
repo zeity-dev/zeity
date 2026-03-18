@@ -4,7 +4,7 @@ import { eq } from '@zeity/database';
 import { taskAssignments } from '@zeity/database/task-assignment';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { users } from '@zeity/database/user';
-import { doesTaskBelongToOrganisation } from '~~/server/utils/task';
+import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
 export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
@@ -31,7 +31,7 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const belongsToOrg = await doesTaskBelongToOrganisation(params.data.id, organisation.value);
+  const belongsToOrg = await doesTasksBelongToOrganisation(params.data.id, organisation.value);
   if (!belongsToOrg) {
     throw createError({
       statusCode: 404,

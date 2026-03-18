@@ -27,13 +27,13 @@ const queryParams = computed(() => ({
   today: true,
   assignedTo: [currentOrganisation.value?.member.id],
 }));
-const { data } = await useLazyFetch(() => `/api/tasks`, {
+const { data } = await useLazyFetch('/api/tasks', {
   query: queryParams,
   server: false,
 });
 
 const filteredTasks = computed(() => {
-  return data.value?.filter(task => isTaskForToday(task)) || [];
+  return data.value?.items.filter(task => isTaskForToday(task)) || [];
 });
 const todayTasks = computed(() => {
   return filteredTasks.value.map(applyTodayStart) || [];
