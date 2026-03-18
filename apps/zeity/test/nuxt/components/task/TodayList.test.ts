@@ -72,7 +72,7 @@ const mockTodayTasks = [
 
 // Use mutable variable for endpoint response
 let currentTasks: any[] = mockTodayTasks;
-registerEndpoint('/api/tasks', () => currentTasks);
+registerEndpoint('/api/tasks', () => ({ items: currentTasks }));
 
 async function mountAndWait() {
   const wrapper = await mountSuspended(TaskTodayList);
