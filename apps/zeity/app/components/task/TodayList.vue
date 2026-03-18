@@ -34,7 +34,7 @@ const { data } = await useLazyFetch('/api/tasks', {
 });
 
 const filteredTasks = computed(() => {
-  return data.value?.items.filter(task => isTaskForToday(task)) || [];
+  return data.value?.items?.filter(task => isTaskForToday(task)) || [];
 });
 const todayTasks = computed(() => {
   return filteredTasks.value.map(applyTodayStart) || [];
