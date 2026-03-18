@@ -5,6 +5,7 @@ import { taskAssignments } from '@zeity/database/task-assignment';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { users } from '@zeity/database/user';
 import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
+import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 
 export default defineEventHandler(async event => {
   const session = await requireUserSession(event);

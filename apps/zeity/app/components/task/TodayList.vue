@@ -22,6 +22,7 @@ const { currentOrganisation } = useOrganisation();
 const { startDraft, createTime } = useTime();
 const timerStore = useTimerStore();
 
+const isSaving = ref(false);
 const now = ref(nowWithoutMillis());
 const queryParams = computed(() => ({
   today: true,
@@ -105,24 +106,29 @@ function isTaskForToday(task: Task): boolean {
 }
 
 async function handleTaskAction(task: Task) {
-  const baseTime = {
-    type: TIME_TYPE_MANUAL,
-    start: nowWithoutMillis().toISOString(),
-    notes: task.notes || '',
-    taskId: task.id,
-    projectId: task?.projectId || null,
-  };
+  isSaving.value = true;
+  try {
+    const baseTime = {
+      type: TIME_TYPE_MANUAL,
+      start: nowWithoutMillis().toISOString(),
+      notes: task.notes || '',
+      taskId: task.id,
+      projectId: task?.projectId || null,
+    };
 
-  if (task.duration) {
-    // Duration set → save directly as time
-    await createTime({
-      id: nanoid(),
-      ...baseTime,
-      duration: task.duration,
-    });
-  } else {
-    // No duration → start as draft
-    await startDraft(baseTime);
+    if (task.duration) {
+      // Duration set → save directly as time
+      await createTime({
+        id: nanoid(),
+        ...baseTime,
+        duration: task.duration,
+      });
+    } else {
+      // No duration → start as draft
+      await startDraft(baseTime);
+    }
+  } finally {
+    isSaving.value = false;
   }
 }
 </script>
@@ -162,11 +168,21 @@ async function handleTaskAction(task: Task) {
 
         <div class="flex items-center gap-2 shrink-0">
           <UButton
-            :icon="task.duration ? 'i-lucide-check' : 'i-lucide-play'"
-            :label="task.duration ? $t('tasks.today.done') : $t('tasks.today.startTimer')"
+            v-if="task.duration"
             size="xs"
             variant="subtle"
-            :disabled="!task.duration && timerStore.isStarted"
+            icon="i-lucide-check"
+            :label="$t('tasks.today.done')"
+            :disabled="isSaving"
+            @click="handleTaskAction(task)"
+          />
+          <UButton
+            v-else
+            size="xs"
+            variant="subtle"
+            icon="i-lucide-play"
+            :label="$t('tasks.today.startTimer')"
+            :disabled="isSaving || timerStore.isStarted"
             @click="handleTaskAction(task)"
           />
         </div>

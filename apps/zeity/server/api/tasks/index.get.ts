@@ -11,7 +11,8 @@ import {
   inArray,
   arrayContains,
   between,
-  gt,
+  lte,
+  gte,
   desc,
   count,
 } from '@zeity/database';
@@ -109,22 +110,22 @@ export default defineEventHandler(async event => {
         // Daily recurring tasks that haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_DAILY),
-          lt(tasks.start, now),
-          or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
+          lte(tasks.start, now),
+          or(isNull(tasks.recurrenceEnd), gte(tasks.recurrenceEnd, startOfToday)),
         ),
         // Weekly recurring tasks that occur on the current weekday and haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_WEEKLY),
-          lt(tasks.start, now),
+          lte(tasks.start, now),
+          or(isNull(tasks.recurrenceEnd), gte(tasks.recurrenceEnd, startOfToday)),
           arrayContains(tasks.recurrenceWeekdays, [startOfToday.getDay()]),
-          or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
         ),
         // Monthly recurring tasks that occur on the current day of the month and haven't ended yet
         and(
           eq(tasks.recurrenceFrequency, TASK_RECURRENCE_MONTHLY),
-          lt(tasks.start, now),
-          eq(tasks.recurrenceDayOfMonth, startOfToday.getDate()),
-          or(isNull(tasks.recurrenceEnd), gt(tasks.recurrenceEnd, startOfToday)),
+          lte(tasks.start, now),
+          or(isNull(tasks.recurrenceEnd), gte(tasks.recurrenceEnd, startOfToday)),
+          eq(tasks.recurrenceDayOfMonth, now.getDate()),
         ),
       ),
     );
