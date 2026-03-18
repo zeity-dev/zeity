@@ -19,12 +19,12 @@
     "@vueuse/core": "^14.2.1",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
-    "docus": "^5.8.0",
+    "docus": "^5.8.1",
     "nuxt": "^4.4.2",
     "vue": "^3.5.30"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.97",
+    "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/ri": "^1.2.10",
     "@nuxt/hints": "1.0.0",
     "nuxt-security": "^2.5.1"
