@@ -17,8 +17,9 @@ const queryParams = computed(() => ({
   search: queryDebounced.value,
 }));
 
+const organisationId = computed(() => props.task?.organisationId);
 const { data, pending, refresh } = await useLazyFetch(
-  () => `/api/organisation/${props.task?.organisationId}/member`,
+  () => `/api/organisation/${organisationId.value}/member`,
   {
     query: queryParams,
     server: false,
@@ -33,7 +34,7 @@ const availableMembers = computed(() => {
 
 function handleOpen(value: boolean) {
   open.value = value;
-  if (value) {
+  if (value && organisationId.value) {
     refresh();
   }
 }
@@ -48,6 +49,7 @@ function handleSelect(id: string) {
   <UPopover :open="open" @update:open="handleOpen">
     <UButton
       :label="$t('tasks.assignments.add')"
+      :disabled="!organisationId"
       icon="i-lucide-plus"
       variant="outline"
       size="xs"
