@@ -65,6 +65,7 @@ function handleToggle() {
 					<UIcon name="i-lucide-cloud-off" />
 				</UTooltip>
 
+				<TimeProjectBadge :time="time" />
 				<TimeTaskBadge :time="time" />
 
 				<span class="tabular-nums">
