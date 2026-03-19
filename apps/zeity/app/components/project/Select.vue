@@ -36,7 +36,7 @@ watchDebounced(
   contentSearch,
   async () => {
     loading.value = true;
-    loadProjects({
+    await loadProjects({
       search: contentSearch.value,
       status: [PROJECT_STATUS_ACTIVE],
     }).finally(() => {
