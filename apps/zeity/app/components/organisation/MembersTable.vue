@@ -50,6 +50,7 @@ const { status, data, refresh } = await useFetch<PaginatedResponse<OrganisationM
     })),
   },
 );
+const isLoading = computed(() => status.value === 'pending');
 
 const membersColumns: TableColumn<OrganisationMember>[] = [
   {
@@ -251,6 +252,7 @@ function setMemberRole(memberId: string, role: OrganisationMemberRole) {
           :default-page="(pagination.pageIndex || 0) + 1"
           :items-per-page="pagination.pageSize"
           :total="data?.total || 0"
+          :loading="isLoading"
           @update:page="(page: number) => (pagination.pageIndex = page - 1)"
         />
       </div>

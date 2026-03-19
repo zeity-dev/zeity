@@ -34,6 +34,7 @@ const { status, data, refresh } = await useFetch<PaginatedResponse<OrganisationI
     })),
   },
 );
+const isLoading = computed(() => status.value === 'pending');
 
 const invitesColumns: TableColumn<OrganisationInvite>[] = [
   {
@@ -289,6 +290,7 @@ function copy(text: string) {
           :default-page="(pagination.pageIndex || 0) + 1"
           :items-per-page="pagination.pageSize"
           :total="data?.total || 0"
+          :loading="isLoading"
           @update:page="(page: number) => (pagination.pageIndex = page - 1)"
         />
       </div>
