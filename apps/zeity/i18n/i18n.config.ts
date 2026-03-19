@@ -38,7 +38,9 @@ export default defineI18nConfig(() => ({
         loadMore: 'Load more',
         or: 'or',
         refresh: 'Refresh',
+        remove: 'Remove',
         save: 'Save',
+        selectDate: 'Select date',
         send: 'Send',
         start: 'Start',
         stop: 'Stop',
@@ -50,6 +52,7 @@ export default defineI18nConfig(() => ({
       navigation: {
         timer: 'Timer',
         projects: 'Projects',
+        tasks: 'Tasks',
         reports: 'Reports',
         settings: 'Settings',
         organisations: 'Organisations',
@@ -163,6 +166,77 @@ export default defineI18nConfig(() => ({
         filter: {
           all: 'All Projects',
           allDescription: 'All active projects',
+        },
+      },
+      tasks: {
+        title: 'Tasks',
+        ended: 'Ended',
+        create: {
+          title: 'Create Task',
+        },
+        edit: {
+          title: 'Edit Task',
+        },
+        form: {
+          name: 'Name',
+          start: 'Start Date',
+          end: 'End Date',
+          recurrence: 'Recurrence',
+          frequency: 'Frequency',
+          weekdays: 'Weekdays',
+          dayOfMonth: 'Day of Month',
+          recurrenceEnd: 'Recurrence End',
+        },
+        recurrence: {
+          once: 'Once',
+          daily: 'Daily',
+          weekly: 'Weekly',
+          monthly: 'Monthly',
+        },
+        weekdays: {
+          sun: 'Sunday',
+          mon: 'Monday',
+          tue: 'Tuesday',
+          wed: 'Wednesday',
+          thu: 'Thursday',
+          fri: 'Friday',
+          sat: 'Saturday',
+          short: {
+            0: 'Sun',
+            1: 'Mon',
+            2: 'Tue',
+            3: 'Wed',
+            4: 'Thu',
+            5: 'Fri',
+            6: 'Sat',
+          },
+        },
+        assignments: {
+          title: 'Assigned Members',
+          add: 'Assign',
+          empty: 'No members assigned',
+          searchMember: 'Search member...',
+          noMembers: 'No members available',
+        },
+        filter: {
+          myTasks: 'My Tasks',
+        },
+        today: {
+          title: "Today's Tasks",
+          startTimer: 'Start',
+          done: 'Done',
+        },
+        empty: {
+          title: 'No Tasks',
+          description: 'You have no tasks yet.',
+        },
+        noOrganisation: {
+            title: 'No Organisation',
+            description: 'You need to belong to an organisation to create and manage tasks.',
+        },
+        loginPrompt: {
+          title: 'Login to create tasks',
+          description: 'Tasks can be created and managed when you are logged in.',
         },
       },
       reports: {
@@ -473,7 +547,9 @@ export default defineI18nConfig(() => ({
         loadMore: 'Mehr laden',
         or: 'oder',
         refresh: 'Aktualisieren',
+        remove: 'Entfernen',
         save: 'Speichern',
+        selectDate: 'Datum auswählen',
         send: 'Senden',
         start: 'Start',
         stop: 'Stop',
@@ -485,6 +561,7 @@ export default defineI18nConfig(() => ({
       navigation: {
         timer: 'Timer',
         projects: 'Projekte',
+        tasks: 'Aufgaben',
         reports: 'Berichte',
         settings: 'Einstellungen',
         organisations: 'Organisationen',
@@ -600,6 +677,77 @@ export default defineI18nConfig(() => ({
         filter: {
           all: 'Alle Projekte',
           allDescription: 'Alle aktiven Projekte',
+        },
+      },
+      tasks: {
+        title: 'Aufgaben',
+        ended: 'Beendet',
+        create: {
+          title: 'Aufgabe erstellen',
+        },
+        edit: {
+          title: 'Aufgabe bearbeiten',
+        },
+        form: {
+          name: 'Name',
+          start: 'Startdatum',
+          end: 'Enddatum',
+          recurrence: 'Wiederholung',
+          frequency: 'Häufigkeit',
+          weekdays: 'Wochentage',
+          dayOfMonth: 'Tag im Monat',
+          recurrenceEnd: 'Wiederholungsende',
+        },
+        recurrence: {
+          once: 'Einmalig',
+          daily: 'Täglich',
+          weekly: 'Wöchentlich',
+          monthly: 'Monatlich',
+        },
+        weekdays: {
+          sun: 'Sonntag',
+          mon: 'Montag',
+          tue: 'Dienstag',
+          wed: 'Mittwoch',
+          thu: 'Donnerstag',
+          fri: 'Freitag',
+          sat: 'Samstag',
+          short: {
+            0: 'So',
+            1: 'Mo',
+            2: 'Di',
+            3: 'Mi',
+            4: 'Do',
+            5: 'Fr',
+            6: 'Sa',
+          },
+        },
+        assignments: {
+          title: 'Zugewiesene Mitglieder',
+          add: 'Zuweisen',
+          empty: 'Keine Mitglieder zugewiesen',
+          searchMember: 'Mitglied suchen...',
+          noMembers: 'Keine Mitglieder verfügbar',
+        },
+        filter: {
+          myTasks: 'Meine Aufgaben',
+        },
+        today: {
+          title: 'Heutige Aufgaben',
+          startTimer: 'Starten',
+          done: 'Erledigt',
+        },
+        empty: {
+          title: 'Keine Aufgaben',
+          description: 'Sie haben noch keine Aufgaben.',
+        },
+        noOrganisation: {
+          title: 'Keine Organisation',
+          description: 'Sie müssen einer Organisation angehören, um Aufgaben zu erstellen und zu verwalten.',
+        },
+        loginPrompt: {
+          title: 'Anmelden, um Aufgaben zu erstellen',
+          description: 'Aufgaben können erstellt und verwaltet werden, wenn Sie angemeldet sind.',
         },
       },
       reports: {

@@ -60,10 +60,12 @@ function handleToggle() {
 				</span>
 			</div>
 
-			<div class="flex items-center gap-1 font-sans text-md text-[var(--ui-text-toned)]">
+			<div class="flex items-center gap-1 font-sans text-md text-toned">
 				<UTooltip v-if="loggedIn && !time.organisationMemberId" :text="$t('times.offline')">
 					<UIcon name="i-lucide-cloud-off" />
 				</UTooltip>
+
+				<TimeTaskBadge :time="time" />
 
 				<span class="tabular-nums">
 					{{ formatDuration(time.duration) }}

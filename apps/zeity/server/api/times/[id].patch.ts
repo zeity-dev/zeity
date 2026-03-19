@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
         start: z.coerce.date(),
         duration: z.coerce.number().nonnegative(),
         // tags: z.array(z.number()).optional(),
-        projectId: z.uuid().optional(),
+        projectId: z.uuid().nullable().optional(),
         notes: z.string().optional(),
       })
       .partial().safeParse,

@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
 import { times } from '@zeity/database/time';
-import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 import { TIME_TYPES, TIME_TYPE_MANUAL } from '@zeity/types';
+import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
+import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -15,7 +16,8 @@ export default defineEventHandler(async (event) => {
       start: z.coerce.date(),
       duration: z.coerce.number().nonnegative().default(0),
       // tags: z.array(z.number()).optional(),
-      projectId: z.uuid().optional(),
+      projectId: z.uuid().nullable().optional(),
+      taskId: z.uuid().nullable().optional(),
       notes: z.string().optional(),
     }).safeParse,
   );
@@ -41,10 +43,23 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  if (body.data.taskId) {
+    const isOrganisationTask = await doesTasksBelongToOrganisation(
+      body.data.taskId,
+      organisation.value,
+    );
+    if (!isOrganisationTask) {
+      throw createError({
+        statusCode: 403,
+        message: 'Forbidden',
+      });
+    }
+  }
+
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (!organisationMemberId) {
     throw createError({
@@ -61,7 +76,7 @@ export default defineEventHandler(async (event) => {
       organisationMemberId,
     })
     .returning()
-    .then((data) => data[0]);
+    .then(data => data[0]);
 
   if (!result) {
     console.error('Failed to create time', result);
