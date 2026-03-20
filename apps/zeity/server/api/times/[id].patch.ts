@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
-import { TIME_TYPES } from '@zeity/types';
+import { TIME_TYPES, AUDIT_ENTITY_TIME, AUDIT_ACTION_UPDATE } from '@zeity/types';
 import { findTimeById } from '~~/server/utils/time';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -70,7 +70,7 @@ export default defineEventHandler(async (event) => {
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (
     existing.organisationId !== organisation.value ||
@@ -82,12 +82,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const result = await useDrizzle()
-    .update(times)
-    .set(body.data)
-    .where(eq(times.id, params.data.id))
-    .returning()
-    .then((res) => res[0]);
+  return await useDrizzle().transaction(async tx => {
+    const result = await tx
+      .update(times)
+      .set(body.data)
+      .where(eq(times.id, params.data.id))
+      .returning()
+      .then(res => res[0]);
 
-  return result;
+    await logAuditEvent({
+      tx,
+      event: {
+        entityType: AUDIT_ENTITY_TIME,
+        action: AUDIT_ACTION_UPDATE,
+        entityId: params.data.id,
+        oldValues: existing,
+        newValues: result,
+        organisationId: organisation.value,
+        organisationMemberId: organisationMemberId!,
+      },
+    });
+  });
 });
