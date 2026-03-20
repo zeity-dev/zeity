@@ -16,3 +16,5 @@ export { organisationTeamMembers } from './organisation-team-member';
 export { organisationMembers } from './organisation-member';
 export { organisationInvites } from './organisation-invite';
 export { organisationJoinRequests } from './organisation-join-request';
+
+export { auditLogs } from './audit-log';
