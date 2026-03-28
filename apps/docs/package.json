@@ -15,7 +15,7 @@
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.6.0",
     "@nuxtjs/i18n": "^10.2.4",
-    "@nuxtjs/seo": "^3.4.0",
+    "@nuxtjs/seo": "^5.0.2",
     "@vueuse/core": "^14.2.1",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
