@@ -24,7 +24,7 @@
     "vue": "^3.5.31"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.99",
+    "@iconify-json/lucide": "^1.2.100",
     "@iconify-json/ri": "^1.2.10",
     "@nuxt/hints": "1.0.2",
     "nuxt-security": "^2.5.1"

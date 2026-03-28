@@ -35,7 +35,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.99",
+    "@iconify-json/lucide": "^1.2.100",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.75",
     "@nuxt/hints": "1.0.2",
