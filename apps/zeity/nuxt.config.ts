@@ -111,7 +111,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    // provider: 'iconify',
+    provider: 'server',
   },
   colorMode: {
     storageKey: 'zeity-color-mode',
