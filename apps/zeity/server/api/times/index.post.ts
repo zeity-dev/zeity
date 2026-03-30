@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 import { times } from '@zeity/database/time';
-import { TIME_TYPES, TIME_TYPE_MANUAL } from '@zeity/types';
+import { TIME_TYPES, TIME_TYPE_MANUAL } from '@zeity/types/time';
+import { AUDIT_ENTITY_TIME, AUDIT_ACTION_CREATE } from '@zeity/types/audit-log';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
@@ -68,23 +69,38 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const result = await useDrizzle()
-    .insert(times)
-    .values({
-      ...body.data,
-      organisationId: organisation.value,
-      organisationMemberId,
-    })
-    .returning()
-    .then(data => data[0]);
+  return await useDrizzle().transaction(async tx => {
+    const result = await tx
+      .insert(times)
+      .values({
+        ...body.data,
+        organisationId: organisation.value,
+        organisationMemberId,
+      })
+      .returning()
+      .then(data => data[0]);
 
-  if (!result) {
-    console.error('Failed to create time', result);
-    throw createError({
-      statusCode: 500,
-      message: 'Failed to create time',
+    if (!result) {
+      console.error('Failed to create time', result);
+      throw createError({
+        statusCode: 500,
+        message: 'Failed to create time',
+      });
+    }
+
+    await logAuditEvent({
+      tx,
+      event: {
+        entityType: AUDIT_ENTITY_TIME,
+        action: AUDIT_ACTION_CREATE,
+        entityId: result.id,
+        oldValues: null,
+        newValues: result as unknown as Record<string, unknown>,
+        organisationId: organisation.value,
+        organisationMemberId,
+      },
     });
-  }
 
-  return result;
+    return result;
+  });
 });
