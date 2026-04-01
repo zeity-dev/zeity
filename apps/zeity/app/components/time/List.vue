@@ -43,14 +43,15 @@ const groups = computed(() => {
 });
 
 function getGroupKey(date: DateLike): string {
-	const now = new Date()
-	const diff = dayDiff(date, now);
+	const today = toStartOfDay(new Date());
+	const normalizedDate = toStartOfDay(date);
+	const diff = dayDiff(normalizedDate, today);
 
-	if (diff < 1) {
-		return formatRelativeDate(now, toStartOfDay(date), locale.value);
+	if (diff < 2) {
+		return formatRelativeDate(today, normalizedDate, locale.value);
 	}
 
-	return formatDate(toStartOfDay(date), locale.value);
+	return formatDate(normalizedDate, locale.value);
 }
 
 function withoutBreaks(times: Time[]): Time[] {
