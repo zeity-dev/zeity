@@ -1,7 +1,7 @@
 import z from 'zod';
 
 import { times } from '@zeity/database/time';
-import { TIME_TYPES } from '@zeity/types';
+import { TIME_TYPES, AUDIT_ENTITY_TIME, AUDIT_ACTION_CREATE } from '@zeity/types';
 import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
 export default defineEventHandler(async event => {
@@ -70,16 +70,33 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const result = await useDrizzle()
-    .insert(times)
-    .values(
-      body.data.map(time => ({
-        ...time,
-        organisationId: organisation.value,
-        organisationMemberId,
-      })),
-    )
-    .returning();
+  return await useDrizzle().transaction(async tx => {
+    const result = await tx
+      .insert(times)
+      .values(
+        body.data.map(time => ({
+          ...time,
+          organisationId: organisation.value,
+          organisationMemberId,
+        })),
+      )
+      .returning();
 
-  return result;
+    if (result.length > 0) {
+      await logAuditEvents({
+        tx,
+        events: result.map(entry => ({
+          entityType: AUDIT_ENTITY_TIME,
+          entityId: entry.id,
+          action: AUDIT_ACTION_CREATE,
+          oldValues: null,
+          newValues: entry,
+          organisationId: organisation.value,
+          organisationMemberId,
+        })),
+      });
+    }
+
+    return result;
+  });
 });
