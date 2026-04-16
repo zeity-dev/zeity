@@ -9,6 +9,7 @@
   },
   "rules": {
     "jest/no-disabled-tests": "warn",
+    "vitest/require-mock-type-parameters": "warn"
   },
   "ignorePatterns": [
     ".output/**",
