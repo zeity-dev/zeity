@@ -109,7 +109,7 @@ function getWeekFilters(locale: string, count: number) {
         const week = getWeek(date);
 
         const start = startOfWeek(date, { weekStartsOn: 1 });
-        const end = endOfDay(addDays(start, 7));
+        const end = endOfDay(addDays(start, 6));
 
         filters.push({
             key: 'kw' + week,
