@@ -27,9 +27,9 @@
     "@vitest/coverage-v8": "^4.1.4",
     "eslint-plugin-regexp": "^3.1.0",
     "knip": "^5.88.1",
-    "oxfmt": "^0.45.0",
-    "oxlint": "^1.60.0",
-    "typescript": "^6.0.2",
+    "oxfmt": "^0.46.0",
+    "oxlint": "^1.61.0",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.4"
   },
   "pnpm": {
@@ -42,5 +42,5 @@
     "zod": "^4.3.6",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.2"
 }
