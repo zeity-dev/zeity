@@ -1,17 +1,14 @@
 import type { H3Event } from 'h3';
 import { createConsola } from 'consola';
-import type { EmailAddress } from 'unemail/types';
-import type { EmailService } from 'unemail';
-import { createEmailService } from 'unemail';
-import smtpProvider from 'unemail/providers/smtp';
+import type { EmailAddress } from 'unemail';
+import { createEmail } from 'unemail';
+import smtpDriver from 'unemail/driver/smtp';
 
 import type { MailSection } from '~~/shared/types/mail';
 import { useMailTemplate } from './mail-template';
 
 type MailTo = EmailAddress | EmailAddress[];
-type MailContent =
-  | { html?: string; text: string }
-  | { html: string; text?: string };
+type MailContent = { html?: string; text: string } | { html: string; text?: string };
 
 type SendMailOptions = {
   to: MailTo;
@@ -21,17 +18,23 @@ type SendMailOptions = {
 } & MailContent;
 
 const logger = createConsola({}).withTag('mailer');
-let client: EmailService | undefined;
+let driver: ReturnType<typeof smtpDriver> | undefined;
 
 async function sendMail(options: SendMailOptions) {
+  if (!driver) {
+    throw new Error('No mailer driver available, cannot send mail');
+  }
+
   if (!options.to) {
     logger.warn('Could not send mail: No recipient specified', options.subject);
     throw new Error('No recipient specified');
   }
 
   const from = useRuntimeConfig().mailer.from;
-  const info = await client
-    ?.sendEmail({
+
+  const email = createEmail({ driver });
+  const info = await email
+    .send({
       from,
       to: options.to,
       cc: options.cc,
@@ -40,7 +43,7 @@ async function sendMail(options: SendMailOptions) {
       text: options.text || '',
       html: options.html,
     })
-    .catch((e) => {
+    .catch(e => {
       logger.error('Sending mail failed', e);
     });
 
@@ -69,7 +72,7 @@ async function sendMessageMail(
   to: MailTo,
   subject: string,
   messages: string[],
-  sections: MailSection[] = []
+  sections: MailSection[] = [],
 ) {
   const { html, text } = await useMailTemplate().renderMessageMail({
     subject,
@@ -88,11 +91,9 @@ async function sendMessageMail(
 export function useMailer(event: H3Event) {
   try {
     const smtp = useRuntimeConfig(event).mailer.smtp;
-    client ??= createEmailService({
-      provider: smtpProvider(smtp),
-    });
+    driver ??= smtpDriver(smtp);
   } catch (e) {
-    logger.error('Failed to create mailer client', e);
+    logger.error('Failed to create mailer driver', e);
   }
 
   return {
