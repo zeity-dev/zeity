@@ -23,7 +23,7 @@
     "@simplewebauthn/server": "^13.3.0",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
-    "@vueuse/core": "^14.2.1",
+    "@vueuse/core": "^14.3.0",
     "@zeity/database": "workspace:^",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
@@ -31,14 +31,14 @@
     "jose": "^6.2.3",
     "qrcode.vue": "^3.9.0",
     "unemail": "^0.4.1",
-    "vue": "^3.5.33",
-    "zod": "^4.3.6"
+    "vue": "^3.5.34",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.104",
+    "@iconify-json/lucide": "^1.2.106",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.80",
-    "@nuxt/hints": "1.0.3",
+    "@iconify-json/simple-icons": "^1.2.81",
+    "@nuxt/hints": "1.1.1",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.3",
     "@nuxt/ui": "^4.7.1",
@@ -46,12 +46,12 @@
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.6",
-    "@vue/test-utils": "^2.4.9",
+    "@vue/test-utils": "^2.4.10",
     "happy-dom": "^20.9.0",
-    "nuxt": "^4.4.2",
+    "nuxt": "^4.4.5",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.5.1",
-    "vue-i18n": "^11.4.0",
-    "vue-tsc": "^3.2.7"
+    "vue-i18n": "^11.4.2",
+    "vue-tsc": "^3.2.8"
   }
 }
