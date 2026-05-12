@@ -29,15 +29,15 @@
     "@zeity/utils": "workspace:^",
     "date-fns": "^4.1.0",
     "jose": "^6.2.3",
-    "qrcode.vue": "^3.9.0",
+    "qrcode.vue": "^3.9.1",
     "unemail": "^0.4.1",
     "vue": "^3.5.34",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.106",
+    "@iconify-json/lucide": "^1.2.107",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.81",
+    "@iconify-json/simple-icons": "^1.2.82",
     "@nuxt/hints": "1.1.1",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.3",
@@ -50,7 +50,7 @@
     "happy-dom": "^20.9.0",
     "nuxt": "^4.4.5",
     "nuxt-auth-utils": "^0.5.29",
-    "nuxt-security": "^2.5.1",
+    "nuxt-security": "^2.6.0",
     "vue-i18n": "^11.4.2",
     "vue-tsc": "^3.2.8"
   }
