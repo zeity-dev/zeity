@@ -16,7 +16,7 @@
   "dependencies": {
     "@zeity/types": "workspace:^",
     "drizzle-orm": "^0.45.2",
-    "pg": "^8.20.0"
+    "pg": "^8.21.0"
   },
   "devDependencies": {
     "@simplewebauthn/server": "^13.3.0",

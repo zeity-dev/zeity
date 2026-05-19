@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@number-flow/vue": "^0.5.0",
-    "@nuxt/content": "^3.13.0",
+    "@nuxt/content": "^3.14.0",
     "@nuxt/icon": "^2.2.2",
     "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.7.1",
@@ -24,9 +24,9 @@
     "vue": "^3.5.34"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.107",
+    "@iconify-json/lucide": "^1.2.108",
     "@iconify-json/ri": "^1.2.10",
-    "@nuxt/hints": "1.1.1",
+    "@nuxt/hints": "1.1.2",
     "nuxt-security": "^2.6.0"
   }
 }
