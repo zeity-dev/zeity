@@ -18,6 +18,8 @@ export const useOrganisationStore = defineStore('organisation', () => {
 
   const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    refresh: true,
   });
 
   function setCurrentOrganisationId(id: string | null | undefined) {
