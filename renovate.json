@@ -6,6 +6,7 @@
         ":semanticCommitTypeAll(chore)",
         ":widenPeerDependencies"
     ],
+    "minimumReleaseAge": "1 day",
     "baseBranchPatterns": [
         "main"
     ],
