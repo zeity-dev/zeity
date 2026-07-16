@@ -135,23 +135,25 @@ export function useTime() {
     if (settings.value.roundTimes) {
       data = roundTime(data);
     }
-    if (loggedIn.value && isOnline.value) {
-      try {
-        const time = await postTime(data);
-        store.insertTime(time);
-        return time;
-      } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error('Error creating time:', error);
+    if (loggedIn.value) {
+      if (isOnline.value) {
+        try {
+          const time = await postTime(data);
+          store.insertTime(time);
+          return time;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.error('Error creating time:', error);
+          }
         }
-        toast.add({
-          color: 'warning',
-          icon: 'i-lucide-wifi-off',
-          title: t('network.savedLocally.title'),
-          description: t('network.savedLocally.description'),
-          duration: 5000,
-        });
       }
+      toast.add({
+        color: 'warning',
+        icon: 'i-lucide-wifi-off',
+        title: t('network.savedLocally.title'),
+        description: t('network.savedLocally.description'),
+        duration: 5000,
+      });
     }
 
     return store.insertTime(data);
@@ -162,16 +164,25 @@ export function useTime() {
         data = roundTime(data);
       }
     }
-    if (loggedIn.value && isOnline.value && isOnlineTime(id)) {
-      try {
-        const time = await patchTime(id, data);
-        store.updateTime(id, time);
-        return time;
-      } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error('Error creating time:', error);
+    if (loggedIn.value && isOnlineTime(id)) {
+      if (isOnline.value) {
+        try {
+          const time = await patchTime(id, data);
+          store.updateTime(id, time);
+          return time;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.error('Error updating time:', error);
+          }
         }
       }
+      toast.add({
+        color: 'warning',
+        icon: 'i-lucide-wifi-off',
+        title: t('network.savedLocally.title'),
+        description: t('network.savedLocally.description'),
+        duration: 5000,
+      });
     }
 
     return store.updateTime(id, data);
@@ -181,10 +192,9 @@ export function useTime() {
     if (loggedIn.value && isOnline.value && isOnlineTime(id)) {
       try {
         await deleteTime(id);
-        return store.removeTime(id);
       } catch (error) {
         if (import.meta.env.DEV) {
-          console.error('Error creating time:', error);
+          console.error('Error deleting time:', error);
         }
       }
     }

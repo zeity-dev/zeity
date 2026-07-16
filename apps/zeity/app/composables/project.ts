@@ -91,38 +91,49 @@ export function useProject() {
   }
 
   async function createProject(data: Project) {
-    if (loggedIn.value && isOnline.value) {
-      try {
-        const project = await postProject(data);
-        store.insertProject(project);
-        return project;
-      } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error('Error creating project:', error);
+    if (loggedIn.value) {
+      if (isOnline.value) {
+        try {
+          const project = await postProject(data);
+          store.insertProject(project);
+          return project;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.error('Error creating project:', error);
+          }
         }
-        toast.add({
-          color: 'warning',
-          icon: 'i-lucide-wifi-off',
-          title: t('network.savedLocally.title'),
-          description: t('network.savedLocally.description'),
-          duration: 5000,
-        });
       }
+      toast.add({
+        color: 'warning',
+        icon: 'i-lucide-wifi-off',
+        title: t('network.savedLocally.title'),
+        description: t('network.savedLocally.description'),
+        duration: 5000,
+      });
     }
 
     return store.insertProject(data);
   }
   async function updateProject(id: string, data: Partial<Project>) {
-    if (loggedIn.value && isOnline.value && isOnlineProject(id)) {
-      try {
-        const project = await patchProject(id, data);
-        store.updateProject(id, project);
-        return project;
-      } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error('Error creating project:', error);
+    if (loggedIn.value && isOnlineProject(id)) {
+      if (isOnline.value) {
+        try {
+          const project = await patchProject(id, data);
+          store.updateProject(id, project);
+          return project;
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.error('Error updating project:', error);
+          }
         }
       }
+      toast.add({
+        color: 'warning',
+        icon: 'i-lucide-wifi-off',
+        title: t('network.savedLocally.title'),
+        description: t('network.savedLocally.description'),
+        duration: 5000,
+      });
     }
 
     return store.updateProject(id, data);
@@ -131,10 +142,9 @@ export function useProject() {
     if (loggedIn.value && isOnline.value && isOnlineProject(id)) {
       try {
         await deleteProject(id);
-        return store.removeProject(id);
       } catch (error) {
         if (import.meta.env.DEV) {
-          console.error('Error creating project:', error);
+          console.error('Error deleting project:', error);
         }
       }
     }
