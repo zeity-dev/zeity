@@ -30,12 +30,7 @@ export function useTimerReminder() {
     const thresholdMs = settingsStore.timerReminderThreshold * 60 * 60 * 1000;
     const elapsed = Date.now() - new Date(draft.value.start).getTime();
 
-    if (elapsed < thresholdMs) {
-      // Timer is within threshold — reset so a notification fires again
-      // if the threshold is later exceeded after a restart.
-      notifiedForStart.value = null;
-      return;
-    }
+    if (elapsed < thresholdMs) return;
 
     // Only notify once per timer start
     if (notifiedForStart.value === draft.value.start) return;
@@ -51,6 +46,7 @@ export function useTimerReminder() {
     }
   });
 
-  // Check every minute
-  useIntervalFn(checkAndNotify, 60 * 1000);
+  // Check every minute; immediateCallback is false (default) so the first
+  // check is delayed by one interval, giving a grace period on page load.
+  useIntervalFn(checkAndNotify, 60 * 1000, { immediateCallback: false });
 }
