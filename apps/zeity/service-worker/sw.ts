@@ -117,7 +117,7 @@ function clearReminderTimeout() {
   scheduledForStart = null;
 }
 
-async function scheduleReminder(draftStart: string, thresholdMs: number, title: string, body: string) {
+async function scheduleReminder(draftStart: string, reminderAfterMs: number, title: string, body: string) {
   // If we already scheduled a reminder for this exact timer start, do nothing.
   if (scheduledForStart === draftStart) return;
 
@@ -125,7 +125,7 @@ async function scheduleReminder(draftStart: string, thresholdMs: number, title: 
   scheduledForStart = draftStart;
 
   const elapsed = Date.now() - new Date(draftStart).getTime();
-  const delay = Math.max(0, thresholdMs - elapsed);
+  const delay = Math.max(0, reminderAfterMs - elapsed);
 
   reminderTimeoutId = setTimeout(async () => {
     reminderTimeoutId = null;
@@ -146,6 +146,6 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
     return;
   }
 
-  const thresholdMs = data.timerReminderThreshold * MS_PER_HOUR;
-  scheduleReminder(data.draftStart, thresholdMs, data.notificationTitle, data.notificationBody);
+  const reminderAfterMs = data.timerReminderThreshold * MS_PER_HOUR;
+  scheduleReminder(data.draftStart, reminderAfterMs, data.notificationTitle, data.notificationBody);
 });

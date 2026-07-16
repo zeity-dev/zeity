@@ -35,8 +35,8 @@ export function useTimerReminder() {
     [
       isStarted,
       () => draft.value?.start,
-      () => settingsStore.timerReminderEnabled,
-      () => settingsStore.timerReminderThreshold,
+      toRef(settingsStore, 'timerReminderEnabled'),
+      toRef(settingsStore, 'timerReminderThreshold'),
     ],
     () => {
       syncWithServiceWorker();
