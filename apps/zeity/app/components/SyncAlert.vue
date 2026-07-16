@@ -5,6 +5,7 @@ const loading = ref(false);
 
 const toast = useToast();
 const { t } = useI18n();
+const { isOnline } = useNetworkStatus();
 
 const { syncOfflineTimes, syncOfflineProjects } = useSync();
 
@@ -19,7 +20,7 @@ const hasOfflineProjects = computed(() => projects.value.length > 0);
 const hasOfflineData = computed(() => hasOfflineTimes.value || hasOfflineProjects.value);
 
 async function handleSyncOfflineData() {
-    if (loading.value) return;
+    if (loading.value || !isOnline.value) return;
     loading.value = true;
 
     const projectsToSync = projects.value;
@@ -77,12 +78,20 @@ function handleSyncOfflineTimes(times: Time[]) {
             });
         });
 }
+
+watch(isOnline, (online) => {
+    if (online && hasOfflineData.value) {
+        handleSyncOfflineData();
+    }
+});
 </script>
 
 <template>
     <UAlert v-if="hasOfflineData" :title="$t('sync.title')"
-        :description="$t('sync.description', { timeCount: times.length, projectCount: projects.length })"
-        icon="i-lucide-cloud-upload" :actions="[
+        :description="isOnline ? $t('sync.description', { timeCount: times.length, projectCount: projects.length }) : $t('sync.offlineDescription')"
+        icon="i-lucide-cloud-upload" :actions="isOnline ? [
             { label: $t('sync.button'), onClick: handleSyncOfflineData, loading: loading, disabled: loading },
+        ] : [
+            { label: $t('sync.offlineButton'), disabled: true, icon: 'i-lucide-wifi-off' },
         ]" />
 </template>

@@ -86,7 +86,9 @@ export default defineI18nConfig(() => ({
         title: 'Sync',
         description:
           'You have offline {timeCount} times and {projectCount} projects that needs to be synced.',
+        offlineDescription: 'You have unsynced data. Connect to the internet to sync.',
         button: 'Sync Now',
+        offlineButton: 'Offline',
         times: {
           successTitle: 'Times Synced',
           successMessage: '{n} of your time entries have been synced successfully.',
@@ -98,6 +100,20 @@ export default defineI18nConfig(() => ({
           successMessage: '{n} of your projects have been synced successfully.',
           errorTitle: 'Error Syncing Projects',
           errorMessage: 'There was an error syncing your projects. Please try again.',
+        },
+      },
+      network: {
+        offline: {
+          title: 'No Connection',
+          description: 'You are offline. Changes will be saved locally and synced when you reconnect.',
+        },
+        reconnected: {
+          title: 'Back Online',
+          description: 'Your connection has been restored.',
+        },
+        savedLocally: {
+          title: 'Saved Locally',
+          description: 'Could not reach the server. Your data has been saved locally and will sync when you reconnect.',
         },
       },
       times: {
@@ -595,7 +611,9 @@ export default defineI18nConfig(() => ({
         title: 'Synchronisieren',
         description:
           'Sie haben Offline {timeCount} Zeiten und {projectCount} Projekte, die synchronisiert werden müssen.',
+        offlineDescription: 'Sie haben nicht synchronisierte Daten. Stellen Sie eine Internetverbindung her, um zu synchronisieren.',
         button: 'Jetzt synchronisieren',
+        offlineButton: 'Offline',
         times: {
           successTitle: 'Zeiten synchronisiert',
           successMessage: '{n} Ihrer Zeiten wurden erfolgreich synchronisiert.',
@@ -609,6 +627,20 @@ export default defineI18nConfig(() => ({
           errorTitle: 'Fehler beim Synchronisieren der Projekte',
           errorMessage:
             'Beim Synchronisieren Ihrer Projekte ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+        },
+      },
+      network: {
+        offline: {
+          title: 'Keine Verbindung',
+          description: 'Sie sind offline. Änderungen werden lokal gespeichert und synchronisiert, sobald Sie wieder online sind.',
+        },
+        reconnected: {
+          title: 'Wieder online',
+          description: 'Ihre Verbindung wurde wiederhergestellt.',
+        },
+        savedLocally: {
+          title: 'Lokal gespeichert',
+          description: 'Server nicht erreichbar. Ihre Daten wurden lokal gespeichert und werden synchronisiert, sobald Sie wieder online sind.',
         },
       },
       times: {

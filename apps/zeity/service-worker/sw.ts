@@ -33,6 +33,7 @@ if (import.meta.env.PROD) {
 
   const strategy = new NetworkFirst({
     cacheName: 'ssr-pages-caches',
+    networkTimeoutSeconds: 5,
     matchOptions: {
       ignoreVary: true,
       ignoreSearch: true,

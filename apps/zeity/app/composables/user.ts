@@ -42,7 +42,7 @@ export function useUser() {
 
   async function reloadUser() {
     userStore.setLoading(true);
-    return $fetch('/api/user/current')
+    return $fetch('/api/user/current', { timeout: 10_000 })
       .then((result) => {
         const { user, organisations } = result || {};
         updateUserAndOrganisations(
@@ -66,6 +66,7 @@ export function useUser() {
   async function deleteUser() {
     return $fetch('/api/user/current', {
       method: 'delete',
+      timeout: 10_000,
     }).then(async () => {
       await useUserSession().clear();
     });
@@ -75,6 +76,7 @@ export function useUser() {
     return $fetch('/api/user/current', {
       method: 'PATCH',
       body: data,
+      timeout: 10_000,
     }).then(async (data) => {
       await useUserSession().fetch();
       return data;
@@ -87,6 +89,7 @@ export function useUser() {
     return $fetch('/api/user/image', {
       method: 'POST',
       body: formData,
+      timeout: 10_000,
     });
   }
 

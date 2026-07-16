@@ -27,16 +27,20 @@ interface FetchTimesOptions {
   rangeEnd?: string;
 }
 
+const API_TIMEOUT = 10_000;
+
 function fetchTimes(options?: FetchTimesOptions): Promise<Time[]> {
   return $fetch('/api/times', {
     method: 'GET',
     params: options,
+    timeout: API_TIMEOUT,
   });
 }
 
 function fetchTime(id: string): Promise<Time> {
   return $fetch(`/api/times/${id}`, {
     method: 'GET',
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -44,6 +48,7 @@ function postTime(data: Time): Promise<Time> {
   return $fetch('/api/times', {
     method: 'POST',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -51,20 +56,24 @@ function patchTime(id: string, data: Partial<Time>): Promise<Time> {
   return $fetch(`/api/times/${id}`, {
     method: 'PATCH',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
 function deleteTime(id: string) {
   return $fetch(`/api/times/${id}`, {
     method: 'DELETE',
+    timeout: API_TIMEOUT,
   });
 }
 
 export function useTime() {
   const { t } = useI18n();
+  const toast = useToast();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
   const { settings } = storeToRefs(useSettingsStore());
+  const { isOnline } = useNetworkStatus();
 
   const store = useTimerStore();
 
@@ -126,15 +135,22 @@ export function useTime() {
     if (settings.value.roundTimes) {
       data = roundTime(data);
     }
-    try {
-      if (loggedIn.value) {
+    if (loggedIn.value && isOnline.value) {
+      try {
         const time = await postTime(data);
         store.insertTime(time);
         return time;
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating time:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating time:', error);
+        }
+        toast.add({
+          color: 'warning',
+          icon: 'i-lucide-wifi-off',
+          title: t('network.savedLocally.title'),
+          description: t('network.savedLocally.description'),
+          duration: 5000,
+        });
       }
     }
 
@@ -146,15 +162,15 @@ export function useTime() {
         data = roundTime(data);
       }
     }
-    try {
-      if (loggedIn.value && isOnlineTime(id)) {
+    if (loggedIn.value && isOnline.value && isOnlineTime(id)) {
+      try {
         const time = await patchTime(id, data);
         store.updateTime(id, time);
         return time;
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating time:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating time:', error);
+        }
       }
     }
 
@@ -162,14 +178,14 @@ export function useTime() {
   }
 
   async function removeTime(id: string) {
-    try {
-      if (loggedIn.value && isOnlineTime(id)) {
+    if (loggedIn.value && isOnline.value && isOnlineTime(id)) {
+      try {
         await deleteTime(id);
         return store.removeTime(id);
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating time:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating time:', error);
+        }
       }
     }
 

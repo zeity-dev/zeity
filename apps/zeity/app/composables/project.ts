@@ -1,6 +1,8 @@
 import type { Project } from '@zeity/types';
 import { useProjectStore } from '~/stores/projectStore';
 
+const API_TIMEOUT = 10_000;
+
 interface FetchProjectsOptions {
   offset?: number;
   limit?: number;
@@ -13,12 +15,14 @@ function fetchProjects(options?: FetchProjectsOptions): Promise<Project[]> {
   return $fetch('/api/projects', {
     method: 'GET',
     params: options,
+    timeout: API_TIMEOUT,
   });
 }
 
 function fetchProject(id: string): Promise<Project> {
   return $fetch(`/api/projects/${id}`, {
     method: 'GET',
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -26,6 +30,7 @@ function postProject(data: Project): Promise<Project> {
   return $fetch('/api/projects', {
     method: 'POST',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -33,18 +38,23 @@ function patchProject(id: string, data: Partial<Project>): Promise<Project> {
   return $fetch(`/api/projects/${id}`, {
     method: 'PATCH',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
 function deleteProject(id: string) {
   return $fetch(`/api/projects/${id}`, {
     method: 'DELETE',
+    timeout: API_TIMEOUT,
   });
 }
 
 export function useProject() {
+  const { t } = useI18n();
+  const toast = useToast();
   const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
+  const { isOnline } = useNetworkStatus();
 
   const store = useProjectStore();
 
@@ -81,44 +91,51 @@ export function useProject() {
   }
 
   async function createProject(data: Project) {
-    try {
-      if (loggedIn.value) {
+    if (loggedIn.value && isOnline.value) {
+      try {
         const project = await postProject(data);
         store.insertProject(project);
         return project;
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating project:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating project:', error);
+        }
+        toast.add({
+          color: 'warning',
+          icon: 'i-lucide-wifi-off',
+          title: t('network.savedLocally.title'),
+          description: t('network.savedLocally.description'),
+          duration: 5000,
+        });
       }
     }
 
     return store.insertProject(data);
   }
   async function updateProject(id: string, data: Partial<Project>) {
-    try {
-      if (loggedIn.value && isOnlineProject(id)) {
+    if (loggedIn.value && isOnline.value && isOnlineProject(id)) {
+      try {
         const project = await patchProject(id, data);
         store.updateProject(id, project);
         return project;
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating project:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating project:', error);
+        }
       }
     }
 
     return store.updateProject(id, data);
   }
   async function removeProject(id: string) {
-    try {
-      if (loggedIn.value && isOnlineProject(id)) {
+    if (loggedIn.value && isOnline.value && isOnlineProject(id)) {
+      try {
         await deleteProject(id);
         return store.removeProject(id);
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Error creating project:', error);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('Error creating project:', error);
+        }
       }
     }
 

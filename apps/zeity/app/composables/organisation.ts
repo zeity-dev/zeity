@@ -16,6 +16,7 @@ export function useOrganisation() {
     return $fetch('/api/organisation', {
       method: 'POST',
       body,
+      timeout: 10_000,
     })
       .then(async data => {
         await useUser().reloadUser();
@@ -32,6 +33,7 @@ export function useOrganisation() {
       $fetch(`/api/organisation/${orgId}/team`, {
         method: 'POST',
         body: data,
+        timeout: 10_000,
       })
         // TODO: add org team to store
         // .then((data) => {
@@ -52,6 +54,7 @@ export function useOrganisation() {
     return $fetch(`/api/organisation/${id}/image`, {
       method: 'POST',
       body: formData,
+      timeout: 10_000,
     });
   }
 

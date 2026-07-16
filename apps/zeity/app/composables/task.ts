@@ -1,6 +1,8 @@
 import type { Task, NewTask } from '@zeity/types/task';
 import { useTaskStore } from '~/stores/taskStore';
 
+const API_TIMEOUT = 10_000;
+
 interface FetchTasksOptions {
   offset?: number;
   limit?: number;
@@ -12,12 +14,14 @@ function fetchTasks(options?: FetchTasksOptions): Promise<Task[]> {
   return $fetch('/api/tasks', {
     method: 'GET',
     params: options,
+    timeout: API_TIMEOUT,
   });
 }
 
 function fetchTask(id: string): Promise<Task> {
   return $fetch(`/api/tasks/${id}`, {
     method: 'GET',
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -25,6 +29,7 @@ function postTask(data: NewTask): Promise<Task> {
   return $fetch('/api/tasks', {
     method: 'POST',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -32,12 +37,14 @@ function patchTask(id: string, data: Partial<Task>): Promise<Task> {
   return $fetch(`/api/tasks/${id}`, {
     method: 'PATCH',
     body: data,
+    timeout: API_TIMEOUT,
   });
 }
 
 function deleteTask(id: string) {
   return $fetch(`/api/tasks/${id}`, {
     method: 'DELETE',
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -46,6 +53,7 @@ function deleteTask(id: string) {
 function fetchTaskAssignments(taskId: string) {
   return $fetch(`/api/tasks/${taskId}/assignments`, {
     method: 'GET',
+    timeout: API_TIMEOUT,
   });
 }
 
@@ -53,12 +61,14 @@ function postTaskAssignment(taskId: string, organisationMemberId: string) {
   return $fetch(`/api/tasks/${taskId}/assignments`, {
     method: 'POST',
     body: { organisationMemberId },
+    timeout: API_TIMEOUT,
   });
 }
 
 function deleteTaskAssignment(taskId: string, memberId: string) {
   return $fetch(`/api/tasks/${taskId}/assignments/${memberId}`, {
     method: 'DELETE',
+    timeout: API_TIMEOUT,
   });
 }
 

@@ -13,6 +13,7 @@ export function useSync() {
     const newTimes = await $fetch('/api/times/sync', {
       method: 'POST',
       body: offlineTimes,
+      timeout: 10_000,
     });
 
     for (const time of offlineTimes) {
@@ -32,6 +33,7 @@ export function useSync() {
     const newProjects = await $fetch('/api/projects/sync', {
       method: 'POST',
       body: offlineProjects,
+      timeout: 10_000,
     });
 
     for (const [index, value] of offlineProjects.entries()) {

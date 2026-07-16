@@ -5,7 +5,7 @@ export function useAuth() {
 
   async function refresh() {
     if (loggedIn.value) {
-      await $fetch('/api/_auth/refresh').catch(async () => {
+      await $fetch('/api/_auth/refresh', { timeout: 10_000 }).catch(async () => {
         toast.add({
           title: t('auth.expired.title'),
           description: t('auth.expired.description'),

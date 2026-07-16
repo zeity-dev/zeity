@@ -1,6 +1,7 @@
 <template>
   <div class="isolate">
     <AppHeader />
+    <AppNetworkStatusBanner />
 
     <UContainer>
       <div
