@@ -102,6 +102,8 @@ clientsClaim();
 // Timer reminder – runs in the SW so it fires even when the screen is off
 // ---------------------------------------------------------------------------
 
+const MS_PER_HOUR = 60 * 60 * 1000;
+
 let reminderTimeoutId: ReturnType<typeof setTimeout> | null = null;
 // The draftStart for which a notification was already scheduled / sent,
 // used to avoid creating duplicate timeouts for the same timer.
@@ -144,6 +146,6 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
     return;
   }
 
-  const thresholdMs = data.timerReminderThreshold * 60 * 60 * 1000;
+  const thresholdMs = data.timerReminderThreshold * MS_PER_HOUR;
   scheduleReminder(data.draftStart, thresholdMs, data.notificationTitle, data.notificationBody);
 });

@@ -3,5 +3,5 @@ useTimerReminder();
 </script>
 
 <template>
-  <span />
+  <slot />
 </template>
