@@ -9,7 +9,7 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
-import type { TimerReminderSyncMessage } from '../shared/types/timerReminder';
+import { isTimerReminderSyncMessage } from '../shared/types/timerReminder';
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -115,7 +115,7 @@ function clearReminderTimeout() {
   scheduledForStart = null;
 }
 
-async function scheduleReminder(draftStart: string, thresholdMs: number) {
+async function scheduleReminder(draftStart: string, thresholdMs: number, title: string, body: string) {
   // If we already scheduled a reminder for this exact timer start, do nothing.
   if (scheduledForStart === draftStart) return;
 
@@ -127,8 +127,8 @@ async function scheduleReminder(draftStart: string, thresholdMs: number) {
 
   reminderTimeoutId = setTimeout(async () => {
     reminderTimeoutId = null;
-    await self.registration.showNotification('Timer still running', {
-      body: 'Your timer has been running for a while. Did you forget to stop it?',
+    await self.registration.showNotification(title, {
+      body,
       icon: '/favicon.svg',
       tag: 'timer-reminder',
     });
@@ -136,8 +136,8 @@ async function scheduleReminder(draftStart: string, thresholdMs: number) {
 }
 
 self.addEventListener('message', (event: ExtendableMessageEvent) => {
-  const data = event.data as TimerReminderSyncMessage;
-  if (data?.type !== 'TIMER_REMINDER_SYNC') return;
+  const data: unknown = event.data;
+  if (!isTimerReminderSyncMessage(data)) return;
 
   if (!data.timerReminderEnabled || !data.draftStart) {
     clearReminderTimeout();
@@ -145,5 +145,5 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
   }
 
   const thresholdMs = data.timerReminderThreshold * 60 * 60 * 1000;
-  scheduleReminder(data.draftStart, thresholdMs);
+  scheduleReminder(data.draftStart, thresholdMs, data.notificationTitle, data.notificationBody);
 });

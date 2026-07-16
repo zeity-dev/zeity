@@ -1,6 +1,7 @@
 import type { TimerReminderSyncMessage } from '~~/shared/types/timerReminder';
 
 export function useTimerReminder() {
+  const { t } = useI18n();
   const store = useTimerStore();
   const settingsStore = useSettingsStore();
 
@@ -17,6 +18,8 @@ export function useTimerReminder() {
       draftStart: isStarted.value ? (draft.value?.start ?? null) : null,
       timerReminderEnabled: settingsStore.timerReminderEnabled,
       timerReminderThreshold: settingsStore.timerReminderThreshold,
+      notificationTitle: t('timer.reminder.title'),
+      notificationBody: t('timer.reminder.body'),
     };
 
     controller.postMessage(message);
