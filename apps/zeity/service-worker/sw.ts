@@ -9,6 +9,7 @@ import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { NetworkFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
+import type { TimerReminderSyncMessage } from '../shared/types/timerReminder';
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -96,3 +97,53 @@ registerRoute(
 
 self.skipWaiting();
 clientsClaim();
+
+// ---------------------------------------------------------------------------
+// Timer reminder – runs in the SW so it fires even when the screen is off
+// ---------------------------------------------------------------------------
+
+let reminderTimeoutId: ReturnType<typeof setTimeout> | null = null;
+// The draftStart for which a notification was already scheduled / sent,
+// used to avoid creating duplicate timeouts for the same timer.
+let scheduledForStart: string | null = null;
+
+function clearReminderTimeout() {
+  if (reminderTimeoutId !== null) {
+    clearTimeout(reminderTimeoutId);
+    reminderTimeoutId = null;
+  }
+  scheduledForStart = null;
+}
+
+async function scheduleReminder(draftStart: string, thresholdMs: number) {
+  // If we already scheduled a reminder for this exact timer start, do nothing.
+  if (scheduledForStart === draftStart) return;
+
+  clearReminderTimeout();
+  scheduledForStart = draftStart;
+
+  const elapsed = Date.now() - new Date(draftStart).getTime();
+  const delay = Math.max(0, thresholdMs - elapsed);
+
+  reminderTimeoutId = setTimeout(async () => {
+    reminderTimeoutId = null;
+    await self.registration.showNotification('Timer still running', {
+      body: 'Your timer has been running for a while. Did you forget to stop it?',
+      icon: '/favicon.svg',
+      tag: 'timer-reminder',
+    });
+  }, delay);
+}
+
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
+  const data = event.data as TimerReminderSyncMessage;
+  if (data?.type !== 'TIMER_REMINDER_SYNC') return;
+
+  if (!data.timerReminderEnabled || !data.draftStart) {
+    clearReminderTimeout();
+    return;
+  }
+
+  const thresholdMs = data.timerReminderThreshold * 60 * 60 * 1000;
+  scheduleReminder(data.draftStart, thresholdMs);
+});

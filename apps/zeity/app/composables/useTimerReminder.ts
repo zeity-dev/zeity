@@ -1,52 +1,42 @@
-import { useIntervalFn } from '@vueuse/core';
+import type { TimerReminderSyncMessage } from '~~/shared/types/timerReminder';
 
 export function useTimerReminder() {
-  const { t } = useI18n();
   const store = useTimerStore();
   const settingsStore = useSettingsStore();
 
   const { draft, isStarted } = storeToRefs(store);
 
-  // Track the start time of the draft for which a notification was already sent.
-  // This prevents sending repeated notifications for the same running timer.
-  const notifiedForStart = ref<string | null>(null);
+  function syncWithServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
 
-  function sendNotification() {
-    if (!('Notification' in window)) return;
+    const controller = navigator.serviceWorker.controller;
+    if (!controller) return;
 
-    if (Notification.permission !== 'granted') return;
+    const message: TimerReminderSyncMessage = {
+      type: 'TIMER_REMINDER_SYNC',
+      draftStart: isStarted.value ? (draft.value?.start ?? null) : null,
+      timerReminderEnabled: settingsStore.timerReminderEnabled,
+      timerReminderThreshold: settingsStore.timerReminderThreshold,
+    };
 
-    new Notification(t('timer.reminder.title'), {
-      body: t('timer.reminder.body'),
-      icon: '/favicon.svg',
-      tag: 'timer-reminder',
-    });
+    controller.postMessage(message);
   }
 
-  function checkAndNotify() {
-    if (!settingsStore.timerReminderEnabled) return;
-    if (!isStarted.value || !draft.value?.start) return;
-
-    const thresholdMs = settingsStore.timerReminderThreshold * 60 * 60 * 1000;
-    const elapsed = Date.now() - new Date(draft.value.start).getTime();
-
-    if (elapsed < thresholdMs) return;
-
-    // Only notify once per timer start
-    if (notifiedForStart.value === draft.value.start) return;
-
-    notifiedForStart.value = draft.value.start;
-    sendNotification();
-  }
-
-  // Reset notification tracking whenever the timer is stopped
-  watch(isStarted, (value) => {
-    if (!value) {
-      notifiedForStart.value = null;
-    }
+  // Sync on mount so a timer that was already running is picked up immediately.
+  onMounted(() => {
+    syncWithServiceWorker();
   });
 
-  // Check every minute; immediateCallback is false (default) so the first
-  // check is delayed by one interval, giving a grace period on page load.
-  useIntervalFn(checkAndNotify, 60 * 1000, { immediateCallback: false });
+  // Re-sync whenever the timer start/stop state or any relevant setting changes.
+  watch(
+    [
+      isStarted,
+      () => draft.value?.start,
+      () => settingsStore.timerReminderEnabled,
+      () => settingsStore.timerReminderThreshold,
+    ],
+    () => {
+      syncWithServiceWorker();
+    },
+  );
 }
