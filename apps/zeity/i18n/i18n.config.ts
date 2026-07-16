@@ -271,6 +271,21 @@ export default defineI18nConfig(() => ({
           detailsOnStop: 'Open details on stop',
           calculateBreaks: 'Calculate breaks',
           roundTimes: 'Round times automatically',
+          timerReminder: 'Remind me if timer is still running',
+          timerReminderThreshold: 'Remind after',
+          timerReminderThresholdOptions: {
+            '1h': '1 hour',
+            '2h': '2 hours',
+            '4h': '4 hours',
+            '8h': '8 hours',
+            '12h': '12 hours',
+          },
+        },
+      },
+      timer: {
+        reminder: {
+          title: 'Timer still running',
+          body: 'Your timer has been running for a while. Did you forget to stop it?',
         },
       },
       offline: {
@@ -1013,6 +1028,21 @@ export default defineI18nConfig(() => ({
           detailsOnStop: 'Details beim Stoppen einblenden',
           calculateBreaks: 'Pausen berechnen',
           roundTimes: 'Zeiten automatisch aufrunden',
+          timerReminder: 'Erinnerung wenn Timer noch läuft',
+          timerReminderThreshold: 'Erinnerung nach',
+          timerReminderThresholdOptions: {
+            '1h': '1 Stunde',
+            '2h': '2 Stunden',
+            '4h': '4 Stunden',
+            '8h': '8 Stunden',
+            '12h': '12 Stunden',
+          },
+        },
+      },
+      timer: {
+        reminder: {
+          title: 'Timer läuft noch',
+          body: 'Dein Timer läuft schon eine Weile. Hast du vergessen ihn zu stoppen?',
         },
       },
       about: {

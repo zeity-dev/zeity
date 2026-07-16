@@ -9,6 +9,8 @@ interface SettingsState {
   openTimeDetailsOnStop: boolean;
   calculateBreaks: boolean;
   roundTimes: boolean;
+  timerReminderEnabled: boolean;
+  timerReminderThreshold: number;
 }
 
 const defaultSettings: SettingsState = {
@@ -19,6 +21,8 @@ const defaultSettings: SettingsState = {
   openTimeDetailsOnStop: false,
   calculateBreaks: false,
   roundTimes: false,
+  timerReminderEnabled: false,
+  timerReminderThreshold: 8,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -45,6 +49,8 @@ export const useSettingsStore = defineStore('settings', () => {
   const openTimeDetailsOnStop = ref(defaultSettings.openTimeDetailsOnStop);
   const calculateBreaks = ref(defaultSettings.calculateBreaks);
   const roundTimes = ref(defaultSettings.roundTimes);
+  const timerReminderEnabled = ref(defaultSettings.timerReminderEnabled);
+  const timerReminderThreshold = ref(defaultSettings.timerReminderThreshold);
 
   const settings = computed<SettingsState>(() => ({
     locale: locale.value,
@@ -54,6 +60,8 @@ export const useSettingsStore = defineStore('settings', () => {
     openTimeDetailsOnStop: openTimeDetailsOnStop.value,
     calculateBreaks: calculateBreaks.value,
     roundTimes: roundTimes.value,
+    timerReminderEnabled: timerReminderEnabled.value,
+    timerReminderThreshold: timerReminderThreshold.value,
   }));
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
@@ -80,6 +88,14 @@ export const useSettingsStore = defineStore('settings', () => {
 
     if (data.roundTimes !== undefined) {
       roundTimes.value = data.roundTimes;
+    }
+
+    if (data.timerReminderEnabled !== undefined) {
+      timerReminderEnabled.value = data.timerReminderEnabled;
+    }
+
+    if (data.timerReminderThreshold !== undefined) {
+      timerReminderThreshold.value = data.timerReminderThreshold;
     }
   }
 
@@ -122,6 +138,8 @@ export const useSettingsStore = defineStore('settings', () => {
     openTimeDetailsOnStop,
     calculateBreaks,
     roundTimes,
+    timerReminderEnabled,
+    timerReminderThreshold,
 
     loadFromLocalStorage,
   };

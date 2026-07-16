@@ -89,6 +89,22 @@ const themePrimaryOptions = [
 
 const filePrompt = useTemplateRef('fileprompt');
 
+const timerReminderThresholdOptions = computed(() => [
+    { label: t('settings.time.timerReminderThresholdOptions.1h'), value: 1 },
+    { label: t('settings.time.timerReminderThresholdOptions.2h'), value: 2 },
+    { label: t('settings.time.timerReminderThresholdOptions.4h'), value: 4 },
+    { label: t('settings.time.timerReminderThresholdOptions.8h'), value: 8 },
+    { label: t('settings.time.timerReminderThresholdOptions.12h'), value: 12 },
+]);
+
+async function onToggleTimerReminder(enabled: boolean) {
+    if (!enabled) return;
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'default') {
+        await Notification.requestPermission();
+    }
+}
+
 function handleExport() {
     const content = {
         times: timeStore.getAllTimes().value,
@@ -214,6 +230,20 @@ function sanitizeProject(data: unknown) {
                 <span>{{ $t('settings.time.roundTimes') }}</span>
                 <USwitch v-model="settingsStore.roundTimes" />
             </label>
+
+            <ClientOnly>
+                <label class="flex items-center justify-between">
+                    <span>{{ $t('settings.time.timerReminder') }}</span>
+                    <USwitch v-model="settingsStore.timerReminderEnabled"
+                        @update:model-value="onToggleTimerReminder" />
+                </label>
+
+                <label v-if="settingsStore.timerReminderEnabled" class="flex items-center justify-between">
+                    <span>{{ $t('settings.time.timerReminderThreshold') }}</span>
+                    <USelect v-model="settingsStore.timerReminderThreshold" :items="timerReminderThresholdOptions"
+                        class="min-w-60" />
+                </label>
+            </ClientOnly>
         </FieldSet>
 
         <FieldSet :label="$t('settings.appearance')">

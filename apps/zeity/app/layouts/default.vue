@@ -23,6 +23,7 @@
     </UContainer>
 
     <AppBottomNavigation class="md:hidden" />
+    <AppTimerReminder />
   </div>
 </template>
 
