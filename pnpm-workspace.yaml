@@ -13,8 +13,9 @@ trustPolicyExclude:
   - xlsx@0.20.3
 
 overrides:
+  "h3": "1.15.11"
+  "h3-next": "npm:h3@2.0.1-rc.22"
   "zod": "^4.4.3"
-  "vite": "npm:rolldown-vite@latest"
   "@netlify/functions": "-"
   "@netlify/blobs": "-"
 
@@ -28,3 +29,8 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
   vue-demi: false
+
+minimumReleaseAgeExclude:
+  - '@nuxtjs/seo@5.3.3'
+  - nuxt-schema-org@6.2.7
+  - nuxtseo-shared@5.3.3

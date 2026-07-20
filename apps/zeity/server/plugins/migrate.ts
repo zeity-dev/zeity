@@ -1,5 +1,9 @@
-import { useDrizzleMigration } from '../utils/drizzle';
+// import { useDrizzleMigration } from '../utils/drizzle';
 
 export default defineNitroPlugin(async () => {
-  await useDrizzleMigration().run();
+  if (import.meta.prerender) {
+    return;
+  }
+
+  // await useDrizzleMigration().run();
 });

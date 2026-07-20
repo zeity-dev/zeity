@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     typescriptPlugin: true,
     viteEnvironmentApi: true,
     viewTransition: true,
+    nitroAutoImports: true,
   },
   modules: [
     '@nuxt/hints',
@@ -265,15 +266,12 @@ export default defineNuxtConfig({
   },
   nitro: {
     compressPublicAssets: true,
-    experimental: {
-      tasks: true,
-    },
     rollupConfig: {
       plugins: [vuePlugin()],
     },
     esbuild: {
       options: {
-        target: 'esnext',
+        target: 'es2024',
       },
     },
     externals: {
