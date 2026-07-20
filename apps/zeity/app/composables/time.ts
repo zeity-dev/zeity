@@ -44,6 +44,7 @@ function postTime(data: Time): Promise<Time> {
   return $fetch('/api/times', {
     method: 'POST',
     body: data,
+    timeout: 10000,
   });
 }
 
