@@ -43,12 +43,27 @@ export default defineNuxtConfig({
     },
     manifest: {
       scope: '/',
+
       name: 'zeity Time Tracker',
+      name_localized: {
+        en: 'zeity Time Tracker',
+        de: 'zeity Zeiterfassung',
+      },
+
       short_name: 'zeity',
-      description: 'Time tracking app app with excellent user experience',
+      short_name_localized: {
+        en: 'zeity',
+        de: 'zeity',
+      },
+
+      description: 'Time Tracking Made Simple',
+      description_locales: {
+        en: 'Time Tracking Made Simple',
+        de: 'Zeiterfassung leicht gemacht',
+      },
+
       theme_color: '#00bbff',
       display: 'standalone',
-      lang: 'en',
       icons: [
         {
           src: 'favicon.svg',
