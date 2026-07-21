@@ -1,70 +1,63 @@
 import { defineStore } from 'pinia';
-import type { Locale } from '~/types/lang';
-
-interface SettingsState {
-  locale: Locale;
-  themeMode: string;
-  themePrimary: string;
-  openTimeDetailsOnStart: boolean;
-  openTimeDetailsOnStop: boolean;
-  calculateBreaks: boolean;
-  roundTimes: boolean;
-}
+import type { SettingsState } from '~/types/settings';
 
 const defaultSettings: SettingsState = {
+  id: 'local',
+
   locale: 'en',
   themeMode: 'system',
-  themePrimary: 'sky',
+  themeColor: 'sky',
   openTimeDetailsOnStart: false,
   openTimeDetailsOnStop: false,
   calculateBreaks: false,
   roundTimes: false,
+
+  organisationId: null,
 };
 
 export const useSettingsStore = defineStore('settings', () => {
-  const { locale, setLocale } = useI18n();
+  const { currentOrganisationId } = storeToRefs(useOrganisationStore());
 
-  const themeMode = computed({
-    get() {
-      return useColorMode().value || defaultSettings.themeMode;
-    },
-    set(option) {
-      useColorMode().preference = option;
-    },
-  });
-  function setThemeMode(value: string) {
-    themeMode.value = value;
+  const userSettingsStore = useEntityStore<SettingsState>('userSettings');
+  userSettingsStore.setEntities([defaultSettings]);
+
+  function upsertUserSettings(settings: SettingsState[]) {
+    userSettingsStore.upsertMany(settings);
   }
 
-  const themePrimary = ref(defaultSettings.themePrimary);
-  function setThemePrimary(value: string) {
-    themePrimary.value = value;
-  }
+  const locale = shallowRef(defaultSettings.locale);
+  const themeMode = shallowRef(defaultSettings.themeMode);
+  const themeColor = shallowRef(defaultSettings.themeColor);
 
-  const openTimeDetailsOnStart = ref(defaultSettings.openTimeDetailsOnStart);
-  const openTimeDetailsOnStop = ref(defaultSettings.openTimeDetailsOnStop);
-  const calculateBreaks = ref(defaultSettings.calculateBreaks);
-  const roundTimes = ref(defaultSettings.roundTimes);
+  const openTimeDetailsOnStart = shallowRef(defaultSettings.openTimeDetailsOnStart);
+  const openTimeDetailsOnStop = shallowRef(defaultSettings.openTimeDetailsOnStop);
+  const calculateBreaks = shallowRef(defaultSettings.calculateBreaks);
+  const roundTimes = shallowRef(defaultSettings.roundTimes);
 
   const settings = computed<SettingsState>(() => ({
+    id: 'local',
+
     locale: locale.value,
     themeMode: themeMode.value,
-    themePrimary: themePrimary.value,
+    themeColor: themeColor.value,
     openTimeDetailsOnStart: openTimeDetailsOnStart.value,
     openTimeDetailsOnStop: openTimeDetailsOnStop.value,
     calculateBreaks: calculateBreaks.value,
     roundTimes: roundTimes.value,
+
+    organisationId: currentOrganisationId.value ?? null,
   }));
+
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
-      setLocale(data.locale);
+      locale.value = data.locale;
     }
 
     if (data.themeMode !== undefined) {
-      setThemeMode(data.themeMode);
+      themeMode.value = data.themeMode;
     }
-    if (data.themePrimary !== undefined) {
-      setThemePrimary(data.themePrimary);
+    if (data.themeColor !== undefined) {
+      themeColor.value = data.themeColor;
     }
 
     if (data.openTimeDetailsOnStart !== undefined) {
@@ -92,11 +85,42 @@ export const useSettingsStore = defineStore('settings', () => {
 
   // load and save settings to localStorage needs to be done in the setup function, otherwise locale will be overwritten by the i18n module
   function init() {
+    const i18n = useI18n();
+
     loadFromLocalStorage();
 
-    watch(settings, (value) => {
+    watch(settings, value => {
       useLocalStorage().setItem('settings', value);
     });
+
+    watch(
+      locale,
+      value => {
+        i18n.setLocale(value);
+      },
+      { immediate: true },
+    );
+
+    watch(
+      themeMode,
+      value => {
+        useColorMode().preference = value || 'system';
+      },
+      { immediate: true },
+    );
+
+    watch(
+      currentOrganisationId,
+      value => {
+        const orgSettings = userSettingsStore
+          .find(setting => setting.organisationId === value)
+          .value.at(0);
+        if (orgSettings) {
+          updateSettings(orgSettings);
+        }
+      },
+      { immediate: true },
+    );
   }
 
   onMounted(() => {
@@ -110,13 +134,8 @@ export const useSettingsStore = defineStore('settings', () => {
     updateSettings,
 
     locale,
-    setLocale,
-
     themeMode,
-    setThemeMode,
-
-    themePrimary,
-    setThemePrimary,
+    themeColor,
 
     openTimeDetailsOnStart,
     openTimeDetailsOnStop,
@@ -124,5 +143,7 @@ export const useSettingsStore = defineStore('settings', () => {
     roundTimes,
 
     loadFromLocalStorage,
+
+    upsertUserSettings,
   };
 });

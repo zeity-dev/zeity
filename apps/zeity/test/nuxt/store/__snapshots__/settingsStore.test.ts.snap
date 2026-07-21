@@ -3,35 +3,41 @@
 exports[`useSettingsStore > localStorage > should load settings from localStorage 1`] = `
 {
   "calculateBreaks": false,
+  "id": "local",
   "locale": "fr",
   "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
+  "organisationId": null,
   "roundTimes": false,
+  "themeColor": "red",
   "themeMode": "dark",
-  "themePrimary": "red",
 }
 `;
 
 exports[`useSettingsStore > should have a default state 1`] = `
 {
   "calculateBreaks": false,
+  "id": "local",
   "locale": "en",
   "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
+  "organisationId": null,
   "roundTimes": false,
-  "themeMode": "dark",
-  "themePrimary": "sky",
+  "themeColor": "sky",
+  "themeMode": "system",
 }
 `;
 
 exports[`useSettingsStore > updateSettings > should update settings 1`] = `
 {
   "calculateBreaks": false,
+  "id": "local",
   "locale": "de",
   "openTimeDetailsOnStart": false,
   "openTimeDetailsOnStop": false,
+  "organisationId": null,
   "roundTimes": false,
-  "themeMode": "dark",
-  "themePrimary": "sky",
+  "themeColor": "sky",
+  "themeMode": "system",
 }
 `;

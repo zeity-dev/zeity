@@ -8,10 +8,14 @@ const locales = {
 };
 
 const settingsStore = useSettingsStore();
-const { locale, themePrimary } = storeToRefs(settingsStore);
+const { locale, themeColor } = storeToRefs(settingsStore);
+
+onMounted(() => {
+  settingsStore.init();
+});
 
 watch(
-  themePrimary,
+  themeColor,
   value => {
     updateAppConfig({
       ui: {

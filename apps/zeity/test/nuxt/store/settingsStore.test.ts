@@ -39,7 +39,7 @@ describe('useSettingsStore', () => {
   describe('localStorage', () => {
     it('should load settings from localStorage', () => {
       vi.spyOn(localStorage, 'getItem').mockReturnValue(
-        JSON.stringify({ locale: 'fr', themeMode: 'dark', themePrimary: 'red' })
+        JSON.stringify({ locale: 'fr', themeMode: 'dark', themeColor: 'red' })
       );
 
       const store = useSettingsStore();
@@ -60,13 +60,15 @@ describe('useSettingsStore', () => {
       expect(spy).toHaveBeenCalledWith(
         'settings',
         JSON.stringify({
+          id: 'local',
           locale: 'de',
-          themeMode: 'dark',
-          themePrimary: 'sky',
+          themeMode: 'system',
+          themeColor: 'sky',
           openTimeDetailsOnStart: false,
           openTimeDetailsOnStop: false,
           calculateBreaks: false,
           roundTimes: false,
+          organisationId: null,
         })
       );
     });
@@ -78,15 +80,6 @@ describe('useSettingsStore', () => {
       store.updateSettings({ locale: 'de' });
 
       expect(store.settings).toMatchSnapshot();
-    });
-  });
-
-  describe('setLocale', () => {
-    it('should set the locale', () => {
-      const store = useSettingsStore();
-      store.setLocale('de');
-
-      expect(store.settings.locale).toStrictEqual('de');
     });
   });
 });
