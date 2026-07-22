@@ -7,10 +7,14 @@ const locales = {
   de,
 };
 
+const timerStore = useTimerStore(); 
+const projectStore = useProjectStore();
 const settingsStore = useSettingsStore();
 const { locale, themeColor } = storeToRefs(settingsStore);
 
 onMounted(() => {
+  timerStore.init();
+  projectStore.init();
   settingsStore.init();
 });
 

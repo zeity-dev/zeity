@@ -32,51 +32,31 @@ describe('timerStore', () => {
       expect(store.draft).toEqual({ start: expect.any(String), notes: 'test' });
     });
 
-    it.skip('should be able to start a draft', () => {
+    it('should be able to set draft data', () => {
       const store = useTimerStore();
-      expect(store.isStarted).toStrictEqual(false);
-
-      store.startDraft();
-
-      expect(store.isStarted).toStrictEqual(true);
-    });
-
-    it.skip('should be able to stop a draft', () => {
-      const store = useTimerStore();
-      store.startDraft();
+      store.setDraft({ start: '2021-08-01T00:00:00.000Z', notes: 'test', type: 'manual' });
       expect(store.isStarted).toStrictEqual(true);
 
-      store.stopDraft();
-      expect(store.isStarted).toStrictEqual(false);
+      expect(toRef(store.draft).value).toMatchSnapshot();
     });
 
-    it.skip('should be able to toggle a draft', () => {
+    it('should be able to reset a draft', () => {
       const store = useTimerStore();
-      expect(store.isStarted).toStrictEqual(false);
-
-      store.toggleDraft();
+      store.setDraft({ start: '2021-08-01T00:00:00.000Z', notes: 'test', type: 'manual' });
       expect(store.isStarted).toStrictEqual(true);
-
-      store.toggleDraft();
-      expect(store.isStarted).toStrictEqual(false);
-    });
-
-    it.skip('should be able to reset a draft', () => {
-      const store = useTimerStore();
-      store.startDraft();
-      expect(store.draft).toEqual({ start: expect.any(String), notes: '' });
 
       store.resetDraft();
-      expect(store.draft).toStrictEqual(null);
+      expect(store.isStarted).toStrictEqual(false);
+      expect(toRef(store.draft).value).toBeNull();
     });
 
     it.skip('should be able to update a draft', () => {
       const store = useTimerStore();
-      store.startDraft();
-      expect(store.draft).toEqual({ start: expect.any(String), notes: '' });
+      store.setDraft({ start: '2021-08-01T00:00:00.000Z', notes: '', type: 'manual' });
+      expect(store.draft).toEqual({ start: expect.any(String), notes: '', type: 'manual' });
 
       store.updateDraft({ notes: 'test' });
-      expect(store.draft).toEqual({ start: expect.any(String), notes: 'test' });
+      expect(store.draft).toEqual({ start: expect.any(String), notes: 'test', type: 'manual' });
     });
   });
 
@@ -115,11 +95,16 @@ describe('timerStore', () => {
     it('should save times to localStorage', async () => {
       const localstorageSpy = vi.spyOn(localStorage, 'setItem');
       const store = useTimerStore();
+      store.init();
+
+      await nextTick();
+
       store.insertTime({
         id: '1',
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       await nextTick();
@@ -132,8 +117,9 @@ describe('timerStore', () => {
             start: '2021-08-01T00:00:00.000Z',
             duration: 0,
             notes: '',
+            type: 'manual',
           },
-        ])
+        ]),
       );
     });
 
@@ -144,10 +130,11 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       expect(store.getAllTimes().value).toEqual([
-        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' },
+        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '', type: 'manual' },
       ]);
     });
 
@@ -158,6 +145,7 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       store.updateTime('1', { notes: 'test' });
@@ -168,6 +156,7 @@ describe('timerStore', () => {
           start: '2021-08-01T00:00:00.000Z',
           duration: 0,
           notes: 'test',
+          type: 'manual',
         },
       ]);
     });
@@ -179,6 +168,7 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       store.updateTime('1', {
@@ -191,6 +181,7 @@ describe('timerStore', () => {
           start: '2021-08-01T00:00:00.000Z',
           duration: 60000,
           notes: '',
+          type: 'manual',
         },
       ]);
 
@@ -201,6 +192,7 @@ describe('timerStore', () => {
           start: '2021-08-01T00:00:00.000Z',
           duration: 90000,
           notes: '',
+          type: 'manual',
         },
       ]);
 
@@ -211,6 +203,7 @@ describe('timerStore', () => {
           start: '2021-08-01T00:00:00.000Z',
           duration: 30000,
           notes: '',
+          type: 'manual',
         },
       ]);
     });
@@ -222,6 +215,7 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       store.removeTime('1');
@@ -236,6 +230,7 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       expect(store.findTimeById('1').value).toEqual({
@@ -243,6 +238,7 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
     });
 
@@ -253,10 +249,11 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
-      expect(store.findTime((time) => time.id === '1').value).toEqual([
-        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' },
+      expect(store.findTime(time => time.id === '1').value).toEqual([
+        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '', type: 'manual' },
       ]);
     });
 
@@ -267,23 +264,24 @@ describe('timerStore', () => {
         start: '2021-08-01T00:00:00.000Z',
         duration: 0,
         notes: '',
+        type: 'manual',
       });
 
       expect(store.getAllTimes().value).toEqual([
-        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '' },
+        { id: '1', start: '2021-08-01T00:00:00.000Z', duration: 0, notes: '', type: 'manual' },
       ]);
     });
   });
 });
 
 function mockDraftLocalstorage(data: unknown) {
-  vi.spyOn(localStorage, 'getItem').mockImplementation((key) =>
-    key === 'draft' ? JSON.stringify(data) : null
+  vi.spyOn(localStorage, 'getItem').mockImplementation(key =>
+    key === 'draft' ? JSON.stringify(data) : null,
   );
 }
 
 function mockTimesLocalstorage(data: unknown) {
-  vi.spyOn(localStorage, 'getItem').mockImplementation((key) =>
-    key === 'times' ? JSON.stringify(data) : null
+  vi.spyOn(localStorage, 'getItem').mockImplementation(key =>
+    key === 'times' ? JSON.stringify(data) : null,
   );
 }

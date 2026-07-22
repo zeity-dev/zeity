@@ -1,12 +1,7 @@
 import { addMilliseconds, isSameDay } from 'date-fns';
 import { nanoid } from 'nanoid';
 
-import {
-  type DraftTime,
-  type Time,
-  TIME_TYPE_BREAK,
-  TIME_TYPE_MANUAL,
-} from '@zeity/types';
+import { type DraftTime, type Time, TIME_TYPE_BREAK, TIME_TYPE_MANUAL } from '@zeity/types';
 import {
   nowWithoutMillis,
   parseDate,
@@ -68,6 +63,7 @@ export function useTime() {
   const { settings } = storeToRefs(useSettingsStore());
 
   const store = useTimerStore();
+  const { draft } = storeToRefs(store);
 
   function roundTime<T extends Partial<Time> = Time>(time: T) {
     // If the time object is incomplete, return it as is
@@ -78,8 +74,7 @@ export function useTime() {
     const tmpEnd = addMilliseconds(parseDate(tmpStart), tmpDuration);
 
     // If the difference is less than a minute, round seconds otherwise round minutes
-    const roundFn =
-      tmpDuration < millisecondsInMinute ? roundToSeconds : roundToMinutes;
+    const roundFn = tmpDuration < millisecondsInMinute ? roundToSeconds : roundToMinutes;
 
     const start = roundFn(tmpStart, {
       roundingMethod: 'floor',
@@ -110,16 +105,14 @@ export function useTime() {
 
   function getOrganisationTimes() {
     const ref = store.findTimes(
-      (time) =>
-        !time.organisationId ||
-        time.organisationId === currentOrganisationId.value,
+      time => !time.organisationId || time.organisationId === currentOrganisationId.value,
     );
 
     return computed(() => ref.value);
   }
 
   function getOfflineTimes() {
-    const ref = store.findTimes((time) => !time.organisationMemberId);
+    const ref = store.findTimes(time => !time.organisationMemberId);
     return computed(() => ref.value);
   }
 
@@ -178,7 +171,7 @@ export function useTime() {
   }
 
   async function toggleDraft(): Promise<DraftTime | Time | undefined> {
-    if (!toRef(store.draft).value) {
+    if (!draft.value) {
       return startDraft();
     }
     return stopDraft();
@@ -199,7 +192,7 @@ export function useTime() {
     return newDraft;
   }
   async function stopDraft() {
-    const draftValue = toRef(store.draft).value;
+    const draftValue = draft.value;
     if (!draftValue) return;
 
     const start = draftValue.start;
@@ -223,18 +216,12 @@ export function useTime() {
   }
 
   function isOnlineTime(idOrTime: string | Time) {
-    const time =
-      typeof idOrTime === 'object'
-        ? idOrTime
-        : store.findTimeById(idOrTime).value;
+    const time = typeof idOrTime === 'object' ? idOrTime : store.findTimeById(idOrTime).value;
     return !!time?.organisationMemberId;
   }
 
   function calculateBreakTime(nextItem: Time, previousItem: Time): Time | null {
-    const prevEnd = addMilliseconds(
-      parseDate(previousItem.start),
-      previousItem.duration,
-    );
+    const prevEnd = addMilliseconds(parseDate(previousItem.start), previousItem.duration);
 
     // if on different days, no break
     if (!isSameDay(prevEnd, parseDate(nextItem.start))) {
@@ -275,11 +262,12 @@ export function useTime() {
 
     isOnlineTime,
 
+    draft,
     toggleDraft,
     startDraft,
     stopDraft,
-    roundTime,
 
+    roundTime,
     calculateBreakTime,
   };
 }

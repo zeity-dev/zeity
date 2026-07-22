@@ -123,10 +123,6 @@ export const useSettingsStore = defineStore('settings', () => {
     );
   }
 
-  onMounted(() => {
-    init();
-  });
-
   return {
     init,
 
