@@ -1,9 +1,8 @@
-import { eq } from '@zeity/database';
+import { eq, asc } from '@zeity/database';
 import { users } from '@zeity/database/user';
 import { organisations } from '@zeity/database/organisation';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { userAccounts } from '@zeity/database/user-account';
-import { userSettings } from '@zeity/database/user-settings';
 
 export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
@@ -33,7 +32,7 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const [providers, orgs, settings] = await Promise.all([
+  const [providers, orgs] = await Promise.all([
     // providers
     db
       .select({
@@ -58,30 +57,11 @@ export default defineEventHandler(async event => {
       .leftJoin(organisationMembers, eq(organisationMembers.organisationId, organisations.id))
       .where(eq(organisationMembers.userId, user.id))
       .orderBy(asc(organisations.name)),
-
-    // user settings
-    db
-      .select({
-        id: userSettings.id,
-
-        locale: userSettings.locale,
-        openTimeDetailsOnStart: userSettings.openTimeDetailsOnStart,
-        openTimeDetailsOnStop: userSettings.openTimeDetailsOnStop,
-        calculateBreaks: userSettings.calculateBreaks,
-        roundTimes: userSettings.roundTimes,
-        themeMode: userSettings.themeMode,
-        themeColor: userSettings.themeColor,
-
-        organisationId: userSettings.organisationId,
-      })
-      .from(userSettings)
-      .where(eq(userSettings.userId, user.id)),
   ]);
 
   return {
     user,
     providers,
     organisations: orgs,
-    settings,
   };
 });

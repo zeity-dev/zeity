@@ -5,7 +5,19 @@ import { userSettings } from '@zeity/database/user-settings';
 
 export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
-  const organisation = await requireOrganisationSession(event);
+
+  const params = await getValidatedRouterParams(
+    event,
+    z.object({
+      orgId: z.uuid(),
+    }).safeParse,
+  );
+  if (!params.success) {
+    throw createError({
+      statusCode: 404,
+      message: 'Not Found',
+    });
+  }
 
   const body = await readValidatedBody(
     event,
@@ -30,17 +42,26 @@ export default defineEventHandler(async event => {
     });
   }
 
-  const db = useDrizzle();
+  if (
+    !(await userIdBelongsToOrganisation(session.user.id, {
+      id: params.data.orgId,
+    }))
+  ) {
+    throw createError({
+      statusCode: 403,
+      message: 'Forbidden',
+    });
+  }
 
-  const settings = await db
+  const settings = await useDrizzle()
     .insert(userSettings)
-    .values({ ...body.data, userId: session.user.id, organisationId: organisation.value })
+    .values({ ...body.data, userId: session.user.id, organisationId: params.data.orgId })
     .onConflictDoUpdate({
       target: [userSettings.userId, userSettings.organisationId],
       set: body.data,
       setWhere: and(
         eq(userSettings.userId, session.user.id),
-        eq(userSettings.organisationId, organisation.value),
+        eq(userSettings.organisationId, params.data.orgId),
       ),
     })
     .returning({

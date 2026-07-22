@@ -1,6 +1,5 @@
 import type { User } from '@zeity/database/user';
 import type { LocalOrganisation, LocalUser } from '~/types/local-user';
-import type { SettingsState } from '~/types/settings';
 
 function uploadImage(file: File) {
   const formData = new FormData();
@@ -13,23 +12,20 @@ function uploadImage(file: File) {
 
 export function useUser() {
   const { clear, fetch } = useUserSession();
-  const userStore = useUserStore();
-  const settingsStore = useSettingsStore();
   const organisationsStore = useOrganisationStore();
-  const userStoreRefs = storeToRefs(useUserStore());
+  const userStore = useUserStore();
+  const userStoreRefs = storeToRefs(userStore);
 
   function updateUserAndOrganisations(
     user: LocalUser | null = null,
     organisations: LocalOrganisation[] = [],
-    settings: SettingsState[] = [],
   ) {
     userStore.setUser(user || null);
     organisationsStore.setOrganisations(organisations || []);
-    settingsStore.upsertUserSettings(settings || []);
   }
 
   function reset() {
-    updateUserAndOrganisations(null, [], []);
+    updateUserAndOrganisations(null, []);
   }
 
   function fetchUser() {
@@ -37,12 +33,8 @@ export function useUser() {
       userStore.setLoading(result.pending.value);
 
       if (result.status.value === 'success') {
-        const { user, organisations, settings } = result?.data.value || {};
-        updateUserAndOrganisations(
-          user as LocalUser,
-          organisations as LocalOrganisation[],
-          settings as SettingsState[],
-        );
+        const { user, organisations } = result?.data.value || {};
+        updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
         return result;
       }
 
@@ -58,12 +50,8 @@ export function useUser() {
     userStore.setLoading(true);
     return $fetch('/api/user/current')
       .then(result => {
-        const { user, organisations, settings } = result || {};
-        updateUserAndOrganisations(
-          user as LocalUser,
-          organisations as LocalOrganisation[],
-          settings as SettingsState[],
-        );
+        const { user, organisations } = result || {};
+        updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
         return result;
       })
       .catch(error => {

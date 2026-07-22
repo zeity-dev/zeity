@@ -39,7 +39,7 @@ describe('useSettingsStore', () => {
   describe('localStorage', () => {
     it('should load settings from localStorage', () => {
       vi.spyOn(localStorage, 'getItem').mockReturnValue(
-        JSON.stringify({ locale: 'fr', themeMode: 'dark', themeColor: 'red' })
+        JSON.stringify({ locale: 'fr', themeMode: 'dark', themeColor: 'red' }),
       );
 
       const store = useSettingsStore();
@@ -52,7 +52,6 @@ describe('useSettingsStore', () => {
       const spy = vi.spyOn(localStorage, 'setItem');
       const store = useSettingsStore();
 
-      store.init();
       store.updateSettings({ locale: 'de' });
 
       await nextTick();
@@ -69,7 +68,7 @@ describe('useSettingsStore', () => {
           calculateBreaks: false,
           roundTimes: false,
           organisationId: null,
-        })
+        }),
       );
     });
   });

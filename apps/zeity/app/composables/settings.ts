@@ -1,7 +1,7 @@
 import type { SettingsState } from '~/types/settings';
 
-function patchSettings(data: Partial<SettingsState>): Promise<SettingsState> {
-  return $fetch(`/api/user/settings`, {
+function patchSettings(orgId: string, data: Partial<SettingsState>): Promise<SettingsState> {
+  return $fetch(`/api/user/settings/${orgId}`, {
     method: 'PATCH',
     body: data,
   });
@@ -10,11 +10,12 @@ function patchSettings(data: Partial<SettingsState>): Promise<SettingsState> {
 export function useSettings() {
   const store = useSettingsStore();
   const { settings } = storeToRefs(store);
+  const { loggedIn } = useUserSession();
   const { currentOrganisationId } = useOrganisation();
 
   async function updateSettings(data: Partial<SettingsState>) {
-    if (currentOrganisationId.value) {
-      const updatedSettings = await patchSettings(data);
+    if (loggedIn.value && currentOrganisationId.value) {
+      const updatedSettings = await patchSettings(currentOrganisationId.value, data);
       store.upsertUserSettings([updatedSettings]);
     }
 
@@ -25,7 +26,72 @@ export function useSettings() {
     return updateSettings({ [key]: value });
   }
 
+  // load and save settings to localStorage needs to be done in the setup function, otherwise locale will be overwritten by the i18n module
+  async function init() {
+    const i18n = useI18n();
+
+    store.loadFromLocalStorage();
+
+    const { status, data } = await useLazyFetch<SettingsState[]>('/api/user/settings', {
+      enabled: () => loggedIn.value,
+      watch: [() => loggedIn.value],
+    });
+
+    watch(
+      () => status.value === 'success' && data.value,
+      userSettings => {
+        console.log('upsertUserSettings', userSettings);
+        if (userSettings) {
+          store.upsertUserSettings(userSettings);
+        }
+      },
+      { immediate: true },
+    );
+
+    watch(
+      currentOrganisationId,
+      value => {
+        const orgSettings = store.allSettings.find(setting => setting.organisationId === value);
+        if (orgSettings) {
+          store.updateSettings(orgSettings);
+        }
+      },
+      { immediate: true },
+    );
+
+    watch(
+      () => settings.value.locale,
+      value => {
+        i18n.setLocale(value);
+      },
+      { immediate: true },
+    );
+
+    watch(
+      () => settings.value.themeMode,
+      value => {
+        useColorMode().preference = value || 'system';
+      },
+    );
+
+    watch(
+      () => settings.value.themeColor,
+      value => {
+        updateAppConfig({
+          ui: {
+            colors: {
+              primary: value || 'sky',
+            },
+          },
+        });
+      },
+      { immediate: true },
+    );
+  }
+
   return {
+    init,
+
     settings,
 
     updateSettings,

@@ -48,6 +48,8 @@ export const useSettingsStore = defineStore('settings', () => {
     organisationId: currentOrganisationId.value ?? null,
   }));
 
+  const allSettings = userSettingsStore.getAll();
+
   function updateSettings(data: Partial<SettingsState>) {
     if (data.locale !== undefined) {
       locale.value = data.locale;
@@ -83,50 +85,13 @@ export const useSettingsStore = defineStore('settings', () => {
     updateSettings(settings);
   }
 
-  // load and save settings to localStorage needs to be done in the setup function, otherwise locale will be overwritten by the i18n module
-  function init() {
-    const i18n = useI18n();
-
-    loadFromLocalStorage();
-
-    watch(settings, value => {
-      useLocalStorage().setItem('settings', value);
-    });
-
-    watch(
-      locale,
-      value => {
-        i18n.setLocale(value);
-      },
-      { immediate: true },
-    );
-
-    watch(
-      themeMode,
-      value => {
-        useColorMode().preference = value || 'system';
-      },
-      { immediate: true },
-    );
-
-    watch(
-      currentOrganisationId,
-      value => {
-        const orgSettings = userSettingsStore
-          .find(setting => setting.organisationId === value)
-          .value.at(0);
-        if (orgSettings) {
-          updateSettings(orgSettings);
-        }
-      },
-      { immediate: true },
-    );
-  }
+  watch(settings, value => {
+    useLocalStorage().setItem('settings', value);
+  });
 
   return {
-    init,
-
     settings,
+    allSettings,
     updateSettings,
 
     locale,
