@@ -28,7 +28,7 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "^4.4.0",
-    "jose": "^6.2.3",
+    "jose": "^6.2.4",
     "qrcode.vue": "^3.10.0",
     "unemail": "^0.5.0",
     "vue": "^3.5.40",
@@ -37,12 +37,12 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.118",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.90",
+    "@iconify-json/simple-icons": "^1.2.91",
     "@nuxt/hints": "^1.1.4",
     "@nuxt/image": "^2.0.0",
     "@nuxt/test-utils": "^4.0.3",
     "@nuxt/ui": "^4.10.0",
-    "@nuxtjs/i18n": "^10.4.1",
+    "@nuxtjs/i18n": "^10.5.0",
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.8",
@@ -51,7 +51,7 @@
     "nuxt": "^4.5.0",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.6.0",
-    "vue-i18n": "^11.4.6",
+    "vue-i18n": "^11.4.7",
     "vue-tsc": "^3.3.7"
   }
 }
