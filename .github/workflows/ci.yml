@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  code-quality: write
 jobs:
   build:
     runs-on: ubuntu-latest
