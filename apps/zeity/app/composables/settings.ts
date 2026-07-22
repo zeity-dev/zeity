@@ -72,6 +72,7 @@ export function useSettings() {
       value => {
         useColorMode().preference = value || 'system';
       },
+      { immediate: true },
     );
 
     watch(
