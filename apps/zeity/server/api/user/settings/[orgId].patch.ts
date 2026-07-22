@@ -42,6 +42,13 @@ export default defineEventHandler(async event => {
     });
   }
 
+  if (Object.keys(body.data).length === 0) {
+    throw createError({
+      statusCode: 400,
+      message: 'Invalid request body',
+    });
+  }
+
   if (
     !(await userIdBelongsToOrganisation(session.user.id, {
       id: params.data.orgId,
