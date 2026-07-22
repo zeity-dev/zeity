@@ -9,7 +9,7 @@ import {
 
 export function useOrganisation() {
   const store = useOrganisationStore();
-  const { currentOrganisation, currentOrganisationId } = storeToRefs(store);
+  const { currentOrganisation, currentOrganisationId, loading } = storeToRefs(store);
 
   async function createOrganisation(body: Organisation | NewOrganisation) {
     store.setLoading(true);
@@ -76,7 +76,7 @@ export function useOrganisation() {
   }
 
   return {
-    loading: store.loading,
+    loading,
     currentOrganisation,
     currentOrganisationId,
     setCurrentOrganisationId: store.setCurrentOrganisationId,

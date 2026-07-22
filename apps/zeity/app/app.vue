@@ -7,25 +7,16 @@ const locales = {
   de,
 };
 
-const settingsStore = useSettingsStore();
-const { locale, themePrimary } = storeToRefs(settingsStore);
+const timerStore = useTimerStore();
+const projectStore = useProjectStore();
+const settings = useSettings();
 
-watch(
-  themePrimary,
-  value => {
-    updateAppConfig({
-      ui: {
-        colors: {
-          primary: value || 'sky',
-        },
-      },
-    });
-  },
-  { immediate: true },
-);
+timerStore.init();
+projectStore.init();
+await settings.init();
 
 const isDev = import.meta.dev;
-const uiLocale = computed(() => locales[locale.value] || en);
+const uiLocale = computed(() => locales[settings.settings.value.locale] || en);
 const lang = computed(() => uiLocale.value.code);
 const dir = computed(() => uiLocale.value.dir);
 

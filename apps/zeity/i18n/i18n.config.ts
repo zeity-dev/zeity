@@ -1002,7 +1002,7 @@ export default defineI18nConfig(() => ({
         theme: 'Thema',
         light: 'Hell',
         dark: 'Dunkel',
-        auto: 'Automatisch',
+        auto: 'Auto',
         color: 'Farbe',
         data: 'Daten',
         import: 'Importieren',

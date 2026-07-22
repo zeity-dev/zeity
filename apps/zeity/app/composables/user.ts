@@ -1,15 +1,24 @@
 import type { User } from '@zeity/database/user';
 import type { LocalOrganisation, LocalUser } from '~/types/local-user';
 
+function uploadImage(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return $fetch('/api/user/image', {
+    method: 'POST',
+    body: formData,
+  });
+}
+
 export function useUser() {
-  const { clear } = useUserSession();
-  const userStore = useUserStore();
+  const { clear, fetch } = useUserSession();
   const organisationsStore = useOrganisationStore();
-  const userStoreRefs = storeToRefs(useUserStore());
+  const userStore = useUserStore();
+  const userStoreRefs = storeToRefs(userStore);
 
   function updateUserAndOrganisations(
     user: LocalUser | null = null,
-    organisations: LocalOrganisation[] = []
+    organisations: LocalOrganisation[] = [],
   ) {
     userStore.setUser(user || null);
     organisationsStore.setOrganisations(organisations || []);
@@ -20,19 +29,16 @@ export function useUser() {
   }
 
   function fetchUser() {
-    return useLazyFetch('/api/user/current').then((result) => {
+    return useLazyFetch('/api/user/current').then(result => {
       userStore.setLoading(result.pending.value);
 
       if (result.status.value === 'success') {
         const { user, organisations } = result?.data.value || {};
-        updateUserAndOrganisations(
-          user as LocalUser,
-          organisations as LocalOrganisation[]
-        );
+        updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
         return result;
       }
 
-      if (result.error.value?.data.statusCode === 401) {
+      if (result.error.value?.data?.statusCode === 401) {
         clear();
       }
 
@@ -43,15 +49,12 @@ export function useUser() {
   async function reloadUser() {
     userStore.setLoading(true);
     return $fetch('/api/user/current')
-      .then((result) => {
+      .then(result => {
         const { user, organisations } = result || {};
-        updateUserAndOrganisations(
-          user as LocalUser,
-          organisations as LocalOrganisation[]
-        );
+        updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
         return result;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('fetchUser error', error);
         if (error?.statusCode === 401) {
           clear();
@@ -65,9 +68,9 @@ export function useUser() {
 
   async function deleteUser() {
     return $fetch('/api/user/current', {
-      method: 'delete',
+      method: 'DELETE',
     }).then(async () => {
-      await useUserSession().clear();
+      await clear();
     });
   }
 
@@ -75,18 +78,9 @@ export function useUser() {
     return $fetch('/api/user/current', {
       method: 'PATCH',
       body: data,
-    }).then(async (data) => {
-      await useUserSession().fetch();
+    }).then(async data => {
+      await fetch();
       return data;
-    });
-  }
-
-  function uploadImage(file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-    return $fetch('/api/user/image', {
-      method: 'POST',
-      body: formData,
     });
   }
 

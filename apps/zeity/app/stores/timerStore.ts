@@ -16,7 +16,7 @@ export const useTimerStore = defineStore('timer', () => {
   // Draft
   const draft = ref<DraftTime | null>(null);
   const isStarted = computed(() => !!draft.value);
-  function setDraft(data: DraftTime) {
+  function setDraft(data: DraftTime | null) {
     draft.value = data;
     return draft;
   }
@@ -37,6 +37,10 @@ export const useTimerStore = defineStore('timer', () => {
   }
   function resetDraft() {
     draft.value = null;
+  }
+
+  function resetTimes() {
+    timesStore.setEntities([]);
   }
 
   function upsertTimes(times: Time[]) {
@@ -70,28 +74,30 @@ export const useTimerStore = defineStore('timer', () => {
     loadDraftFromLocalStorage();
   }
 
-  onMounted(() => {
-    loadFromLocalStorage();
-  });
-
   const offlineTimes = computed(() => {
     const times = timesStore.getAll();
-    return times.value.filter((time) => !time.organisationMemberId);
+    return times.value.filter(time => !time.organisationMemberId);
   });
 
-  watch(draft, (value) => {
-    useLocalStorage().setItem('draft', value);
-  });
-  watch(offlineTimes, (value) => {
-    useLocalStorage().setItem('times', value);
-  });
+  function init() {
+    loadFromLocalStorage();
+
+    watch(draft, value => {
+      useLocalStorage().setItem('draft', value);
+    });
+    watch(offlineTimes, value => {
+      useLocalStorage().setItem('times', value);
+    });
+  }
 
   return {
+    init,
     offlineTimes,
     getAllTimes: timesStore.getAll,
     findTimes: timesStore.find,
     findTimeById: timesStore.findById,
     findTime: timesStore.find,
+    resetTimes,
 
     upsertTimes,
     insertTime,

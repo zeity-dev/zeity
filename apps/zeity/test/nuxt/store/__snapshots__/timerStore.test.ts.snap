@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`timerStore > draft > should be able to set draft data 1`] = `
+{
+  "notes": "test",
+  "start": "2021-08-01T00:00:00.000Z",
+  "type": "manual",
+}
+`;

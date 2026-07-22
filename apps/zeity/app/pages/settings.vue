@@ -4,6 +4,7 @@ import { PROJECT_STATUS_ACTIVE, type Project, type Time } from '@zeity/types';
 import { timeDiff, type DateLike } from '@zeity/utils/date';
 import { pick } from '@zeity/utils/object';
 import { downloadAs } from '~/utils/download-file';
+import type { Locale } from '~/types/lang';
 
 const { t } = useI18n();
 
@@ -13,7 +14,8 @@ useHead({
 
 const timeStore = useTimerStore();
 const projectStore = useProjectStore();
-const settingsStore = useSettingsStore();
+
+const { settings, updateSetting } = useSettings();
 
 const localeOptions = [
     {
@@ -37,6 +39,11 @@ const themeModes = computed(() => [
         value: 'dark',
         icon: 'i-lucide-moon'
     },
+    {
+        label: t('settings.auto'),
+        value: 'system',
+        icon: 'i-lucide-sun-moon'
+    }
 ]);
 
 const themePrimaryOptions = [
@@ -93,7 +100,7 @@ function handleExport() {
     const content = {
         times: timeStore.getAllTimes().value,
         projects: projectStore.getAllProjects().value,
-        settings: settingsStore.settings,
+        settings: settings.value,
     };
     const blob = new Blob([JSON.stringify(content)], { type: 'text/plain' });
     const dataUri = URL.createObjectURL(blob);
@@ -190,36 +197,36 @@ function sanitizeProject(data: unknown) {
         <FieldSet :label="$t('settings.general')">
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.language') }}</span>
-                <USelect v-model="settingsStore.locale" :items="localeOptions" class="min-w-60" />
+                <USelect v-model="settings.locale" :items="localeOptions" @update:model-value="updateSetting('locale', $event as Locale)" class="min-w-60" />
             </label>
         </FieldSet>
 
         <FieldSet :label="$t('settings.time.title')">
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.time.detailsOnStart') }}</span>
-                <USwitch v-model="settingsStore.openTimeDetailsOnStart" />
+                <USwitch v-model="settings.openTimeDetailsOnStart" @update:model-value="updateSetting('openTimeDetailsOnStart', $event)" />
             </label>
 
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.time.detailsOnStop') }}</span>
-                <USwitch v-model="settingsStore.openTimeDetailsOnStop" />
+                <USwitch v-model="settings.openTimeDetailsOnStop" @update:model-value="updateSetting('openTimeDetailsOnStop', $event)" />
             </label>
 
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.time.calculateBreaks') }}</span>
-                <USwitch v-model="settingsStore.calculateBreaks" />
+                <USwitch v-model="settings.calculateBreaks" @update:model-value="updateSetting('calculateBreaks', $event)" />
             </label>
 
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.time.roundTimes') }}</span>
-                <USwitch v-model="settingsStore.roundTimes" />
+                <USwitch v-model="settings.roundTimes" @update:model-value="updateSetting('roundTimes', $event)" />
             </label>
         </FieldSet>
 
         <FieldSet :label="$t('settings.appearance')">
             <label class="flex items-center justify-between">
                 <span>{{ $t('settings.color') }}</span>
-                <USelect v-model="settingsStore.themePrimary" :items="themePrimaryOptions" class="min-w-60">
+                <USelect v-model="settings.themeColor" :items="themePrimaryOptions" class="min-w-60" @update:model-value="updateSetting('themeColor', $event)">
                     <template #leading="{ modelValue, ui }">
                         <UChip v-if="modelValue" inset standalone :size="ui.itemLeadingChipSize() as UISize"
                             :class="ui.itemLeadingChip()" :style="`--ui-primary: var(--ui-color-${modelValue}-400);`" />
@@ -231,10 +238,10 @@ function sanitizeProject(data: unknown) {
                 <span>{{ $t('settings.theme') }}</span>
 
                 <ClientOnly>
-                    <UFieldGroup v-model="settingsStore.themeMode" class="min-w-60">
+                    <UFieldGroup v-model="settings.themeMode" class="min-w-60">
                         <UButton v-for="mode in themeModes" :key="mode.label" :label="mode.label" :icon="mode.icon"
-                            :color="settingsStore.themeMode === mode.value ? 'primary' : 'neutral'" variant="outline"
-                            block class="w-full" @click="settingsStore.themeMode = mode.value" />
+                            :color="settings.themeMode === mode.value ? 'primary' : 'neutral'" variant="outline"
+                            block class="w-full" @click="updateSetting('themeMode', mode.value)" />
                     </UFieldGroup>
                 </ClientOnly>
             </label>
