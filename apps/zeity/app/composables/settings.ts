@@ -40,7 +40,6 @@ export function useSettings() {
     watch(
       () => status.value === 'success' && data.value,
       userSettings => {
-        console.log('upsertUserSettings', userSettings);
         if (userSettings) {
           store.upsertUserSettings(userSettings);
         }
