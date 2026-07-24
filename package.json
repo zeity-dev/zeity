@@ -26,9 +26,9 @@
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint-plugin-regexp": "^3.1.1",
-    "knip": "^6.27.0",
-    "oxfmt": "^0.59.0",
-    "oxlint": "^1.74.0",
+    "knip": "^6.29.0",
+    "oxfmt": "^0.60.0",
+    "oxlint": "^1.75.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
@@ -36,5 +36,5 @@
     "zod": "^4.4.3",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@11.15.1"
+  "packageManager": "pnpm@11.16.0"
 }

@@ -47,11 +47,11 @@
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/test-utils": "^2.4.11",
-    "happy-dom": "^20.11.0",
+    "happy-dom": "^20.11.1",
     "nuxt": "^4.5.0",
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.6.0",
     "vue-i18n": "^11.4.7",
-    "vue-tsc": "^3.3.7"
+    "vue-tsc": "^3.3.8"
   }
 }
