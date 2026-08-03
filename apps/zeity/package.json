@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.6",
-    "@internationalized/date": "^3.12.2",
+    "@internationalized/date": "^3.12.3",
     "@number-flow/vue": "^0.5.2",
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^1.0.1",
@@ -28,21 +28,21 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "^4.4.0",
-    "jose": "^6.2.5",
+    "jose": "^6.2.7",
     "qrcode.vue": "^3.10.0",
     "unemail": "^0.5.0",
     "vue": "^3.5.40",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.120",
+    "@iconify-json/lucide": "^1.2.121",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.92",
     "@nuxt/hints": "^1.1.4",
     "@nuxt/image": "^2.1.0",
     "@nuxt/test-utils": "^4.1.0",
     "@nuxt/ui": "^4.10.0",
-    "@nuxtjs/i18n": "^10.5.0",
+    "@nuxtjs/i18n": "^10.6.0",
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.8",
@@ -52,6 +52,6 @@
     "nuxt-auth-utils": "^0.5.29",
     "nuxt-security": "^2.6.0",
     "vue-i18n": "^11.4.8",
-    "vue-tsc": "^3.3.8"
+    "vue-tsc": "^3.3.9"
   }
 }
