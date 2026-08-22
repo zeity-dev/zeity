@@ -25,10 +25,10 @@
     "@types/node": "^24.13.3",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
-    "eslint-plugin-regexp": "^3.1.1",
-    "knip": "^6.32.0",
-    "oxfmt": "^0.62.0",
-    "oxlint": "^1.77.0",
+    "eslint-plugin-regexp": "^3.2.0",
+    "knip": "^6.32.2",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
@@ -36,5 +36,5 @@
     "zod": "^4.4.3",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@11.20.0"
+  "packageManager": "pnpm@11.22.0"
 }
