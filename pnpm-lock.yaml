@@ -111,8 +111,8 @@ importers:
   apps/zeity:
     dependencies:
       '@bradenmacdonald/s3-lite-client':
-        specifier: npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.6
-        version: '@jsr/bradenmacdonald__s3-lite-client@0.9.6'
+        specifier: npm:@jsr/bradenmacdonald__s3-lite-client@^1.0.0
+        version: '@jsr/bradenmacdonald__s3-lite-client@1.0.0'
       '@internationalized/date':
         specifier: ^3.12.3
         version: 3.12.3
@@ -2002,8 +2002,8 @@ packages:
     peerDependencies:
       zod: ^4.4.3
 
-  '@jsr/bradenmacdonald__s3-lite-client@0.9.6':
-    resolution: {integrity: sha512-YJewLR/K0YmDGhSwKsvZ4vCJaXPjvE+2G2z/EAKIkuP7BSQ5BnJ3Tw6KYYAgfx37ktjp2VozimD2BjfcBuz18A==, tarball: https://npm.jsr.io/~/11/@jsr/bradenmacdonald__s3-lite-client/0.9.6.tgz}
+  '@jsr/bradenmacdonald__s3-lite-client@1.0.0':
+    resolution: {integrity: sha512-xKFkasxXFUj/euc1eai+eK4wwrpJFV2SNvE5CF7YiVhmT4QXresVZVBp9buQSQTLZqP6XIMthEg5UW1sQWzaQQ==, tarball: https://npm.jsr.io/~/11/@jsr/bradenmacdonald__s3-lite-client/1.0.0.tgz}
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
@@ -11723,7 +11723,7 @@ snapshots:
       zod: 4.4.3
     optional: true
 
-  '@jsr/bradenmacdonald__s3-lite-client@0.9.6': {}
+  '@jsr/bradenmacdonald__s3-lite-client@1.0.0': {}
 
   '@kwsites/file-exists@1.1.1(supports-color@10.2.2)':
     dependencies:
