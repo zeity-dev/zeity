@@ -111,8 +111,8 @@ importers:
   apps/zeity:
     dependencies:
       '@bradenmacdonald/s3-lite-client':
-        specifier: npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.6
-        version: '@jsr/bradenmacdonald__s3-lite-client@0.9.6'
+        specifier: ^1.0.0
+        version: 1.0.0
       '@internationalized/date':
         specifier: ^3.12.3
         version: 3.12.3
@@ -895,6 +895,9 @@ packages:
         optional: true
       commander:
         optional: true
+
+  '@bradenmacdonald/s3-lite-client@1.0.0':
+    resolution: {integrity: sha512-j83jujGwsJDfXPybSF+wA3orT9hO9xIM1HseCk9IDCmdn3zU2WdCK3vk6DSuys7VilB/cVNXcmb7zOpUgor/jQ==}
 
   '@capsizecss/unpack@4.0.1':
     resolution: {integrity: sha512-CuNiSqg7+e1cO/GjffyMOm5Tt2jUF9CWHHnvQ/UkqvtkGfHdgwEC0wpmq7fkN3gxwpRnrAN0WzO3vREKmNolMQ==}
@@ -2001,9 +2004,6 @@ packages:
     resolution: {integrity: sha512-vvcyZ+10EDZKbEyB1J2kXOGfDaiZR2LurZGSqi2r5STHyKr+Te85DWaBxTwRGgM7U1LtIvNx85BzzjElRKoAIg==}
     peerDependencies:
       zod: ^4.4.3
-
-  '@jsr/bradenmacdonald__s3-lite-client@0.9.6':
-    resolution: {integrity: sha512-YJewLR/K0YmDGhSwKsvZ4vCJaXPjvE+2G2z/EAKIkuP7BSQ5BnJ3Tw6KYYAgfx37ktjp2VozimD2BjfcBuz18A==, tarball: https://npm.jsr.io/~/11/@jsr/bradenmacdonald__s3-lite-client/0.9.6.tgz}
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
@@ -10866,6 +10866,8 @@ snapshots:
       cac: 7.0.0
       citty: 0.2.2
 
+  '@bradenmacdonald/s3-lite-client@1.0.0': {}
+
   '@capsizecss/unpack@4.0.1':
     dependencies:
       fontkitten: 1.0.3
@@ -11722,8 +11724,6 @@ snapshots:
     dependencies:
       zod: 4.4.3
     optional: true
-
-  '@jsr/bradenmacdonald__s3-lite-client@0.9.6': {}
 
   '@kwsites/file-exists@1.1.1(supports-color@10.2.2)':
     dependencies:

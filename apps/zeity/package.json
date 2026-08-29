@@ -14,7 +14,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@bradenmacdonald/s3-lite-client": "npm:@jsr/bradenmacdonald__s3-lite-client@^0.9.6",
+    "@bradenmacdonald/s3-lite-client": "^1.0.0",
     "@internationalized/date": "^3.12.3",
     "@number-flow/vue": "^0.5.2",
     "@nuxtjs/html-validator": "^2.1.0",

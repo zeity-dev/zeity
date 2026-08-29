@@ -289,11 +289,6 @@ export default defineNuxtConfig({
         target: 'es2024',
       },
     },
-    externals: {
-      // bundle the S3 client in the server bundle as nitro does not support jsr packages yet
-      // see: https://github.com/nitrojs/nitro/issues/3034
-      inline: ['@bradenmacdonald/s3-lite-client'],
-    },
   },
 
   vite: {
