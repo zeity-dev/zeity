@@ -34,6 +34,15 @@ export async function refreshUserSession(
     return;
   }
 
+  // hack for updating cookie expiration time
+  // see: https://github.com/atinux/nuxt-auth-utils/issues/356
+  if (event.context?.sessions?.['zeity_session']) {
+    event.context.sessions!['zeity_session'] = {
+      ...event.context.sessions!['zeity_session'],
+      createdAt: Date.now(),
+    };
+  }
+
   await setUserSession(event, {
     ...session,
     user: {
