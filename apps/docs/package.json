@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@number-flow/vue": "^0.5.2",
-    "@nuxt/content": "^3.15.2",
-    "@nuxt/icon": "^2.5.0",
+    "@nuxt/content": "^3.16.0",
+    "@nuxt/icon": "^2.5.1",
     "@nuxt/image": "^2.1.0",
     "@nuxt/ui": "^4.11.0",
     "@nuxtjs/i18n": "^10.6.0",
@@ -21,10 +21,10 @@
     "@zeity/utils": "workspace:^",
     "docus": "^5.12.3",
     "nuxt": "^4.5.2",
-    "vue": "^3.5.41"
+    "vue": "^3.5.42"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.124",
+    "@iconify-json/lucide": "^1.2.126",
     "@iconify-json/ri": "^1.2.10",
     "@nuxt/hints": "^1.1.4",
     "nuxt-security": "^2.6.0"
