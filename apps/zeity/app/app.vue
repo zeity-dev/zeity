@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { de, en } from '@nuxt/ui/locale';
-import { useDocumentVisibility } from '@vueuse/core';
 
 const locales = {
   en,
@@ -33,13 +32,7 @@ useHead({
 });
 
 const auth = useAuth();
-const visibility = useDocumentVisibility();
-watch(visibility, current => {
-  // keep user session alive by refreshing it when the user comes back to the app
-  if (current === 'visible') {
-    auth.refresh();
-  }
-});
+auth.startSessionKeepAlive();
 </script>
 
 <template>
