@@ -20,7 +20,7 @@
     "@nuxtjs/html-validator": "^2.1.0",
     "@pinia/nuxt": "^1.0.2",
     "@simplewebauthn/browser": "^13.3.0",
-    "@simplewebauthn/server": "^13.3.3",
+    "@simplewebauthn/server": "^14.0.0",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
     "@vueuse/core": "^14.4.0",

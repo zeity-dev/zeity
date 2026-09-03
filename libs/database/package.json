@@ -19,7 +19,7 @@
     "pg": "^8.23.0"
   },
   "devDependencies": {
-    "@simplewebauthn/server": "^13.3.3",
+    "@simplewebauthn/server": "^14.0.0",
     "@types/node": "^24.13.3",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.10",
