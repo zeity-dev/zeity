@@ -2,7 +2,7 @@ import type { H3Event } from 'h3';
 import { createConsola } from 'consola';
 import type { EmailAddress } from 'unemail';
 import { createEmail } from 'unemail';
-import smtpDriver from 'unemail/driver/smtp';
+import smtpDriver from 'unemail/drivers/smtp';
 
 import type { MailSection } from '~~/shared/types/mail';
 import { useMailTemplate } from './mail-template';
