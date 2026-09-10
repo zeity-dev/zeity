@@ -29,7 +29,7 @@
     "knip": "^6.35.0",
     "oxfmt": "^0.67.0",
     "oxlint": "^1.82.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
   "resolutions": {
