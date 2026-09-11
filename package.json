@@ -36,5 +36,5 @@
     "zod": "^4.5.4",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@11.26.0"
+  "packageManager": "pnpm@12.4.1"
 }
