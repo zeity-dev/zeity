@@ -22,18 +22,18 @@
   "devDependencies": {
     "@e18e/eslint-plugin": "^0.8.0",
     "@playwright/test": "^1.63.0",
-    "@types/node": "^24.13.3",
+    "@types/node": "^24.13.4",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint-plugin-regexp": "^3.3.0",
-    "knip": "^6.35.0",
+    "knip": "^6.35.1",
     "oxfmt": "^0.67.0",
     "oxlint": "^1.82.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "resolutions": {
-    "zod": "^4.5.4",
+    "zod": "^4.6.2",
     "vite": "npm:rolldown-vite@latest"
   },
   "packageManager": "pnpm@11.26.0"

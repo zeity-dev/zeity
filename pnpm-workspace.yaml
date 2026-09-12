@@ -14,7 +14,7 @@ trustPolicyExclude:
 overrides:
   "h3": "1.15.11"
   "h3-next": "npm:h3@2.0.1-rc.31"
-  "zod": "^4.5.4"
+  "zod": "^4.6.2"
   "@netlify/functions": "-"
   "@netlify/blobs": "-"
 
