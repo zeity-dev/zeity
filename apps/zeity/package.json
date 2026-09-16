@@ -32,12 +32,12 @@
     "qrcode.vue": "^3.11.0",
     "unemail": "^0.7.0",
     "vue": "^3.5.42",
-    "zod": "^4.5.4"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.130",
+    "@iconify-json/lucide": "^1.2.132",
     "@iconify-json/ri": "^1.2.10",
-    "@iconify-json/simple-icons": "^1.2.95",
+    "@iconify-json/simple-icons": "^1.2.96",
     "@nuxt/hints": "^1.1.4",
     "@nuxt/image": "^2.1.0",
     "@nuxt/test-utils": "^4.3.2",
@@ -45,9 +45,9 @@
     "@nuxtjs/i18n": "^10.6.0",
     "@types/etag": "^1.8.4",
     "@vite-pwa/nuxt": "^1.1.1",
-    "@vitejs/plugin-vue": "^6.0.8",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.5.0",
-    "happy-dom": "^20.14.0",
+    "happy-dom": "^20.14.5",
     "nuxt": "^4.5.2",
     "nuxt-auth-utils": "^0.5.30",
     "nuxt-security": "^2.6.0",
