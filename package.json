@@ -20,21 +20,21 @@
     "nanoid": "^6.0.1"
   },
   "devDependencies": {
-    "@e18e/eslint-plugin": "^0.8.0",
+    "@e18e/eslint-plugin": "^0.8.1",
     "@playwright/test": "^1.63.0",
-    "@types/node": "^24.13.3",
+    "@types/node": "^24.13.5",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint-plugin-regexp": "^3.3.0",
-    "knip": "^6.35.0",
-    "oxfmt": "^0.67.0",
-    "oxlint": "^1.82.0",
+    "knip": "^6.37.0",
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "resolutions": {
-    "zod": "^4.5.4",
+    "zod": "^4.6.5",
     "vite": "npm:rolldown-vite@latest"
   },
-  "packageManager": "pnpm@11.26.0"
+  "packageManager": "pnpm@11.27.0"
 }
