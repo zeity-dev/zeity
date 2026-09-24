@@ -23,7 +23,7 @@
     "@simplewebauthn/server": "^13.3.3",
     "@vue-email/components": "^0.0.21",
     "@vue-email/render": "^0.0.9",
-    "@vueuse/core": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
     "@zeity/database": "workspace:^",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
