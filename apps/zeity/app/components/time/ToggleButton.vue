@@ -12,20 +12,20 @@ const { isStarted, loading } = storeToRefs(store);
 // );
 
 const startTimeButton = {
-    icon: 'i-ri-play-fill',
-    label: 'times.start',
-    onClick: onToggle,
-}
+  icon: 'i-ri-play-fill',
+  label: 'times.start',
+  onClick: onToggle,
+};
 const stopTimeButton = {
-    icon: 'i-ri-stop-fill',
-    label: 'times.stop',
-    onClick: onToggle,
-}
+  icon: 'i-ri-stop-fill',
+  label: 'times.stop',
+  onClick: onToggle,
+};
 const nextTimeButton = {
-    icon: 'i-ri-skip-forward-fill',
-    label: 'times.recordNext',
-    onClick: onStartNext,
-}
+  icon: 'i-ri-skip-forward-fill',
+  label: 'times.recordNext',
+  onClick: onStartNext,
+};
 // const breakTimeButton = {
 //     icon: 'i-lucide-coffee',
 //     label: 'times.break.start',
@@ -38,39 +38,39 @@ const nextTimeButton = {
 // }
 
 const buttons = computed(() => {
-    if (!isStarted.value) {
-        return [startTimeButton];
-    }
+  if (!isStarted.value) {
+    return [startTimeButton];
+  }
 
-    // if (isBreakDraft.value) {
-    //     return [stopTimeButton, stopBreakButton];
-    // } else {
-    //     return [breakTimeButton, nextTimeButton, stopTimeButton];
-    // }
+  // if (isBreakDraft.value) {
+  //     return [stopTimeButton, stopBreakButton];
+  // } else {
+  //     return [breakTimeButton, nextTimeButton, stopTimeButton];
+  // }
 
-    return [nextTimeButton, stopTimeButton];
+  return [nextTimeButton, stopTimeButton];
 });
 const styledButtons = computed<ButtonProps[]>(() => {
-    return buttons.value.map((button, index) => {
-        if (index === buttons.value.length - 1) {
-            return { ...button, size: 'xl', color: 'primary' };
-        } else {
-            return { ...button, size: 'md', color: 'neutral' };
-        }
-    });
+  return buttons.value.map((button, index) => {
+    if (index === buttons.value.length - 1) {
+      return { ...button, size: 'xl', color: 'primary' };
+    } else {
+      return { ...button, size: 'md', color: 'neutral' };
+    }
+  });
 });
 
 async function onToggle() {
-    store.setLoading(true);
-    await toggleDraft();
-    store.setLoading(false);
+  store.setLoading(true);
+  await toggleDraft();
+  store.setLoading(false);
 }
 
 async function onStartNext() {
-    store.setLoading(true);
-    await stopDraft();
-    await startDraft();
-    store.setLoading(false);
+  store.setLoading(true);
+  await stopDraft();
+  await startDraft();
+  store.setLoading(false);
 }
 
 // async function onStartBreak() {
@@ -88,10 +88,19 @@ async function onStartNext() {
 </script>
 
 <template>
-    <div class="flex items-center gap-2">
-        <UTooltip v-for="button in styledButtons" :key="button.label" :text="$t(button.label!)">
-            <UButton square class="rounded-full shadow-lg" :size="button.size" :color="button.color" :disabled="loading"
-                :aria-label="$t(button.label!)" :icon="button.icon" @click="button.onClick" />
-        </UTooltip>
-    </div>
+  <div class="flex items-center gap-2">
+    <UTooltip v-for="button in styledButtons" :key="button.label" :text="$t(button.label!)">
+      <UButton
+        square
+        class="rounded-full shadow-lg"
+        :size="button.size"
+        :color="button.color"
+        :disabled="loading"
+        :loading="loading"
+        :aria-label="$t(button.label!)"
+        :icon="button.icon"
+        @click="button.onClick"
+      />
+    </UTooltip>
+  </div>
 </template>
