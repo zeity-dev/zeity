@@ -16,11 +16,11 @@
   "dependencies": {
     "@zeity/types": "workspace:^",
     "drizzle-orm": "^0.45.3",
-    "pg": "^8.23.0"
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@simplewebauthn/server": "^13.3.3",
-    "@types/node": "^24.13.6",
+    "@types/node": "^24.19.1",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.11",
     "typescript": "^6.0.3"
