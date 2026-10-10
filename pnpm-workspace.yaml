@@ -12,7 +12,7 @@ trustPolicyExclude:
   - xlsx@0.20.3
 
 overrides:
-  "h3": "1.15.11"
+  "h3": "2.0.2"
   "h3-next": "npm:h3@2.0.2"
   "zod": "^4.6.5"
   "@netlify/functions": "-"
