@@ -6,7 +6,7 @@ export function doesTimeExist(timeId: string): Promise<boolean> {
     .select({ id: times.id })
     .from(times)
     .where(eq(times.id, timeId))
-    .then((res) => res[0]?.id === timeId);
+    .then(res => res[0]?.id === timeId);
 }
 
 export function findTimeById(timeId: string) {
@@ -15,5 +15,5 @@ export function findTimeById(timeId: string) {
     .from(times)
     .where(eq(times.id, timeId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 }

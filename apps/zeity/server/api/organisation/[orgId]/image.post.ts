@@ -8,18 +8,18 @@ import { checkFileSize, checkMimeType } from '~~/server/utils/image';
 import { doesOrganisationExist } from '~~/server/utils/organisation';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -27,16 +27,14 @@ export default defineEventHandler(async (event) => {
   const existing = await doesOrganisationExist(params.data.orgId);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -44,7 +42,7 @@ export default defineEventHandler(async (event) => {
   const files = await readMultipartFormData(event);
   if (!files?.length) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'No files found',
     });
   }
@@ -52,20 +50,20 @@ export default defineEventHandler(async (event) => {
   const file = files[0];
   if (!file) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid file',
     });
   }
 
   if (!checkFileSize(file.data.byteLength)) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'File size exceeds limit',
     });
   }
   if (!checkMimeType(file.type)) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid file type',
     });
   }
@@ -95,7 +93,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error('Error saving file:', error);
     throw createError({
-      statusCode: 500,
+      status: 500,
       message: 'Failed to save file',
     });
   }

@@ -1,18 +1,18 @@
 import z from 'zod';
 import { getOrganisationTeamsByOrgId } from '~~/server/utils/organisation';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -20,16 +20,14 @@ export default defineEventHandler(async (event) => {
   const existing = await doesOrganisationExist(params.data.orgId);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

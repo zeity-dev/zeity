@@ -2,7 +2,7 @@ import z from 'zod';
 import { projects } from '@zeity/database/project';
 import { PROJECT_STATUS_ACTIVE, PROJECT_STATUSES } from '@zeity/types';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -13,14 +13,14 @@ export default defineEventHandler(async (event) => {
         name: z.string().max(150),
         status: z.enum(PROJECT_STATUSES).default(PROJECT_STATUS_ACTIVE),
         notes: z.string().optional(),
-      })
-    ).safeParse
+      }),
+    ).safeParse,
   );
 
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -28,11 +28,11 @@ export default defineEventHandler(async (event) => {
   const result = await useDrizzle()
     .insert(projects)
     .values(
-      body.data.map((project) => ({
+      body.data.map(project => ({
         ...project,
         userId: session.user.id,
         organisationId: organisation.value,
-      }))
+      })),
     )
     .returning();
 

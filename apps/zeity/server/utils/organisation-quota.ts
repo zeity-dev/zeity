@@ -12,14 +12,12 @@ export async function getOrganisationQuota(organisationId: string) {
     .from(organisations)
     .where(eq(organisations.id, organisationId))
     .limit(1)
-    .then((res) => res[0]?.quota);
+    .then(res => res[0]?.quota);
 
   return quota;
 }
 
-export async function checkOrganisationMembersQuota(
-  organisationId: string,
-): Promise<boolean> {
+export async function checkOrganisationMembersQuota(organisationId: string): Promise<boolean> {
   const quota = await getOrganisationQuota(organisationId);
 
   const membersQuota = quota?.members;
@@ -34,12 +32,12 @@ export async function checkOrganisationMembersQuota(
       .select({ count: count() })
       .from(organisationMembers)
       .where(and(eq(organisationMembers.organisationId, organisationId)))
-      .then((res) => res[0]?.count ?? 0),
+      .then(res => res[0]?.count ?? 0),
     db
       .select({ count: count() })
       .from(organisationInvites)
       .where(and(eq(organisationInvites.organisationId, organisationId)))
-      .then((res) => res[0]?.count ?? 0),
+      .then(res => res[0]?.count ?? 0),
   ]);
 
   if (memberCount + invitesCount < membersQuota) {

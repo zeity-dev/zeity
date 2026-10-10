@@ -6,7 +6,7 @@ import { TIME_TYPES } from '@zeity/types';
 import { findTimeById } from '~~/server/utils/time';
 import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
     );
     if (!isOrganisationProject) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }
@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
   const existing = await findTimeById(params.data.id);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -70,14 +70,14 @@ export default defineEventHandler(async (event) => {
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (
     existing.organisationId !== organisation.value ||
     existing.organisationMemberId !== organisationMemberId
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -87,7 +87,7 @@ export default defineEventHandler(async (event) => {
     .set(body.data)
     .where(eq(times.id, params.data.id))
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   return result;
 });

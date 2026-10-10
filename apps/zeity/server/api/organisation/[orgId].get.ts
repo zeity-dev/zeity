@@ -7,7 +7,7 @@ import { organisationInvites } from '@zeity/database/organisation-invite';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { JOIN_REQUEST_STATUS_PENDING } from '@zeity/types';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -19,16 +19,14 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserReadOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserReadOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -77,25 +75,19 @@ export default defineEventHandler(async (event) => {
       },
     })
     .from(organisations)
-    .leftJoin(
-      membersCountSubquery,
-      eq(organisations.id, membersCountSubquery.organisationId),
-    )
-    .leftJoin(
-      invitesCountSubquery,
-      eq(organisations.id, invitesCountSubquery.organisationId),
-    )
+    .leftJoin(membersCountSubquery, eq(organisations.id, membersCountSubquery.organisationId))
+    .leftJoin(invitesCountSubquery, eq(organisations.id, invitesCountSubquery.organisationId))
     .leftJoin(
       joinRequestsCountSubquery,
       eq(organisations.id, joinRequestsCountSubquery.organisationId),
     )
     .where(eq(organisations.id, params.data.orgId))
     .limit(1)
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   if (!result) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }

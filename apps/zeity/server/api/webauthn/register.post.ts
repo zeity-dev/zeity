@@ -14,7 +14,7 @@ export default defineWebAuthnRegisterEventHandler({
     return getChallenge(attemptId);
   },
 
-  validateUser: (user) =>
+  validateUser: user =>
     z
       .object({
         userName: z.email().min(1).toLowerCase().trim(),
@@ -38,19 +38,19 @@ export default defineWebAuthnRegisterEventHandler({
         emailVerified: users.emailVerified,
         image: users.image,
       })
-      .then((rows) => rows[0])
-      .catch((e) => {
+      .then(rows => rows[0])
+      .catch(e => {
         console.error(e);
 
         throw createError({
-          statusCode: 400,
+          status: 400,
           message: 'User already exists',
         });
       });
 
     if (!dbUser) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'User already exists',
       });
     }
@@ -68,10 +68,7 @@ export default defineWebAuthnRegisterEventHandler({
 
     const otp = await createEmailVerificationOTP(dbUser.id);
 
-    await useMailer(event).sendWelcomeMail(
-      { email: dbUser.email, name: dbUser.name },
-      otp,
-    );
+    await useMailer().sendWelcomeMail({ email: dbUser.email, name: dbUser.name }, otp);
   },
 
   async excludeCredentials(event, username) {

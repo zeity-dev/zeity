@@ -4,17 +4,17 @@ import { users } from '@zeity/database/user';
 
 import getEtag from 'etag';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const params = await getValidatedRouterParams(
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -26,18 +26,18 @@ export default defineEventHandler(async (event) => {
     .from(users)
     .where(eq(users.id, params.data.id))
     .limit(1)
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   if (!user) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
   if (!user.image) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
   if (!file || !file.ok) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }

@@ -1,16 +1,20 @@
+import { createError, defineEventHandler, readValidatedBody, setResponseStatus } from 'nuxt/server';
 import z from 'zod';
 
+import { and, eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 import { userAccounts } from '@zeity/database/user-account';
 import { PASSWORD_PROVIDER_ID } from '~~/server/utils/auth-providers';
+import { useDrizzle } from '~~/server/utils/drizzle';
+import { storeUserSession } from '~~/server/utils/user-session';
 
 const invalidCredentialsError = createError({
-  statusCode: 401,
+  status: 401,
   // This message is intentionally vague to prevent user enumeration attacks.
-  message: 'Invalid credentials',
+  statusText: 'Invalid credentials',
 });
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { email, password } = await readValidatedBody(
     event,
     z.object({
@@ -24,14 +28,9 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(users)
     .leftJoin(userAccounts, eq(users.id, userAccounts.userId))
-    .where(
-      and(
-        eq(users.email, email),
-        eq(userAccounts.providerId, PASSWORD_PROVIDER_ID),
-      ),
-    )
+    .where(and(eq(users.email, email), eq(userAccounts.providerId, PASSWORD_PROVIDER_ID)))
     .limit(1)
-    .then((res) => res[0] || { user: null, user_account: null });
+    .then(res => res[0] || { user: null, user_account: null });
 
   if (!user || !user_account?.password) {
     throw invalidCredentialsError;
@@ -46,10 +45,7 @@ export default defineEventHandler(async (event) => {
       .update(userAccounts)
       .set({ password: await hashPassword(password) })
       .where(
-        and(
-          eq(userAccounts.userId, user.id),
-          eq(userAccounts.providerId, PASSWORD_PROVIDER_ID),
-        ),
+        and(eq(userAccounts.userId, user.id), eq(userAccounts.providerId, PASSWORD_PROVIDER_ID)),
       );
   }
 

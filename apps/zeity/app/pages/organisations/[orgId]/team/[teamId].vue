@@ -13,6 +13,7 @@ interface TeamMemberData {
 
 const { t } = useI18n();
 const toast = useToast();
+const { getUserImagePath } = useImagePaths();
 
 const addMemberModalOpen = ref(false);
 function toggleAddMemberModal() {

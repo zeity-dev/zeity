@@ -5,19 +5,19 @@ import { organisations } from '@zeity/database/organisation';
 import { doesOrganisationExist } from '~~/server/utils/organisation';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -28,13 +28,13 @@ export default defineEventHandler(async (event) => {
       .object({
         name: z.string().trim().min(3).max(150),
       })
-      .partial().safeParse
+      .partial().safeParse,
   );
 
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -42,16 +42,14 @@ export default defineEventHandler(async (event) => {
   const existing = await doesOrganisationExist(params.data.orgId);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'organisation not found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -61,7 +59,7 @@ export default defineEventHandler(async (event) => {
     .set(body.data)
     .where(eq(organisations.id, params.data.orgId))
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   return result;
 });

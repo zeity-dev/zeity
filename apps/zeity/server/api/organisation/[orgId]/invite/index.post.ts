@@ -7,7 +7,7 @@ import { sendInviteMail } from '~~/server/utils/user-invite';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { checkOrganisationMembersQuota } from '~~/server/utils/organisation-quota';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -34,23 +34,21 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
   if ((await checkOrganisationMembersQuota(params.data.orgId)) === false) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'User quota exceeded',
     });
   }
@@ -61,7 +59,7 @@ export default defineEventHandler(async (event) => {
     .from(organisations)
     .where(eq(organisations.id, params.data.orgId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   const result = await db
     .insert(organisationInvites)
@@ -70,11 +68,11 @@ export default defineEventHandler(async (event) => {
       organisationId: params.data.orgId,
     })
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!organisation || !result) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Not found',
     });
   }

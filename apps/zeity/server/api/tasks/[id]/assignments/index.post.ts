@@ -19,14 +19,14 @@ export default defineEventHandler(async event => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
   if (!(await canUserUpdateOrganisationByOrgId(session.user, organisation.value))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -34,7 +34,7 @@ export default defineEventHandler(async event => {
   const belongsToOrg = await doesTasksBelongToOrganisation(params.data.id, organisation.value);
   if (!belongsToOrg) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -49,7 +49,7 @@ export default defineEventHandler(async event => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -69,7 +69,7 @@ export default defineEventHandler(async event => {
 
   if (!member) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Member does not belong to this organisation',
     });
   }
@@ -86,7 +86,7 @@ export default defineEventHandler(async event => {
 
   if (!result) {
     throw createError({
-      statusCode: 409,
+      status: 409,
       message: 'Assignment already exists',
     });
   }

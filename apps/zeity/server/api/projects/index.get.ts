@@ -5,7 +5,7 @@ import { eq, desc, ilike, inArray } from '@zeity/database';
 import { projects } from '@zeity/database/project';
 import { coerceArray } from '~~/server/utils/zod';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -17,13 +17,13 @@ export default defineEventHandler(async (event) => {
       sort: z.enum(['name', 'createdAt']).default('name'),
       search: z.string().optional(),
       status: coerceArray(z.enum(PROJECT_STATUSES)).optional(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request queries',
     });
   }

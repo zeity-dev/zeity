@@ -1,16 +1,21 @@
+import { defineEventHandler, createError, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
 
+import { eq, and } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { JOIN_REQUEST_STATUS_PENDING } from '@zeity/types';
+import { useDrizzle } from '~~/server/utils/drizzle';
+import { verifyToken } from '~~/server/utils/jwt';
+import { useJwtSecret } from '~~/server/utils/jwt-secret';
 
 const invalidTokenError = createError({
-  statusCode: 400,
+  status: 400,
   message: 'Invalid or expired invite link',
 });
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const body = await getValidatedQuery(
@@ -23,25 +28,18 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
   const db = useDrizzle();
 
-  const payload = await verifyToken(
-    await useJwtSecret(event),
-    body.data.token,
-  ).catch(() => {
+  const payload = await verifyToken(await useJwtSecret(), body.data.token).catch(() => {
     throw invalidTokenError;
   });
 
-  if (
-    !payload ||
-    payload.type !== 'organisation-invite' ||
-    !payload.organisationId
-  ) {
+  if (!payload || payload.type !== 'organisation-invite' || !payload.organisationId) {
     throw invalidTokenError;
   }
   const organisationId = payload.organisationId as string;
@@ -56,7 +54,7 @@ export default defineEventHandler(async (event) => {
     .from(organisations)
     .where(eq(organisations.id, organisationId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!organisation) {
     throw invalidTokenError;
@@ -73,7 +71,7 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => !!res[0]);
+    .then(res => !!res[0]);
 
   // Check if user already has a pending request
   const existingRequest = await db
@@ -87,7 +85,7 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => !!res[0]);
+    .then(res => !!res[0]);
 
   return {
     organisation,

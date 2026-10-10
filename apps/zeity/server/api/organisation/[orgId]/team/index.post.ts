@@ -5,18 +5,18 @@ import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
     event,
     z.object({
       orgId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -28,27 +28,25 @@ export default defineEventHandler(async (event) => {
       description: z.string().trim().optional(),
       permissions: z.array(z.string()).optional().default([]),
       memberIds: z.array(z.uuid()).optional().default([]),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
-  const result = await useDrizzle().transaction(async (tx) => {
+  const result = await useDrizzle().transaction(async tx => {
     // create organisation team
     const team = await tx
       .insert(organisationTeams)
@@ -57,11 +55,11 @@ export default defineEventHandler(async (event) => {
         organisationId: params.data.orgId,
       })
       .returning()
-      .then((res) => res[0]);
+      .then(res => res[0]);
 
     if (!team) {
       throw createError({
-        statusCode: 500,
+        status: 500,
         message: 'Failed to create organisation team',
       });
     }
@@ -73,8 +71,8 @@ export default defineEventHandler(async (event) => {
       .where(
         and(
           eq(organisationMembers.organisationId, params.data.orgId),
-          inArray(organisationMembers.id, body.data.memberIds)
-        )
+          inArray(organisationMembers.id, body.data.memberIds),
+        ),
       );
 
     if (existingMembers.length) {
@@ -83,7 +81,7 @@ export default defineEventHandler(async (event) => {
         existingMembers.map(({ id }) => ({
           memberId: id,
           teamId: team.id,
-        }))
+        })),
       );
     }
 

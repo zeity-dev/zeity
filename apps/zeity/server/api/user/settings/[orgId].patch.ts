@@ -14,7 +14,7 @@ export default defineEventHandler(async event => {
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -37,14 +37,14 @@ export default defineEventHandler(async event => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
   if (Object.keys(body.data).length === 0) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -55,7 +55,7 @@ export default defineEventHandler(async event => {
     }))
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

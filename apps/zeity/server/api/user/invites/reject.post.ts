@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { organisationInvites } from '@zeity/database/organisation-invite';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const body = await readValidatedBody(
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -25,11 +25,11 @@ export default defineEventHandler(async (event) => {
     .from(organisationInvites)
     .where(eq(organisationInvites.id, body.data.inviteId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!invite || invite?.email !== session.user.email) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

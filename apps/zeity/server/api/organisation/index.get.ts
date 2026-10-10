@@ -1,11 +1,13 @@
+import { createError, defineEventHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
 
-import { eq, asc } from '@zeity/database';
+import { eq, asc, sql } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationMembers } from '@zeity/database/organisation-member';
+import { useDrizzle } from '~~/server/utils/drizzle';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const query = await getValidatedQuery(
@@ -13,13 +15,13 @@ export default defineEventHandler(async (event) => {
     z.object({
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(40),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request queries',
     });
   }
@@ -55,18 +57,9 @@ export default defineEventHandler(async (event) => {
       },
     })
     .from(organisations)
-    .leftJoin(
-      organisationMembers,
-      eq(organisationMembers.organisationId, organisations.id)
-    )
-    .leftJoin(
-      membersCountSubquery,
-      eq(membersCountSubquery.organisationId, organisations.id)
-    )
-    .leftJoin(
-      teamsCountSubquery,
-      eq(teamsCountSubquery.organisationId, organisations.id)
-    )
+    .leftJoin(organisationMembers, eq(organisationMembers.organisationId, organisations.id))
+    .leftJoin(membersCountSubquery, eq(membersCountSubquery.organisationId, organisations.id))
+    .leftJoin(teamsCountSubquery, eq(teamsCountSubquery.organisationId, organisations.id))
     .where(eq(organisationMembers.userId, session.user.id))
     .orderBy(asc(organisations.name));
 

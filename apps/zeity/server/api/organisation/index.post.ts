@@ -1,15 +1,17 @@
+import { defineEventHandler, createError, readValidatedBody, useRuntimeConfig } from 'nuxt/server';
 import { z } from 'zod';
 
 import { organisations } from '@zeity/database/organisation';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
 import { getDefaultOrganisationQuota } from '~~/server/utils/organisation';
+import { useDrizzle } from '~~/server/utils/drizzle';
 
-export default defineEventHandler(async (event) => {
-  const allowed = useRuntimeConfig(event).public.allow.organisation.create;
+export default defineEventHandler(async event => {
+  const allowed = useRuntimeConfig().public.allow.organisation.create;
   if (!allowed) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Organisation creation is disabled',
     });
   }
@@ -26,23 +28,23 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
-  const defaultQuota = getDefaultOrganisationQuota(event);
+  const defaultQuota = getDefaultOrganisationQuota();
 
-  const result = await useDrizzle().transaction(async (tx) => {
+  const result = await useDrizzle().transaction(async tx => {
     const org = await tx
       .insert(organisations)
       .values({ ...body.data, quota: defaultQuota })
       .returning()
-      .then((res) => res[0]);
+      .then(res => res[0]);
 
     if (!org) {
       throw createError({
-        statusCode: 500,
+        status: 500,
         message: 'Failed to create organisation',
       });
     }

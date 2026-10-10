@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -11,21 +11,19 @@ export default defineEventHandler(async (event) => {
     z.object({
       orgId: z.uuid(),
       inviteId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -35,8 +33,8 @@ export default defineEventHandler(async (event) => {
     .where(
       and(
         eq(organisationInvites.organisationId, params.data.orgId),
-        eq(organisationInvites.id, params.data.inviteId)
-      )
+        eq(organisationInvites.id, params.data.inviteId),
+      ),
     );
 
   return sendNoContent(event);

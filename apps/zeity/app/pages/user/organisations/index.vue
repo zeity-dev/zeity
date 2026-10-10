@@ -18,6 +18,7 @@ defineProps({
 });
 const { t } = useI18n();
 const toast = useToast();
+const { getOrganisationImagePath } = useImagePaths();
 const { currentOrganisationId } = useOrganisation();
 
 const { data: invites, refresh } = useLazyFetch('/api/user/invites');
@@ -36,7 +37,7 @@ function acceptInvite(inviteId: string) {
       });
       await refresh();
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         title: t('organisations.join.acceptError'),
@@ -58,7 +59,7 @@ function rejectInvite(inviteId: string) {
       });
       await refresh();
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       toast.add({
         title: t('organisations.join.rejectError'),

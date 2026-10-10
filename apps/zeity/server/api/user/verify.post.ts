@@ -1,16 +1,10 @@
 import { z } from 'zod';
 import { users } from '@zeity/database/user';
-import {
-  deleteUsersOTPs,
-  OTP_TYPE_EMAIL_VERIFICATION,
-} from '~~/server/utils/auth-otp';
-import {
-  isUserVerified,
-  verifyEmailVerificationOTP,
-} from '~~/server/utils/user-verification';
+import { deleteUsersOTPs, OTP_TYPE_EMAIL_VERIFICATION } from '~~/server/utils/auth-otp';
+import { isUserVerified, verifyEmailVerificationOTP } from '~~/server/utils/user-verification';
 import { refreshUserSession } from '~~/server/utils/user-session';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { user } = await requireUserSession(event);
 
   const query = await readValidatedBody(
@@ -22,23 +16,21 @@ export default defineEventHandler(async (event) => {
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request query',
     });
   }
 
   // verify otp
-  const otp = await verifyEmailVerificationOTP(user.id, query.data.code).catch(
-    (e: unknown) => {
-      console.error(e);
-      return null;
-    },
-  );
+  const otp = await verifyEmailVerificationOTP(user.id, query.data.code).catch((e: unknown) => {
+    console.error(e);
+    return null;
+  });
 
   // if token is invalid or userId in token does not match the session user id
   if (!otp) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid otp',
     });
   }
@@ -50,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
   if (emailVerified) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Email already verified',
     });
   }

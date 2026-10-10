@@ -13,6 +13,8 @@ const open = shallowRef(false);
 const query = shallowRef('');
 const queryDebounced = refDebounced(query, 300);
 
+const { getUserImagePath } = useImagePaths();
+
 const queryParams = computed(() => ({
   search: queryDebounced.value,
 }));

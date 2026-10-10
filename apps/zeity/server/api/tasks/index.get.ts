@@ -45,7 +45,7 @@ export default defineEventHandler(async event => {
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request queries',
     });
   }
@@ -64,7 +64,7 @@ export default defineEventHandler(async event => {
 
   if (!organisationMember) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -79,7 +79,7 @@ export default defineEventHandler(async event => {
       // Non-privileged users can only filter their own assignments
       if (!query.data.assignedTo.every(id => id === organisationMember.id)) {
         throw createError({
-          statusCode: 403,
+          status: 403,
           message: 'Forbidden',
         });
       }

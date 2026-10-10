@@ -6,7 +6,7 @@ import { PROJECT_STATUSES } from '@zeity/types';
 import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 import { doesProjectExist } from '~~/server/utils/project';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -14,12 +14,12 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -32,13 +32,13 @@ export default defineEventHandler(async (event) => {
         status: z.enum(PROJECT_STATUSES),
         notes: z.string().optional(),
       })
-      .partial().safeParse
+      .partial().safeParse,
   );
 
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
   const existing = await doesProjectExist(params.data.id);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
     }))
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
     .set(body.data)
     .where(eq(projects.id, params.data.id))
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   return result;
 });

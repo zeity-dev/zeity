@@ -1,7 +1,7 @@
-import type { H3Event } from 'h3';
+import { useRuntimeConfig } from 'nuxt/server';
 import z from 'zod';
 
-import { count, inArray, isNotNull } from '@zeity/database';
+import { and, count, eq, inArray, isNotNull, sql } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
@@ -14,6 +14,7 @@ import {
   ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types/organisation';
 import { nonEmptyString } from './zod';
+import { useDrizzle } from './drizzle';
 
 export function doesOrganisationExist(organisationId: string) {
   return useDrizzle()
@@ -21,7 +22,7 @@ export function doesOrganisationExist(organisationId: string) {
     .from(organisations)
     .where(eq(organisations.id, organisationId))
     .limit(1)
-    .then((res) => res[0]?.id === organisationId);
+    .then(res => res[0]?.id === organisationId);
 }
 
 export function hasUserOrganisationMemberRole(
@@ -36,9 +37,7 @@ export function hasUserOrganisationMemberRole(
       },
   roles: OrganisationMemberRole[] = [ORGANISATION_MEMBER_ROLE_OWNER],
 ) {
-  const where = [
-    eq(organisationMembers.organisationId, options.organisationId),
-  ];
+  const where = [eq(organisationMembers.organisationId, options.organisationId)];
 
   if ('userId' in options) {
     where.push(eq(organisationMembers.userId, options.userId));
@@ -52,13 +51,10 @@ export function hasUserOrganisationMemberRole(
     .select()
     .from(organisationMembers)
     .where(and(...where, inArray(organisationMembers.role, roles)))
-    .then((res) => res.length > 0);
+    .then(res => res.length > 0);
 }
 
-export function getOrganisationMemberByUserId(
-  organisationId: string,
-  userId: string,
-) {
+export function getOrganisationMemberByUserId(organisationId: string, userId: string) {
   return useDrizzle()
     .select()
     .from(organisationMembers)
@@ -69,13 +65,10 @@ export function getOrganisationMemberByUserId(
       ),
     )
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 }
 
-export function getOrganisationMembersByUserIds(
-  organisationId: string,
-  userIds: string[],
-) {
+export function getOrganisationMembersByUserIds(organisationId: string, userIds: string[]) {
   return useDrizzle()
     .select()
     .from(organisationMembers)
@@ -87,10 +80,7 @@ export function getOrganisationMembersByUserIds(
     );
 }
 
-export function getOrganisationMembersByMemberIds(
-  organisationId: string,
-  memberIds: string[],
-) {
+export function getOrganisationMembersByMemberIds(organisationId: string, memberIds: string[]) {
   return useDrizzle()
     .select()
     .from(organisationMembers)
@@ -111,7 +101,7 @@ export function getOrganisationAdmins(organisationId: string) {
       user: {
         name: users.name,
         email: users.email,
-      }
+      },
     })
     .from(organisationMembers)
     .innerJoin(users, eq(organisationMembers.userId, users.id))
@@ -141,7 +131,7 @@ export function countOrganisationMemberOwner(
         isNotNull(organisationMembers.userId),
       ),
     )
-    .then((res) => res[0]?.count ?? 0);
+    .then(res => res[0]?.count ?? 0);
 }
 
 export function getOrganisationTeamsByOrgId(organisationId: string) {
@@ -163,10 +153,7 @@ export function getOrganisationTeamsByOrgId(organisationId: string) {
       memberCount: membersCountSubquery.counter,
     })
     .from(organisationTeams)
-    .leftJoin(
-      membersCountSubquery,
-      eq(membersCountSubquery.teamId, organisationTeams.id),
-    )
+    .leftJoin(membersCountSubquery, eq(membersCountSubquery.teamId, organisationTeams.id))
     .where(eq(organisationTeams.organisationId, organisationId));
 }
 
@@ -176,8 +163,8 @@ const schemaQuota = z
   })
   .partial();
 
-export function getDefaultOrganisationQuota(event: H3Event) {
-  const quota = useRuntimeConfig(event).organisation?.quota;
+export function getDefaultOrganisationQuota() {
+  const quota = useRuntimeConfig().organisation?.quota;
   const parsed = schemaQuota.safeParse(quota);
   if (parsed.success) {
     return parsed.data;

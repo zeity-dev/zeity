@@ -2,7 +2,7 @@ import { eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const db = useDrizzle();
@@ -16,10 +16,7 @@ export default defineEventHandler(async (event) => {
       },
     })
     .from(organisationInvites)
-    .leftJoin(
-      organisations,
-      eq(organisationInvites.organisationId, organisations.id),
-    )
+    .leftJoin(organisations, eq(organisationInvites.organisationId, organisations.id))
     .where(eq(organisationInvites.email, session.user.email))
     .orderBy(asc(organisationInvites.createdAt));
 

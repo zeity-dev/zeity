@@ -3,12 +3,9 @@ import { z } from 'zod';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
-import {
-  JOIN_REQUEST_STATUS_PENDING,
-  JOIN_REQUEST_STATUS_REJECTED,
-} from '@zeity/types';
+import { JOIN_REQUEST_STATUS_PENDING, JOIN_REQUEST_STATUS_REJECTED } from '@zeity/types';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -21,16 +18,14 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -49,11 +44,11 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!joinRequest) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Join request not found or already processed',
     });
   }
@@ -66,7 +61,7 @@ export default defineEventHandler(async (event) => {
     })
     .where(eq(organisationJoinRequests.id, joinRequest.id))
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   return result;
 });

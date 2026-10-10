@@ -14,6 +14,8 @@ const { organisationId, excludeTeam } = defineProps({
   },
 });
 
+const { getUserImagePath } = useImagePaths();
+
 const query = shallowRef('');
 const queryDebounced = refDebounced(query, 300);
 const queryParams = computed(() => ({

@@ -4,7 +4,7 @@ import { eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const query = await getValidatedQuery(
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     console.log('Invalid request query', query.error);
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request query',
     });
   }
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     .verifyToken(query.data.token)
     .catch(() => {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Invalid token',
       });
     });
@@ -41,17 +41,14 @@ export default defineEventHandler(async (event) => {
       },
     })
     .from(organisationInvites)
-    .leftJoin(
-      organisations,
-      eq(organisations.id, organisationInvites.organisationId),
-    )
+    .leftJoin(organisations, eq(organisations.id, organisationInvites.organisationId))
     .where(eq(organisationInvites.id, jwt.inviteId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!result || result?.email !== session.user.email) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

@@ -6,7 +6,7 @@ export function linkUserAccount(
   userId: string,
   providerId: string,
   accountId: string,
-  scope?: string
+  scope?: string,
 ) {
   return useDrizzle()
     .insert(userAccounts)
@@ -17,27 +17,22 @@ export function linkUserAccount(
       scope,
     })
     .returning()
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 }
 
 export async function handleOAuthLogin(
   providerId: string,
   accountId: string,
-  data: { email: string; name?: string; scope?: string }
+  data: { email: string; name?: string; scope?: string },
 ): Promise<User | null> {
-  return useDrizzle().transaction(async (tx) => {
+  return useDrizzle().transaction(async tx => {
     const oauthAccount = await tx
       .select()
       .from(users)
       .innerJoin(userAccounts, eq(users.id, userAccounts.userId))
-      .where(
-        and(
-          eq(userAccounts.accountId, accountId),
-          eq(userAccounts.providerId, providerId)
-        )
-      )
+      .where(and(eq(userAccounts.accountId, accountId), eq(userAccounts.providerId, providerId)))
       .limit(1)
-      .then((rows) => rows[0]);
+      .then(rows => rows[0]);
     if (oauthAccount) {
       return oauthAccount.user;
     }
@@ -47,7 +42,7 @@ export async function handleOAuthLogin(
       .from(users)
       .where(eq(users.email, data.email))
       .limit(1)
-      .then((rows) => rows[0]);
+      .then(rows => rows[0]);
     if (dbUser) {
       await tx
         .insert(userAccounts)
@@ -58,7 +53,7 @@ export async function handleOAuthLogin(
           scope: data.scope,
         })
         .returning()
-        .then((rows) => rows[0]);
+        .then(rows => rows[0]);
       return dbUser;
     }
 
@@ -69,7 +64,7 @@ export async function handleOAuthLogin(
         email: data.email,
       })
       .returning()
-      .then((rows) => rows[0]);
+      .then(rows => rows[0]);
     if (newUser) {
       await tx
         .insert(userAccounts)
@@ -80,7 +75,7 @@ export async function handleOAuthLogin(
           scope: data.scope,
         })
         .returning()
-        .then((rows) => rows[0]);
+        .then(rows => rows[0]);
       return newUser;
     }
 

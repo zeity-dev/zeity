@@ -18,7 +18,7 @@ export default defineEventHandler(async event => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -29,7 +29,7 @@ export default defineEventHandler(async event => {
     }))
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -59,7 +59,7 @@ export default defineEventHandler(async event => {
     .then(res => res[0]);
   if (!result) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }

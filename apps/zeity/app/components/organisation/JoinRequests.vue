@@ -7,6 +7,7 @@ const emit = defineEmits(['refresh']);
 
 const { t } = useI18n();
 const toast = useToast();
+const { getUserImagePath } = useImagePaths();
 
 const { pending, data, refresh } = useFetch(
   () => `/api/organisation/${props.organisationId}/join-request`,
@@ -18,12 +19,9 @@ const { pending, data, refresh } = useFetch(
 );
 
 function acceptRequest(requestId: string) {
-  return $fetch(
-    `/api/organisation/${props.organisationId}/join-request/${requestId}/accept`,
-    {
-      method: 'POST',
-    },
-  )
+  return $fetch(`/api/organisation/${props.organisationId}/join-request/${requestId}/accept`, {
+    method: 'POST',
+  })
     .then(() => {
       toast.add({
         title: t('organisations.join.requests.accepted'),
@@ -41,12 +39,9 @@ function acceptRequest(requestId: string) {
 }
 
 function rejectRequest(requestId: string) {
-  return $fetch(
-    `/api/organisation/${props.organisationId}/join-request/${requestId}/reject`,
-    {
-      method: 'POST',
-    },
-  )
+  return $fetch(`/api/organisation/${props.organisationId}/join-request/${requestId}/reject`, {
+    method: 'POST',
+  })
     .then(() => {
       toast.add({
         title: t('organisations.join.requests.rejected'),
@@ -92,11 +87,7 @@ function rejectRequest(requestId: string) {
       <UCard>
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-2">
-            <UAvatar
-              size="lg"
-              :src="getUserImagePath(request.user)"
-              :alt="request.user?.name"
-            />
+            <UAvatar size="lg" :src="getUserImagePath(request.user)" :alt="request.user?.name" />
             <p class="line-clamp-3">{{ request.user?.name }}</p>
           </div>
           <div>

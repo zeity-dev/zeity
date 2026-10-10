@@ -6,7 +6,7 @@ export function doesProjectExist(projectId: string): Promise<boolean> {
     .select({ id: projects.id })
     .from(projects)
     .where(eq(projects.id, projectId))
-    .then((res) => res[0]?.id === projectId);
+    .then(res => res[0]?.id === projectId);
 }
 
 export function findProjectById(projectId: string) {
@@ -15,12 +15,12 @@ export function findProjectById(projectId: string) {
     .from(projects)
     .where(eq(projects.id, projectId))
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 }
 
 export function doesProjectsBelongsToOrganisation(
   projectIds: string | string[],
-  organisationId: string
+  organisationId: string,
 ) {
   const ids = Array.isArray(projectIds)
     ? // deduplicate ids
@@ -29,15 +29,6 @@ export function doesProjectsBelongsToOrganisation(
   return useDrizzle()
     .select({ id: projects.id })
     .from(projects)
-    .where(
-      and(
-        inArray(projects.id, ids),
-        eq(projects.organisationId, organisationId)
-      )
-    )
-    .then(
-      (res) =>
-        res.length === ids.length &&
-        res.every((project) => ids.includes(project.id))
-    );
+    .where(and(inArray(projects.id, ids), eq(projects.organisationId, organisationId)))
+    .then(res => res.length === ids.length && res.every(project => ids.includes(project.id)));
 }

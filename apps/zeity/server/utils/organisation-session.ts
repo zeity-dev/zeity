@@ -1,9 +1,8 @@
-import type { H3Event } from 'h3';
-import { getCookie } from 'h3';
+import { type RequestEvent, getCookie, setCookie, createError } from 'nuxt/server';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 
-export function useOrganisationSession(event: H3Event) {
+export function useOrganisationSession(event: RequestEvent) {
   const value = getCookie(event, ORGANISATION_COOKIE_NAME);
 
   return {
@@ -14,12 +13,12 @@ export function useOrganisationSession(event: H3Event) {
   };
 }
 
-export function requireOrganisationSession(event: H3Event) {
+export function requireOrganisationSession(event: RequestEvent) {
   const session = useOrganisationSession(event);
 
   if (!session.value) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Organisation not set',
     });
   }

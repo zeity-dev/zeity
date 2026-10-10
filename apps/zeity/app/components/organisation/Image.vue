@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Organisation } from '@zeity/types';
 
+const { getOrganisationImagePath } = useImagePaths();
+
 const props = defineProps({
   org: {
     type: Object as PropType<Pick<Organisation, 'image' | 'name'>>,
@@ -51,7 +53,7 @@ const fallback = computed(
     props.text ||
     (props.org.name || '')
       .split(' ')
-      .map((word) => word.charAt(0))
+      .map(word => word.charAt(0))
       .join('')
       .substring(0, 2),
 );

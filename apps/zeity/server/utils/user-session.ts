@@ -1,8 +1,9 @@
-import type { H3Event } from 'h3';
+import type { RequestEvent } from 'nuxt/server';
 import { type User, users } from '@zeity/database/user';
+import { eq, useDrizzle } from './drizzle';
 
 export function storeUserSession(
-  event: H3Event,
+  event: RequestEvent,
   user: Pick<User, 'id' | 'email' | 'name' | 'emailVerified' | 'image'>,
 ) {
   return setUserSession(event, {
@@ -17,7 +18,7 @@ export function storeUserSession(
 }
 
 export async function refreshUserSession(
-  event: H3Event,
+  event: RequestEvent,
   user?: Pick<User, 'id' | 'email' | 'name' | 'emailVerified' | 'image'> | null,
 ) {
   const session = await getUserSession(event);
@@ -36,8 +37,11 @@ export async function refreshUserSession(
 
   // hack for updating cookie expiration time
   // see: https://github.com/atinux/nuxt-auth-utils/issues/356
+  // @ts-expect-error: Accessing internal session object to update cookie expiration time
   if (event.context?.sessions?.['zeity_session']) {
+    // @ts-expect-error: Accessing internal session object to update cookie expiration time
     event.context.sessions!['zeity_session'] = {
+      // @ts-expect-error: Accessing internal session object to update cookie expiration time
       ...event.context.sessions!['zeity_session'],
       createdAt: Date.now(),
     };

@@ -16,6 +16,8 @@ const props = defineProps({
   },
 });
 
+const { getUserImagePath } = useImagePaths();
+
 const src = computed(() => {
   return getUserImagePath(props.user);
 });
@@ -51,7 +53,7 @@ const fallback = computed(
     props.text ||
     (props.user.name || '')
       .split(' ')
-      .map((word) => word.charAt(0))
+      .map(word => word.charAt(0))
       .join('')
       .substring(0, 2),
 );

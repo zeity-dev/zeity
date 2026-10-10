@@ -1,8 +1,11 @@
+import { createError, defineEventHandler, getRequestURL } from 'nuxt/server';
 import { z } from 'zod';
 
 import { generateToken } from '~~/server/utils/jwt';
+import { useJwtSecret } from '~~/server/utils/jwt-secret';
+import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -14,16 +17,14 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event) => {
       type: 'organisation-invite',
       organisationId: params.data.orgId,
     },
-    await useJwtSecret(event),
+    await useJwtSecret(),
     { expiresIn: '7d' },
   );
 

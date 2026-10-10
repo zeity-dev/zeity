@@ -1,10 +1,11 @@
 import { randomInt } from 'node:crypto';
-import type { H3Event } from 'h3';
+import { type RequestEvent, getRequestURL } from 'nuxt/server';
 
 import { users } from '@zeity/database/user';
 import { useJwtSecret } from './jwt-secret';
 import { generateToken, verifyToken } from './jwt';
-import { OTP_TYPE_EMAIL_VERIFICATION } from './auth-otp';
+import { createOTP, OTP_TYPE_EMAIL_VERIFICATION, verifyOTP } from './auth-otp';
+import { eq, useDrizzle } from './drizzle';
 
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -26,17 +27,11 @@ export async function isUserVerified(userId: string) {
   return !!rows[0]?.emailVerified;
 }
 
-export function generateEmailVerificationToken(
-  secret: Uint8Array,
-  userId: string,
-) {
+export function generateEmailVerificationToken(secret: Uint8Array, userId: string) {
   return generateToken({ type: 'email-verification', userId }, secret);
 }
 
-export async function verifyEmailVerificationToken(
-  secret: Uint8Array,
-  token: string,
-) {
+export async function verifyEmailVerificationToken(secret: Uint8Array, token: string) {
   const payload = await verifyToken(secret, token);
 
   return payload;
@@ -56,21 +51,21 @@ export function verifyEmailVerificationOTP(userId: string, otp: string) {
   return verifyOTP(userId, code, OTP_TYPE_EMAIL_VERIFICATION);
 }
 
-export function useUserVerification(event: H3Event) {
+export function useUserVerification(event: RequestEvent) {
   return {
     generateLink: async (userId: string) => {
-      const jwtSecret = await useJwtSecret(event);
+      const jwtSecret = await useJwtSecret();
       const token = await generateEmailVerificationToken(jwtSecret, userId);
 
       const baseUrl = getRequestURL(event).origin;
       return `${baseUrl}/user/verify?token=${token}`;
     },
     generateToken: async (userId: string) => {
-      const jwtSecret = await useJwtSecret(event);
+      const jwtSecret = await useJwtSecret();
       return generateEmailVerificationToken(jwtSecret, userId);
     },
     verifyToken: async (token: string) => {
-      const jwtSecret = await useJwtSecret(event);
+      const jwtSecret = await useJwtSecret();
       return verifyEmailVerificationToken(jwtSecret, token);
     },
   };

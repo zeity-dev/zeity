@@ -5,7 +5,7 @@ import { organisationMembers } from '@zeity/database/organisation-member';
 import { countOrganisationMemberOwner } from '~~/server/utils/organisation';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -33,21 +33,19 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
-  const result = await useDrizzle().transaction(async (tx) => {
+  const result = await useDrizzle().transaction(async tx => {
     const txResult = await tx
       .update(organisationMembers)
       .set(body.data)
@@ -59,14 +57,11 @@ export default defineEventHandler(async (event) => {
       );
 
     // check if organisation has at least one owner
-    const ownerCount = await countOrganisationMemberOwner(
-      params.data.orgId,
-      tx,
-    );
+    const ownerCount = await countOrganisationMemberOwner(params.data.orgId, tx);
 
     if (ownerCount < 1) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Organisation must have at least one owner',
       });
     }

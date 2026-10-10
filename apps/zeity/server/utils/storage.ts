@@ -23,10 +23,7 @@ export async function readStorageFile(key: string) {
   return object;
 }
 
-export function saveStorageFile(
-  key: string,
-  file: { name: string; type: string; data: Buffer }
-) {
+export function saveStorageFile(key: string, file: { name: string; type: string; data: Buffer }) {
   const storage = getStorage();
   return storage.putObject(key, file.data, {
     size: file.data.byteLength,

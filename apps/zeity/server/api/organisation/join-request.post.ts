@@ -1,13 +1,19 @@
+import { defineEventHandler, readValidatedBody, createError, getRequestURL } from 'nuxt/server';
 import { z } from 'zod';
 
+import { eq, and } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { JOIN_REQUEST_STATUS_PENDING } from '@zeity/types';
 import { getOrganisationAdmins } from '~~/server/utils/organisation';
+import { useJwtSecret } from '~~/server/utils/jwt-secret';
+import { verifyToken } from '~~/server/utils/jwt';
+import { useDrizzle } from '~~/server/utils/drizzle';
+import { useMailer } from '~~/server/utils/mailer';
 
 const invalidTokenError = createError({
-  statusCode: 400,
+  status: 400,
   message: 'Invalid or expired invite link',
 });
 
@@ -25,14 +31,14 @@ export default defineEventHandler(async event => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
   const db = useDrizzle();
 
-  const payload = await verifyToken(await useJwtSecret(event), body.data.token);
+  const payload = await verifyToken(await useJwtSecret(), body.data.token);
 
   if (!payload || payload.type !== 'organisation-invite' || !payload.organisationId) {
     throw invalidTokenError;
@@ -67,7 +73,7 @@ export default defineEventHandler(async event => {
 
   if (existingMember) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Already a member of this organisation',
     });
   }
@@ -88,7 +94,7 @@ export default defineEventHandler(async event => {
 
   if (existingRequest) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'You already have a pending join request for this organisation',
     });
   }
@@ -110,7 +116,7 @@ export default defineEventHandler(async event => {
   const baseUrl = getRequestURL(event).origin;
   const joinRequestsUrl = `${baseUrl}/organisations/${organisationId}/invite`;
 
-  const mailer = useMailer(event);
+  const mailer = useMailer();
   const userName = session.user.name || session.user.email;
 
   await Promise.allSettled(

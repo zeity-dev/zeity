@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3';
+import { useRuntimeConfig } from 'nuxt/server';
 import { createConsola } from 'consola';
 import type { EmailAddress } from 'unemail';
 import { createEmail } from 'unemail';
@@ -88,9 +88,9 @@ async function sendMessageMail(
   });
 }
 
-export function useMailer(event: H3Event) {
+export function useMailer() {
   try {
-    const smtp = useRuntimeConfig(event).mailer.smtp;
+    const smtp = useRuntimeConfig().mailer?.smtp;
     driver ??= smtpDriver(smtp);
   } catch (e) {
     logger.error('Failed to create mailer driver', e);

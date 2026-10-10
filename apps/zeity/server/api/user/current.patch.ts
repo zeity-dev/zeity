@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const schema = z
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
       email: users.email,
       emailVerified: users.emailVerified,
     })
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   await refreshUserSession(event, user);
 

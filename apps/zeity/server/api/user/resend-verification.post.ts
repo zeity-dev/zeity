@@ -1,29 +1,26 @@
 import { users } from '@zeity/database/user';
-import {
-  deleteUsersOTPs,
-  OTP_TYPE_EMAIL_VERIFICATION,
-} from '~~/server/utils/auth-otp';
+import { deleteUsersOTPs, OTP_TYPE_EMAIL_VERIFICATION } from '~~/server/utils/auth-otp';
 import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const user = await useDrizzle()
     .select()
     .from(users)
     .where(eq(users.id, session.user.id))
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   if (!user) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'user not found',
     });
   }
 
   if (user.emailVerified) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Email already verified',
     });
   }
@@ -32,7 +29,7 @@ export default defineEventHandler(async (event) => {
   await deleteUsersOTPs(user.id, OTP_TYPE_EMAIL_VERIFICATION);
 
   const otp = await createEmailVerificationOTP(session.user.id);
-  await useMailer(event).sendMessageMail(
+  await useMailer().sendMessageMail(
     { email: user.email, name: user.name },
     'Verify your email',
     ['Please verify your email address by entering the code below:'],

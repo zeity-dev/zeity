@@ -5,7 +5,7 @@ import { projects } from '@zeity/database/project';
 import { doesProjectExist } from '~~/server/utils/project';
 import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -13,12 +13,12 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({
       id: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
   const existing = await doesProjectExist(params.data.id);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -37,15 +37,12 @@ export default defineEventHandler(async (event) => {
     }))
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
-  await useDrizzle()
-    .delete(projects)
-    .where(eq(projects.id, params.data.id))
-    .returning();
+  await useDrizzle().delete(projects).where(eq(projects.id, params.data.id)).returning();
 
   return sendNoContent(event);
 });

@@ -6,7 +6,7 @@ import { users } from '@zeity/database/user';
 import { canUserReadOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { JOIN_REQUEST_STATUSES } from '@zeity/types';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -18,16 +18,14 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserReadOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserReadOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -43,9 +41,7 @@ export default defineEventHandler(async (event) => {
 
   const db = useDrizzle();
 
-  const conditions = [
-    eq(organisationJoinRequests.organisationId, params.data.orgId),
-  ];
+  const conditions = [eq(organisationJoinRequests.organisationId, params.data.orgId)];
 
   if (query.success && query.data.status) {
     conditions.push(eq(organisationJoinRequests.status, query.data.status));

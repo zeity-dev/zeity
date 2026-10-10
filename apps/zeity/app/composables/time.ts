@@ -98,9 +98,14 @@ export function useTime() {
   }
   async function loadTime(id: string) {
     if (!loggedIn.value) return;
-    const time = await fetchTime(id);
-    store.upsertTimes([time]);
-    return time;
+    store.setLoading(true);
+    try {
+      const time = await fetchTime(id);
+      store.upsertTimes([time]);
+      return time;
+    } finally {
+      store.setLoading(false);
+    }
   }
 
   function getOrganisationTimes() {
@@ -120,6 +125,7 @@ export function useTime() {
     if (settings.value.roundTimes) {
       data = roundTime(data);
     }
+    store.setLoading(true);
     try {
       if (loggedIn.value) {
         const time = await postTime(data);
@@ -130,6 +136,8 @@ export function useTime() {
       if (import.meta.env.DEV) {
         console.error('Error creating time:', error);
       }
+    } finally {
+      store.setLoading(false);
     }
 
     return store.insertTime(data);
@@ -140,6 +148,7 @@ export function useTime() {
         data = roundTime(data);
       }
     }
+    store.setLoading(true);
     try {
       if (loggedIn.value && isOnlineTime(id)) {
         const time = await patchTime(id, data);
@@ -150,12 +159,15 @@ export function useTime() {
       if (import.meta.env.DEV) {
         console.error('Error creating time:', error);
       }
+    } finally {
+      store.setLoading(false);
     }
 
     return store.updateTime(id, data);
   }
 
   async function removeTime(id: string) {
+    store.setLoading(true);
     try {
       if (loggedIn.value && isOnlineTime(id)) {
         await deleteTime(id);
@@ -165,6 +177,8 @@ export function useTime() {
       if (import.meta.env.DEV) {
         console.error('Error creating time:', error);
       }
+    } finally {
+      store.setLoading(false);
     }
 
     return store.removeTime(id);

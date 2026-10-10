@@ -7,7 +7,7 @@ import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 import { getOrganisationMembersByMemberIds } from '~~/server/utils/organisation';
 import { isPrivilegedOrganisationMember } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request queries',
     });
   }
@@ -38,21 +38,17 @@ export default defineEventHandler(async (event) => {
     const organisationMemberIds = await getOrganisationMembersByMemberIds(
       organisation.value,
       query.data.organisationMemberId,
-    ).then((members) => members.map((member) => member.id));
+    ).then(members => members.map(member => member.id));
 
     // check if all organisationMemberIds belongs to the organisation
-    if (
-      organisationMemberIds.length !== query.data.organisationMemberId.length
-    ) {
+    if (organisationMemberIds.length !== query.data.organisationMemberId.length) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }
 
-    whereStatements.push(
-      inArray(times.organisationMemberId, organisationMemberIds),
-    );
+    whereStatements.push(inArray(times.organisationMemberId, organisationMemberIds));
   } else {
     const organisationMember = await getOrganisationMemberByUserId(
       organisation.value,
@@ -61,16 +57,14 @@ export default defineEventHandler(async (event) => {
 
     if (!organisationMember) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }
 
     // if the user is not a privileged member, they can only see their own times
     if (!isPrivilegedOrganisationMember(organisationMember)) {
-      whereStatements.push(
-        eq(times.organisationMemberId, organisationMember.id),
-      );
+      whereStatements.push(eq(times.organisationMemberId, organisationMember.id));
     }
   }
 
@@ -82,7 +76,7 @@ export default defineEventHandler(async (event) => {
     );
     if (!isOrganisationProject) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }

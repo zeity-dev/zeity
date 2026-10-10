@@ -19,15 +19,9 @@ export async function findOTP(code: string, type: string) {
   const otp = await useDrizzle()
     .select()
     .from(authOTP)
-    .where(
-      and(
-        eq(authOTP.type, type),
-        eq(authOTP.code, code),
-        gte(authOTP.expiresAt, new Date()),
-      ),
-    )
+    .where(and(eq(authOTP.type, type), eq(authOTP.code, code), gte(authOTP.expiresAt, new Date())))
     .limit(1)
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   return otp;
 }
@@ -47,17 +41,12 @@ export async function verifyOTP(userId: string, code: string, type: string) {
       ),
     )
     .limit(1)
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   return otp;
 }
 
-export async function createOTP(
-  userId: string,
-  code: string,
-  type: string,
-  expiresAt?: Date,
-) {
+export async function createOTP(userId: string, code: string, type: string, expiresAt?: Date) {
   await useDrizzle()
     .insert(authOTP)
     .values({

@@ -20,14 +20,14 @@ export default defineEventHandler(async event => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
   if (!(await userIdBelongsToOrganisation(session.user.id, { id: organisation.value }))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -35,7 +35,7 @@ export default defineEventHandler(async event => {
   const belongsToOrg = await doesTasksBelongToOrganisation(params.data.id, organisation.value);
   if (!belongsToOrg) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }

@@ -1,11 +1,16 @@
+import { defineEventHandler, readValidatedBody, createError, setResponseStatus } from 'nuxt/server';
 import { z } from 'zod';
+import { eq, and, gt } from '@zeity/database';
 
 import { count } from '@zeity/database';
 import { users } from '@zeity/database/user';
 import { authOTP } from '@zeity/database/auth-otp';
 import { useUserPasswordReset } from '~~/server/utils/user-password-reset';
+import { useDrizzle } from '~~/server/utils/drizzle';
+import { OTP_TYPE_PASSWORD_RESET } from '~~/server/utils/auth-otp';
+import { useMailer } from '~~/server/utils/mailer';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const { email } = await readValidatedBody(
     event,
     z.object({
@@ -18,7 +23,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .from(users)
     .where(eq(users.email, email))
-    .then((rows) => rows[0]);
+    .then(rows => rows[0]);
 
   if (!dbUser) {
     // intentionally send no error to prevent user enumeration
@@ -36,18 +41,18 @@ export default defineEventHandler(async (event) => {
         gt(authOTP.expiresAt, new Date()),
       ),
     )
-    .then((res) => res[0]?.count || 0);
+    .then(res => res[0]?.count || 0);
   // Limit to 3 active reset requests per user to prevent abuse
   if (existingOTPs > 3) {
     throw createError({
-      statusCode: 429,
-      message: `Too many password reset requests. Please try again later.`,
+      status: 429,
+      statusText: `Too many password reset requests. Please try again later.`,
     });
   }
 
   const link = await useUserPasswordReset(event).generateResetLink(dbUser.id);
 
-  await useMailer(event).sendMessageMail(
+  await useMailer().sendMessageMail(
     { email: dbUser.email, name: dbUser.name },
     `Password Reset Request`,
     [`You have requested to reset your password.`],

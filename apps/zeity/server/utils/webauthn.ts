@@ -1,10 +1,8 @@
 import { eq } from '@zeity/database';
 import { authChallenge } from '@zeity/database/auth-challenge';
+import { useDrizzle } from './drizzle';
 
-export async function storeChallenge(
-  challenge: string,
-  attemptId: string
-): Promise<void> {
+export async function storeChallenge(challenge: string, attemptId: string): Promise<void> {
   await useDrizzle().insert(authChallenge).values({
     id: attemptId,
     challenge,
@@ -18,14 +16,14 @@ export async function getChallenge(attemptId: string): Promise<string> {
     .from(authChallenge)
     .where(eq(authChallenge.id, attemptId))
     .limit(1)
-    .then((rows) => rows[0]?.challenge)
+    .then(rows => rows[0]?.challenge)
     .catch(() => undefined);
 
   // Make sure to always remove the attempt because they are single use only!
   await db.delete(authChallenge).where(eq(authChallenge.id, attemptId));
 
   if (!challenge) {
-    throw createError({ statusCode: 400, message: 'Challenge expired' });
+    throw createError({ status: 400, statusText: 'Challenge expired' });
   }
 
   return challenge;

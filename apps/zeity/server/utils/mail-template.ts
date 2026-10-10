@@ -5,10 +5,7 @@ import { render } from '@vue-email/render';
 import MailWelcome from '../mail/MailWelcome.vue';
 import MailMessage from '../mail/MailMessage.vue';
 
-async function renderVueMail<T extends Component>(
-  component: T,
-  props?: ExtractComponentProps<T>
-) {
+async function renderVueMail<T extends Component>(component: T, props?: ExtractComponentProps<T>) {
   const [html, text] = await Promise.all([
     render(component, props, { pretty: import.meta.dev ?? false }),
     render(component, props, { plainText: true }),

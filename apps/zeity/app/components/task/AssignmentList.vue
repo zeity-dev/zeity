@@ -12,6 +12,7 @@ const props = defineProps({
   },
 });
 
+const { getUserImagePath } = useImagePaths();
 const { addAssignment, removeAssignment } = useTask();
 
 const { data, refresh } = await useFetch(() => `/api/tasks/${props.task.id}/assignments`);

@@ -1,7 +1,12 @@
-import type { H3Event } from 'h3';
-
+import { type RequestEvent, getRequestURL } from 'nuxt/server';
 import { randomBytes } from 'node:crypto';
-import { deleteUsersOTPs, OTP_TYPE_PASSWORD_RESET } from './auth-otp';
+import {
+  deleteUsersOTPs,
+  OTP_TYPE_PASSWORD_RESET,
+  createOTP,
+  deleteExpiredOTPs,
+  findOTP,
+} from './auth-otp';
 
 export async function findResetRequest(code: string) {
   await deleteExpiredOTPs();
@@ -20,7 +25,7 @@ export async function createResetRequest(userId: string) {
   return code;
 }
 
-export function useUserPasswordReset(event: H3Event) {
+export function useUserPasswordReset(event: RequestEvent) {
   return {
     generateResetLink: async (userId: string) => {
       const token = await createResetRequest(userId);

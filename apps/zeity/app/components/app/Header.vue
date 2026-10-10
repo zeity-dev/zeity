@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const appConfig = useRuntimeConfig();
+const { getUserImagePath, getOrganisationImagePath } = useImagePaths();
 
 const { isLoggedIn } = useAuth();
 const { user } = useUserSession();
-const { currentOrganisation, getAllOrganisations, setCurrentOrganisationId } =
-  useOrganisation();
+const { loading } = storeToRefs(useUserStore());
+const { currentOrganisation, getAllOrganisations, setCurrentOrganisationId } = useOrganisation();
 const orgItems = computed(() =>
-  getAllOrganisations().value.map((organisation) => ({
+  getAllOrganisations().value.map(organisation => ({
     label: organisation.name,
     avatar: {
       src: getOrganisationImagePath(organisation),
@@ -48,17 +49,26 @@ const orgItems = computed(() =>
           </span>
         </UButton>
 
-        <UAvatarGroup v-if="isLoggedIn && user">
-          <UDropdownMenu :items="orgItems">
-            <UAvatar
-              v-if="currentOrganisation"
-              :src="getOrganisationImagePath(currentOrganisation)"
-              :alt="currentOrganisation?.name"
-            />
-          </UDropdownMenu>
-          <ULink to="/user" :title="user?.name">
-            <UAvatar :src="getUserImagePath(user)" :alt="user?.name" />
-          </ULink>
+        <UAvatarGroup v-if="isLoggedIn">
+          <div
+            v-if="loading"
+            class="flex items-center justify-center w-8 h-8 rounded-full bg-default border border-muted"
+          >
+            <UIcon name="i-lucide-loader-circle" class="animate-spin text-sm" />
+          </div>
+
+          <template v-else>
+            <UDropdownMenu :items="orgItems">
+              <UAvatar
+                v-if="currentOrganisation"
+                :src="getOrganisationImagePath(currentOrganisation)"
+                :alt="currentOrganisation?.name"
+              />
+            </UDropdownMenu>
+            <ULink to="/user" :title="user?.name">
+              <UAvatar :src="getUserImagePath(user)" :alt="user?.name" />
+            </ULink>
+          </template>
         </UAvatarGroup>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { eq, asc } from '@zeity/database';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -12,11 +12,11 @@ export default defineEventHandler(async (event) => {
     z.object({
       orgId: z.uuid(),
       inviteId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -26,21 +26,19 @@ export default defineEventHandler(async (event) => {
     z.object({
       offset: z.coerce.number().int().nonnegative().default(0),
       limit: z.coerce.number().int().positive().lte(500).default(10),
-    }).safeParse
+    }).safeParse,
   );
   if (!query.success) {
     throw createError({
       data: query.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request queries',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

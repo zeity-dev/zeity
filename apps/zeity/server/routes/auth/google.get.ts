@@ -15,7 +15,7 @@ export default defineOAuthGoogleEventHandler({
     });
     if (!linkedUser) {
       throw createError({
-        statusCode: 401,
+        status: 401,
         statusMessage: 'User not found',
       });
     }

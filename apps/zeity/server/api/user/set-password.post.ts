@@ -3,7 +3,7 @@ import z from 'zod';
 import { userAccounts } from '@zeity/database/user-account';
 import { PASSWORD_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const { currentPassword, newPassword } = await readValidatedBody(
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
   if (currentPassword === newPassword) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'New password must be different from current password',
     });
   }
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!account) {
     await db.insert(userAccounts).values({
@@ -42,12 +42,9 @@ export default defineEventHandler(async (event) => {
       password: await hashPassword(newPassword),
     });
   } else {
-    if (
-      account.password &&
-      !(await verifyPassword(account.password, currentPassword))
-    ) {
+    if (account.password && !(await verifyPassword(account.password, currentPassword))) {
       throw createError({
-        statusCode: 401,
+        status: 401,
         message: 'Invalid current password',
       });
     }

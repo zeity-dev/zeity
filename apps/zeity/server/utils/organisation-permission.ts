@@ -6,39 +6,23 @@ import {
   ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types';
-import {
-  getOrganisationMembersByUserIds,
-  getOrganisationMemberByUserId,
-} from './organisation';
+import { getOrganisationMembersByUserIds, getOrganisationMemberByUserId } from './organisation';
 
-const privilegedRoles = new Set([
-  ORGANISATION_MEMBER_ROLE_OWNER,
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-]);
+const privilegedRoles = new Set([ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN]);
 
 export function isUserOrganisationMember(
   user: Pick<User, 'id'>,
   organisationMembers: OrganisationMember[],
 ) {
-  return organisationMembers.some(
-    (member) => member.userId === user.id && member.role,
-  );
+  return organisationMembers.some(member => member.userId === user.id && member.role);
 }
 
-export function userIdBelongsToOrganisation(
-  userId: string,
-  org: Pick<Organisation, 'id'>,
-) {
-  return getOrganisationMemberByUserId(org.id, userId).then((res) =>
-    Boolean(res),
-  );
+export function userIdBelongsToOrganisation(userId: string, org: Pick<Organisation, 'id'>) {
+  return getOrganisationMemberByUserId(org.id, userId).then(res => Boolean(res));
 }
 
-export function userIdsBelongsToOrganisation(
-  org: Pick<Organisation, 'id'>,
-  userIds: string[],
-) {
-  return getOrganisationMembersByUserIds(org.id, userIds).then((res) => {
+export function userIdsBelongsToOrganisation(org: Pick<Organisation, 'id'>, userIds: string[]) {
+  return getOrganisationMembersByUserIds(org.id, userIds).then(res => {
     return res.length === userIds.length;
   });
 }
@@ -55,47 +39,31 @@ export function canUserUpdateOrganisation(
   organisationMembers: OrganisationMember[],
 ) {
   return organisationMembers.some(
-    (member) =>
-      member.userId === user.id && privilegedRoles.has(member.role),
+    member => member.userId === user.id && privilegedRoles.has(member.role),
   );
 }
 
-export function canUserReadOrganisationByOrgId(
-  user: Pick<User, 'id'>,
-  orgId: string,
-) {
-  return hasUserOrganisationMemberRole(
-    { organisationId: orgId, userId: user.id },
-    [
-      ORGANISATION_MEMBER_ROLE_OWNER,
-      ORGANISATION_MEMBER_ROLE_ADMIN,
-      ORGANISATION_MEMBER_ROLE_MEMBER,
-    ],
-  );
+export function canUserReadOrganisationByOrgId(user: Pick<User, 'id'>, orgId: string) {
+  return hasUserOrganisationMemberRole({ organisationId: orgId, userId: user.id }, [
+    ORGANISATION_MEMBER_ROLE_OWNER,
+    ORGANISATION_MEMBER_ROLE_ADMIN,
+    ORGANISATION_MEMBER_ROLE_MEMBER,
+  ]);
 }
 
-export function canUserUpdateOrganisationByOrgId(
-  user: Pick<User, 'id'>,
-  orgId: string,
-) {
-  return hasUserOrganisationMemberRole(
-    { organisationId: orgId, userId: user.id },
-    [ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN],
-  );
+export function canUserUpdateOrganisationByOrgId(user: Pick<User, 'id'>, orgId: string) {
+  return hasUserOrganisationMemberRole({ organisationId: orgId, userId: user.id }, [
+    ORGANISATION_MEMBER_ROLE_OWNER,
+    ORGANISATION_MEMBER_ROLE_ADMIN,
+  ]);
 }
 
-export function canUserDeleteOrganisationByOrgId(
-  user: Pick<User, 'id'>,
-  orgId: string,
-) {
-  return hasUserOrganisationMemberRole(
-    { organisationId: orgId, userId: user.id },
-    [ORGANISATION_MEMBER_ROLE_OWNER],
-  );
+export function canUserDeleteOrganisationByOrgId(user: Pick<User, 'id'>, orgId: string) {
+  return hasUserOrganisationMemberRole({ organisationId: orgId, userId: user.id }, [
+    ORGANISATION_MEMBER_ROLE_OWNER,
+  ]);
 }
 
-export function isPrivilegedOrganisationMember(
-  member: Pick<OrganisationMember, 'role'>,
-) {
+export function isPrivilegedOrganisationMember(member: Pick<OrganisationMember, 'role'>) {
   return privilegedRoles.has(member.role);
 }

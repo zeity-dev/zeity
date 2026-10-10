@@ -29,21 +29,27 @@ export function useUser() {
   }
 
   function fetchUser() {
-    return useLazyFetch('/api/user/current').then(result => {
-      userStore.setLoading(result.pending.value);
+    userStore.setLoading(true);
 
-      if (result.status.value === 'success') {
-        const { user, organisations } = result?.data.value || {};
-        updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
+    return useLazyFetch('/api/user/current')
+      .then(result => {
+        if (result.status.value === 'success') {
+          const { user, organisations } = result?.data.value || {};
+          updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
+          return result;
+        }
+
+        console.error('Error fetching user:', result.error.value);
+        const errorStatus = result.error.value?.status;
+        if (errorStatus === 401) {
+          clear();
+        }
+
         return result;
-      }
-
-      if (result.error.value?.data?.statusCode === 401) {
-        clear();
-      }
-
-      return result;
-    });
+      })
+      .finally(() => {
+        userStore.setLoading(false);
+      });
   }
 
   async function reloadUser() {
@@ -56,7 +62,8 @@ export function useUser() {
       })
       .catch(error => {
         console.error('fetchUser error', error);
-        if (error?.statusCode === 401) {
+        const fetchError = error as { status?: number; statusCode?: number } | undefined;
+        if (fetchError?.statusCode === 401 || fetchError?.status === 401) {
           clear();
         }
         throw error;

@@ -11,7 +11,7 @@ import { organisationMembers } from '@zeity/database/organisation-member';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { checkOrganisationMembersQuota } from '~~/server/utils/organisation-quota';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -24,23 +24,21 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
   if ((await checkOrganisationMembersQuota(params.data.orgId)) === false) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'User quota exceeded',
     });
   }
@@ -59,17 +57,17 @@ export default defineEventHandler(async (event) => {
       ),
     )
     .limit(1)
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   if (!joinRequest) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Join request not found or already processed',
     });
   }
 
   // Create member and update request status in a transaction
-  const result = await db.transaction(async (tx) => {
+  const result = await db.transaction(async tx => {
     // Add user to organisation
     const member = await tx
       .insert(organisationMembers)
@@ -79,11 +77,11 @@ export default defineEventHandler(async (event) => {
         role: ORGANISATION_MEMBER_ROLE_MEMBER,
       })
       .returning()
-      .then((res) => res[0]);
+      .then(res => res[0]);
 
     if (!member) {
       throw createError({
-        statusCode: 500,
+        status: 500,
         message: 'Failed to add member to organisation',
       });
     }
@@ -96,7 +94,7 @@ export default defineEventHandler(async (event) => {
       })
       .where(eq(organisationJoinRequests.id, joinRequest.id))
       .returning()
-      .then((res) => res[0]);
+      .then(res => res[0]);
 
     return { member, request: updatedRequest };
   });

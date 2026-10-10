@@ -1,12 +1,12 @@
 import { eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   if (!session.user.id) {
     throw createError({
-      statusCode: 401,
+      status: 401,
       message: 'Unauthorized',
     });
   }

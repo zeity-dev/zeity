@@ -26,7 +26,7 @@ export default defineEventHandler(async event => {
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
@@ -40,7 +40,7 @@ export default defineEventHandler(async event => {
     );
     if (!isOrganisationProject) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }
@@ -52,7 +52,7 @@ export default defineEventHandler(async event => {
     const isOrganisationTask = await doesTasksBelongToOrganisation(taskIds, organisation.value);
     if (!isOrganisationTask) {
       throw createError({
-        statusCode: 403,
+        status: 403,
         message: 'Forbidden',
       });
     }
@@ -65,7 +65,7 @@ export default defineEventHandler(async event => {
 
   if (!organisationMemberId) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }

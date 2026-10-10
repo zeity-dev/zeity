@@ -4,7 +4,7 @@ import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
 import { findTimeById } from '~~/server/utils/time';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const existing = await findTimeById(params.data.id);
   if (!existing) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -33,22 +33,19 @@ export default defineEventHandler(async (event) => {
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (
     existing.organisationId !== organisation.value ||
     existing.organisationMemberId !== organisationMemberId
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
 
-  await useDrizzle()
-    .delete(times)
-    .where(eq(times.id, params.data.id))
-    .returning();
+  await useDrizzle().delete(times).where(eq(times.id, params.data.id)).returning();
 
   return sendNoContent(event);
 });

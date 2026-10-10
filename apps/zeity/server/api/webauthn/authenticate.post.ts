@@ -13,15 +13,17 @@ export default defineWebAuthnAuthenticateEventHandler({
 
   async allowCredentials(event, username) {
     const user = await useDrizzle()
-      .select({ credentials: {
-        id: userCredentials.id,
-        trasports: userCredentials.transports,
-      } })
+      .select({
+        credentials: {
+          id: userCredentials.id,
+          trasports: userCredentials.transports,
+        },
+      })
       .from(users)
       .rightJoin(userCredentials, eq(userCredentials.userId, users.id))
       .where(eq(users.email, username));
 
-    return user.map((item) => item.credentials) || [];
+    return user.map(item => item.credentials) || [];
   },
 
   async getCredential(event, credentialID) {
@@ -38,11 +40,11 @@ export default defineWebAuthnAuthenticateEventHandler({
       .from(userCredentials)
       .innerJoin(users, eq(users.id, userCredentials.userId))
       .where(eq(userCredentials.id, credentialID))
-      .then((rows) => rows[0]);
+      .then(rows => rows[0]);
 
     if (!credential) {
       throw createError({
-        statusCode: 404,
+        status: 404,
         statusMessage: 'Credential not found',
       });
     }

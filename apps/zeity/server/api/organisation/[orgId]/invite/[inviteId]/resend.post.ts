@@ -5,7 +5,7 @@ import { organisationInvites } from '@zeity/database/organisation-invite';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { sendInviteMail } from '~~/server/utils/user-invite';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -13,20 +13,18 @@ export default defineEventHandler(async (event) => {
     z.object({
       orgId: z.uuid(),
       inviteId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -34,17 +32,14 @@ export default defineEventHandler(async (event) => {
   const { organisation, organisation_invite } = await useDrizzle()
     .select()
     .from(organisationInvites)
-    .leftJoin(
-      organisations,
-      eq(organisations.id, organisationInvites.organisationId)
-    )
+    .leftJoin(organisations, eq(organisations.id, organisationInvites.organisationId))
     .where(eq(organisationInvites.id, params.data.inviteId))
     .limit(1)
-    .then((res) => res[0] || { organisation: null, organisation_invite: null });
+    .then(res => res[0] || { organisation: null, organisation_invite: null });
 
   if (!organisation || !organisation_invite) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }

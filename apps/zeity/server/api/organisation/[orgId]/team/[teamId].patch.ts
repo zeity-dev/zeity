@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { eq, and } from '@zeity/database';
 import { organisationTeams } from '@zeity/database/organisation-team';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
   const params = await getValidatedRouterParams(
@@ -11,11 +11,11 @@ export default defineEventHandler(async (event) => {
     z.object({
       orgId: z.uuid(),
       teamId: z.uuid(),
-    }).safeParse
+    }).safeParse,
   );
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -28,22 +28,20 @@ export default defineEventHandler(async (event) => {
         description: z.string().trim().optional(),
         permissions: z.array(z.string()).optional().default([]),
       })
-      .partial().safeParse
+      .partial().safeParse,
   );
 
   if (!body.success) {
     throw createError({
       data: body.error,
-      statusCode: 400,
+      status: 400,
       message: 'Invalid request body',
     });
   }
 
-  if (
-    !(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))
-  ) {
+  if (!(await canUserUpdateOrganisationByOrgId(session.user, params.data.orgId))) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
@@ -54,11 +52,11 @@ export default defineEventHandler(async (event) => {
     .where(
       and(
         eq(organisationTeams.organisationId, params.data.orgId),
-        eq(organisationTeams.id, params.data.teamId)
-      )
+        eq(organisationTeams.id, params.data.teamId),
+      ),
     )
     .returning()
-    .then((res) => res[0]);
+    .then(res => res[0]);
 
   return result;
 });

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { findTimeById } from '~~/server/utils/time';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   if (!params.success) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   const result = await findTimeById(params.data.id);
   if (!result) {
     throw createError({
-      statusCode: 404,
+      status: 404,
       message: 'Not Found',
     });
   }
@@ -31,14 +31,14 @@ export default defineEventHandler(async (event) => {
   const organisationMemberId = await getOrganisationMemberByUserId(
     organisation.value,
     session.user.id,
-  ).then((member) => member?.id);
+  ).then(member => member?.id);
 
   if (
     result.organisationId !== organisation.value ||
     result.organisationMemberId !== organisationMemberId
   ) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Forbidden',
     });
   }
