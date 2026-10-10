@@ -26,11 +26,11 @@ catalogs:
     zod: "^4.6.5"
     # WebAuthn
     "@simplewebauthn/browser": "^14.0.0"
-    "@simplewebauthn/server": "^14.0.0"
+    "@simplewebauthn/server": "^14.0.3"
     # Other dependencies
     "qrcode.vue": "^3.11.0"
     "@vue-email/components": "^0.0.21"
-    "drizzle-orm": "^0.45.3"
+    "drizzle-orm": "^0.45.4"
     pg: "^8.23.1"
 
   dev:
@@ -39,7 +39,7 @@ catalogs:
     "@types/node": "^24.19.1"
     "@nuxt/hints": "^1.1.4"
     nuxt-security: "^2.6.0"
-    "@iconify-json/lucide": "^1.2.141"
+    "@iconify-json/lucide": "^1.2.142"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 

@@ -26,7 +26,7 @@
     "@vitest/browser-playwright": "^5.0.3",
     "@vitest/coverage-v8": "^5.0.3",
     "eslint-plugin-regexp": "^3.3.1",
-    "knip": "^6.40.0",
+    "knip": "^6.41.0",
     "oxfmt": "^0.72.0",
     "oxlint": "^1.87.0",
     "typescript": "^6.0.3",
@@ -35,5 +35,5 @@
   "resolutions": {
     "zod": "^4.6.5"
   },
-  "packageManager": "pnpm@12.10.1"
+  "packageManager": "pnpm@12.11.1"
 }
