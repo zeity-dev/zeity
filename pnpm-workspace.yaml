@@ -35,7 +35,7 @@ catalogs:
 
   dev:
     # Development Dependencies - Tooling, Types, Testing
-    typescript: "^6.0.3"
+    typescript: "^7.0.2"
     "@types/node": "^24.19.1"
     "@nuxt/hints": "^1.1.4"
     nuxt-security: "^2.6.0"
