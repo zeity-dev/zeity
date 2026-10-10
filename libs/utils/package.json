@@ -11,10 +11,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "date-fns": "^4.4.0",
+    "date-fns": "catalog:",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "catalog:dev"
   }
 }

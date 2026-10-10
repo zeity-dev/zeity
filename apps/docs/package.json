@@ -9,24 +9,24 @@
     "preview": "nuxt preview --extends docus"
   },
   "dependencies": {
-    "@number-flow/vue": "^0.5.2",
+    "@number-flow/vue": "catalog:",
     "@nuxt/content": "^3.16.1",
     "@nuxt/icon": "^2.5.1",
-    "@nuxt/image": "^2.1.0",
-    "@nuxt/ui": "^4.11.3",
-    "@nuxtjs/i18n": "^10.6.0",
+    "@nuxt/image": "catalog:",
+    "@nuxt/ui": "catalog:",
+    "@nuxtjs/i18n": "catalog:",
     "@nuxtjs/seo": "^5.3.16",
-    "@vueuse/core": "^15.0.0",
+    "@vueuse/core": "catalog:",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "docus": "^5.14.0",
-    "nuxt": "^4.6.0",
-    "vue": "^3.5.43"
+    "nuxt": "catalog:",
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.141",
-    "@iconify-json/ri": "^1.2.10",
-    "@nuxt/hints": "^1.1.4",
-    "nuxt-security": "^2.6.0"
+    "@iconify-json/lucide": "catalog:dev",
+    "@iconify-json/ri": "catalog:dev",
+    "@nuxt/hints": "catalog:dev",
+    "nuxt-security": "catalog:dev"
   }
 }

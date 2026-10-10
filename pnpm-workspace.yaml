@@ -11,9 +11,39 @@ trustPolicyExclude:
   - semver@6.3.1
   - xlsx@0.20.3
 
+catalogs:
+  default:
+    # Production Dependencies - Framework, UI, Utilities
+    nuxt: "^4.6.0"
+    vue: "^3.5.43"
+    "@nuxt/ui": "^4.11.3"
+    "@nuxt/image": "^2.1.0"
+    "@nuxtjs/i18n": "^10.6.0"
+    "@vueuse/core": "^15.0.0"
+    "@number-flow/vue": "^0.5.2"
+    "@pinia/nuxt": "^1.0.2"
+    date-fns: "^4.4.0"
+    zod: "^4.6.5"
+    # WebAuthn
+    "@simplewebauthn/browser": "^13.3.0"
+    "@simplewebauthn/server": "^13.3.3"
+    # Other dependencies
+    "qrcode.vue": "^3.11.0"
+    "@vue-email/components": "^0.0.21"
+    "drizzle-orm": "^0.45.3"
+    pg: "^8.23.1"
+
+  dev:
+    # Development Dependencies - Tooling, Types, Testing
+    typescript: "^6.0.3"
+    "@types/node": "^24.19.1"
+    "@nuxt/hints": "^1.1.4"
+    nuxt-security: "^2.6.0"
+    "@iconify-json/lucide": "^1.2.141"
+    "@iconify-json/ri": "^1.2.10"
+    drizzle-kit: "^0.31.11"
+
 overrides:
-  "h3": "1.15.11"
-  "h3-next": "npm:h3@2.0.2"
   "zod": "^4.6.5"
   "@netlify/functions": "-"
   "@netlify/blobs": "-"
@@ -28,10 +58,3 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
   vue-demi: false
-
-minimumReleaseAgeExclude:
-  - '@nuxt/kit@4.5.1'
-  - '@nuxt/nitro-server@4.5.1'
-  - '@nuxt/schema@4.5.1'
-  - '@nuxt/vite-builder@4.5.1'
-  - nuxt@4.5.1
