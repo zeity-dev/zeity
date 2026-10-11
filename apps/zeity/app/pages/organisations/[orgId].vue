@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui';
-import {
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
-} from '@zeity/types';
+import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types';
 import type { OrganisationWithStats } from '~/types/organisation';
 
 definePageMeta({
-  validate: async (route) => {
+  validate: async route => {
     // Check if the id is made up of digits
     return typeof route.params.orgId === 'string';
   },
@@ -25,7 +22,7 @@ const { data, refresh, error } = await useFetch<OrganisationWithStats>(
   () => `/api/organisation/${organisationId}`,
 );
 
-switch (error.value?.statusCode) {
+switch (error.value?.status ?? error.value?.statusCode) {
   case 401:
     await navigateTo('/auth/login');
     break;

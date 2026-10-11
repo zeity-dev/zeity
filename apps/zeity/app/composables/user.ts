@@ -1,3 +1,4 @@
+import type { NuxtError } from '#app';
 import type { User } from '@zeity/database/user';
 import type { LocalOrganisation, LocalUser } from '~/types/local-user';
 
@@ -60,10 +61,9 @@ export function useUser() {
         updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
         return result;
       })
-      .catch(error => {
+      .catch((error: NuxtError) => {
         console.error('fetchUser error', error);
-        const fetchError = error as { status?: number; statusCode?: number } | undefined;
-        if (fetchError?.statusCode === 401 || fetchError?.status === 401) {
+        if (error?.statusCode === 401 || error?.status === 401) {
           clear();
         }
         throw error;

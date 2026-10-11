@@ -9,7 +9,7 @@ const props = defineProps({
 const { t } = useI18n();
 
 const isDev = import.meta.dev;
-const status = computed(() => props.error.statusCode || 500);
+const status = computed(() => props.error.status ?? props.error.statusCode ?? 500);
 
 const title = computed(() => {
   switch (status.value) {
