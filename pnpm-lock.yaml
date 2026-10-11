@@ -194,6 +194,9 @@ catalogs:
     date-fns:
       specifier: ^4.4.0
       version: 4.4.0
+    drizzle-orm:
+      specifier: ^0.45.3
+      version: 0.45.4
     nuxt:
       specifier: ^4.6.1
       version: 4.6.1
@@ -449,7 +452,7 @@ importers:
         specifier: workspace:^
         version: link:../types
       drizzle-orm:
-        specifier: ^0.45.3
+        specifier: 'catalog:'
         version: 0.45.4(@types/pg@8.23.1)(better-sqlite3@12.11.1)(pg@8.23.1)
       pg:
         specifier: ^8.23.1
