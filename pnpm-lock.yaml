@@ -200,6 +200,9 @@ catalogs:
     nuxt:
       specifier: ^4.6.1
       version: 4.6.1
+    pg:
+      specifier: ^8.23.1
+      version: 8.23.1
     qrcode.vue:
       specifier: ^3.11.0
       version: 3.11.0
@@ -455,7 +458,7 @@ importers:
         specifier: 'catalog:'
         version: 0.45.4(@types/pg@8.23.1)(better-sqlite3@12.11.1)(pg@8.23.1)
       pg:
-        specifier: ^8.23.1
+        specifier: 'catalog:'
         version: 8.23.1
     devDependencies:
       '@simplewebauthn/server':
