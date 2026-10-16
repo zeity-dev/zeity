@@ -15,7 +15,7 @@
     "@nuxt/image": "catalog:",
     "@nuxt/ui": "catalog:",
     "@nuxtjs/i18n": "catalog:",
-    "@nuxtjs/seo": "^5.3.16",
+    "@nuxtjs/seo": "^6.0.1",
     "@vueuse/core": "catalog:",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
