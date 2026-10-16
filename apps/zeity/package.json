@@ -37,7 +37,7 @@
   "devDependencies": {
     "@iconify-json/lucide": "catalog:dev",
     "@iconify-json/ri": "catalog:dev",
-    "@iconify-json/simple-icons": "^1.2.99",
+    "@iconify-json/simple-icons": "^1.2.100",
     "@nuxt/hints": "catalog:dev",
     "@nuxt/image": "catalog:",
     "@nuxt/test-utils": "^4.3.3",
@@ -51,7 +51,7 @@
     "nuxt": "catalog:",
     "nuxt-auth-utils": "^0.5.31",
     "nuxt-security": "catalog:dev",
-    "vue-i18n": "^11.4.13",
-    "vue-tsc": "^3.3.12"
+    "vue-i18n": "^11.4.14",
+    "vue-tsc": "^3.3.13"
   }
 }

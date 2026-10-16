@@ -15,15 +15,15 @@ catalogs:
   default:
     # Production Dependencies - Framework, UI, Utilities
     nuxt: "^4.6.1"
-    vue: "^3.5.43"
+    vue: "^3.5.44"
     "@nuxt/ui": "^4.11.3"
     "@nuxt/image": "^2.1.0"
     "@nuxtjs/i18n": "^10.6.0"
     "@vueuse/core": "^15.0.0"
     "@number-flow/vue": "^0.5.2"
-    "@pinia/nuxt": "^1.0.2"
+    "@pinia/nuxt": "^1.0.3"
     date-fns: "^4.4.0"
-    zod: "^4.6.5"
+    zod: "^4.6.7"
     # WebAuthn
     "@simplewebauthn/browser": "^14.0.0"
     "@simplewebauthn/server": "^14.0.3"
@@ -37,14 +37,14 @@ catalogs:
     # Development Dependencies - Tooling, Types, Testing
     typescript: "^6.0.3"
     "@types/node": "^24.19.2"
-    "@nuxt/hints": "^1.1.4"
+    "@nuxt/hints": "^1.1.5"
     nuxt-security: "^2.6.0"
-    "@iconify-json/lucide": "^1.2.142"
+    "@iconify-json/lucide": "^1.2.144"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 
 overrides:
-  "zod": "^4.6.5"
+  "zod": "^4.6.7"
   "@netlify/functions": "-"
   "@netlify/blobs": "-"
 

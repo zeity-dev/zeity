@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@number-flow/vue": "catalog:",
-    "@nuxt/content": "^3.16.1",
+    "@nuxt/content": "^3.16.2",
     "@nuxt/icon": "^2.5.1",
     "@nuxt/image": "catalog:",
     "@nuxt/ui": "catalog:",
@@ -19,7 +19,7 @@
     "@vueuse/core": "catalog:",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
-    "docus": "^5.14.0",
+    "docus": "^5.15.0",
     "nuxt": "catalog:",
     "vue": "catalog:"
   },
