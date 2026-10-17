@@ -35,5 +35,5 @@
   "resolutions": {
     "zod": "^4.6.7"
   },
-  "packageManager": "pnpm@12.11.2"
+  "packageManager": "pnpm@12.14.0"
 }
