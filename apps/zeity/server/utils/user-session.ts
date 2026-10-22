@@ -1,4 +1,5 @@
-import type { RequestEvent } from 'nuxt/server';
+import { type RequestEvent } from 'nuxt/server';
+import { add } from 'date-fns';
 import { type User, users } from '@zeity/database/user';
 import { eq, useDrizzle } from './drizzle';
 
@@ -35,28 +36,25 @@ export async function refreshUserSession(
     return;
   }
 
-  // hack for updating cookie expiration time
-  // see: https://github.com/atinux/nuxt-auth-utils/issues/356
-  // @ts-expect-error: Accessing internal session object to update cookie expiration time
-  if (event.context?.sessions?.['zeity_session']) {
-    // @ts-expect-error: Accessing internal session object to update cookie expiration time
-    event.context.sessions!['zeity_session'] = {
-      // @ts-expect-error: Accessing internal session object to update cookie expiration time
-      ...event.context.sessions!['zeity_session'],
-      createdAt: Date.now(),
-    };
-  }
-
-  await setUserSession(event, {
-    ...session,
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      verified: Boolean(user.emailVerified),
-      image: user.image,
+  await setUserSession(
+    event,
+    {
+      ...session,
+      updatedAt: Date.now(),
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        verified: Boolean(user.emailVerified),
+        image: user.image,
+      },
     },
-  });
+    {
+      cookie: {
+        expires: add(new Date(Date.now()), { seconds: useRuntimeConfig().session.maxAge }),
+      },
+    },
+  );
 }
 
 function getUser(userId: string) {
