@@ -28,7 +28,7 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "catalog:",
-    "jose": "^6.2.12",
+    "jose": "^6.2.13",
     "qrcode.vue": "catalog:",
     "unemail": "^0.7.0",
     "vue": "catalog:",
@@ -47,11 +47,11 @@
     "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vue/test-utils": "^2.5.1",
-    "happy-dom": "^21.0.3",
+    "happy-dom": "^21.0.4",
     "nuxt": "catalog:",
     "nuxt-auth-utils": "^0.5.32",
     "nuxt-security": "catalog:dev",
-    "vue-i18n": "^11.4.14",
+    "vue-i18n": "^11.4.16",
     "vue-tsc": "^3.3.13"
   }
 }
