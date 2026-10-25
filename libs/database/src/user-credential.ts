@@ -1,13 +1,4 @@
-import {
-  boolean,
-  integer,
-  jsonb,
-  pgTable,
-  primaryKey,
-  text,
-  uuid,
-} from 'drizzle-orm/pg-core';
-import type { AuthenticatorTransportFuture } from '@simplewebauthn/server';
+import { boolean, integer, jsonb, pgTable, primaryKey, text, uuid } from 'drizzle-orm/pg-core';
 
 import { users } from './user';
 
@@ -21,9 +12,7 @@ export const userCredentials = pgTable(
     publicKey: text('public_key').notNull(),
     counter: integer('counter').notNull(),
     backedUp: boolean('backed_up').notNull(),
-    transports: jsonb('transports')
-      .notNull()
-      .$type<AuthenticatorTransportFuture[]>(),
+    transports: jsonb('transports').notNull().$type<string[]>(),
   },
-  (table) => [primaryKey({ columns: [table.userId, table.id] })]
+  table => [primaryKey({ columns: [table.userId, table.id] })],
 );
