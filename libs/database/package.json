@@ -19,7 +19,6 @@
     "pg": "catalog:"
   },
   "devDependencies": {
-    "@simplewebauthn/server": "catalog:",
     "@types/node": "catalog:dev",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "catalog:dev",
