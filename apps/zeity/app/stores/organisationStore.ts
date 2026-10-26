@@ -19,6 +19,8 @@ export const useOrganisationStore = defineStore('organisation', () => {
   const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 365, // 1 year
+    // Only watch for shallow changes to the cookie value. This prevents unnecessary reactivity triggers.
+    watch: 'shallow',
     refresh: true,
   });
 
