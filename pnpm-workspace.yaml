@@ -38,7 +38,7 @@ catalogs:
     typescript: "^6.0.3"
     "@types/node": "^24.19.2"
     "@nuxt/hints": "^1.1.5"
-    nuxt-security: "^2.6.0"
+    nuxt-security: "^2.7.0"
     "@iconify-json/lucide": "^1.2.147"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
