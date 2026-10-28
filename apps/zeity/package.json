@@ -37,7 +37,7 @@
   "devDependencies": {
     "@iconify-json/lucide": "catalog:dev",
     "@iconify-json/ri": "catalog:dev",
-    "@iconify-json/simple-icons": "^1.2.100",
+    "@iconify-json/simple-icons": "^1.2.101",
     "@nuxt/hints": "catalog:dev",
     "@nuxt/image": "catalog:",
     "@nuxt/test-utils": "^4.3.4",
