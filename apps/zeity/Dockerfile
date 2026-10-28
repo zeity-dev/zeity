@@ -1,5 +1,5 @@
 # base stage
-FROM node:24.22.1-alpine AS node-alpine
+FROM node:26.12.1-alpine AS node-alpine
 
 RUN apk update --no-cache && \
     apk upgrade && \
