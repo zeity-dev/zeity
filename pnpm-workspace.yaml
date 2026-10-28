@@ -14,7 +14,7 @@ trustPolicyExclude:
 catalogs:
   default:
     # Production Dependencies - Framework, UI, Utilities
-    nuxt: "^4.6.2"
+    nuxt: "^4.6.3"
     vue: "^3.5.44"
     "@nuxt/ui": "^4.12.0"
     "@nuxt/image": "^2.2.0"
