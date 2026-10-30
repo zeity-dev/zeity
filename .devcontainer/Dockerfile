@@ -1,4 +1,4 @@
-FROM node:26.12.0
+FROM node:26.13.0
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \

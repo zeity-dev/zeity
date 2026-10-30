@@ -36,10 +36,10 @@ catalogs:
   dev:
     # Development Dependencies - Tooling, Types, Testing
     typescript: "^6.0.3"
-    "@types/node": "^26.6.5"
+    "@types/node": "^26.6.6"
     "@nuxt/hints": "^1.1.5"
     nuxt-security: "^2.7.0"
-    "@iconify-json/lucide": "^1.2.147"
+    "@iconify-json/lucide": "^1.2.148"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 
