@@ -15,6 +15,7 @@ const UButton = resolveComponent('UButton');
 const UDropdownMenu = resolveComponent('UDropdownMenu');
 const NuxtTime = resolveComponent('NuxtTime');
 
+const { getUserImagePath } = useImagePaths();
 const { t, locale } = useI18n();
 const toast = useToast();
 
