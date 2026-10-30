@@ -34,16 +34,18 @@ export function useUser() {
 
     return useLazyFetch('/api/user/current')
       .then(result => {
-        if (result.status.value === 'success') {
-          const { user, organisations } = result?.data.value || {};
+        if (result?.status?.value === 'success') {
+          const { user, organisations } = result.data?.value || {};
           updateUserAndOrganisations(user as LocalUser, organisations as LocalOrganisation[]);
           return result;
         }
 
-        console.error('Error fetching user:', result.error.value);
-        const errorStatus = result.error.value?.status;
-        if (errorStatus === 401) {
-          clear();
+        if (result?.error?.value) {
+          console.error('Error fetching user:', result.error.value);
+          const errorStatus = result?.error?.value?.status;
+          if (errorStatus === 401) {
+            clear();
+          }
         }
 
         return result;
