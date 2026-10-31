@@ -39,7 +39,7 @@ catalogs:
     "@types/node": "^26.6.6"
     "@nuxt/hints": "^1.1.5"
     nuxt-security: "^2.7.0"
-    "@iconify-json/lucide": "^1.2.148"
+    "@iconify-json/lucide": "^1.2.149"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 

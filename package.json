@@ -26,7 +26,7 @@
     "@vitest/browser-playwright": "^5.0.5",
     "@vitest/coverage-v8": "^5.0.5",
     "eslint-plugin-regexp": "^3.3.2",
-    "knip": "^6.43.0",
+    "knip": "^6.44.0",
     "oxfmt": "^0.75.0",
     "oxlint": "^1.90.0",
     "typescript": "^6.0.3",
