@@ -41,6 +41,10 @@ export default defineNuxtConfig({
     allow: ['*'],
   },
 
+  aiReady: {
+    enabled: false,
+  },
+
   icon: {
     customCollections: [
       {
