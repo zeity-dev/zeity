@@ -28,7 +28,7 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "catalog:",
-    "jose": "^6.2.14",
+    "jose": "^6.2.15",
     "qrcode.vue": "catalog:",
     "unemail": "^0.7.0",
     "vue": "catalog:",
