@@ -31,18 +31,20 @@ export function useAuth() {
   function startSessionKeepAlive() {
     const online = useOnline();
     const visibility = useDocumentVisibility();
+    const { reloadUser } = useUser();
 
-    watch(visibility, current => {
+    watch(visibility, async current => {
       if (current === 'visible' && online.value) {
-        refresh();
+        await refresh();
+        await reloadUser();
       }
     });
 
     // refresh session periodically to prevent expiry during long sessions
     useIntervalFn(
-      () => {
+      async () => {
         if (online.value && loggedIn.value) {
-          refresh();
+          await refresh();
         }
       },
       30 * 60 * 1000,
