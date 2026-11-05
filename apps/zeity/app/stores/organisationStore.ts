@@ -57,8 +57,20 @@ export const useOrganisationStore = defineStore('organisation', () => {
 
   function autoSelectFirstOrganisation() {
     const allOrgs = organisationsStore.getAll().value;
-    if (!currentOrganisationId.value && allOrgs.length > 0) {
+    const currentId = currentOrganisationId.value;
+    
+    // No organisation selected yet → pick first available
+    if (!currentId && allOrgs.length > 0) {
       setCurrentOrganisationId(allOrgs[0]?.id);
+      return;
+    }
+    
+    // Current organisation no longer exists (e.g., deleted on server) → pick first available
+    if (currentId && allOrgs.length > 0) {
+      const currentExists = organisationsStore.findById(currentId).value;
+      if (!currentExists) {
+        setCurrentOrganisationId(allOrgs[0]?.id);
+      }
     }
   }
 
