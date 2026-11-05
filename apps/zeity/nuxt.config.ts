@@ -107,7 +107,6 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'zeity_lang',
-      cookieCrossOrigin: true,
       alwaysRedirect: false,
     },
     locales: [
