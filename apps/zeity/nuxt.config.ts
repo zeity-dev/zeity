@@ -104,7 +104,12 @@ export default defineNuxtConfig({
   },
   i18n: {
     strategy: 'no_prefix',
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'zeity_lang',
+      cookieCrossOrigin: true,
+      alwaysRedirect: false,
+    },
     locales: [
       {
         code: 'de',
@@ -293,7 +298,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['@vueuse/core'],
+      include: ['@vueuse/core', 'qrcode.vue', 'xlsx', 'zod'],
     },
   },
 
