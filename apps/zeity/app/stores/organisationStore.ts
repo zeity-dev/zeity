@@ -5,6 +5,20 @@ import type { LocalOrganisation } from '~/types/local-user';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 
+/**
+ * Create a ref that syncs bidirectionally with a cookie
+ * Fixes cookie cache invalidation issue
+ */
+function createSyncedCookie(cookie: Ref<string | undefined | null>, loggedIn: Ref<boolean>) {
+  const current = ref(loggedIn.value ? cookie.value : undefined);
+
+  watch(cookie, val => loggedIn.value && (current.value = val), { immediate: true });
+  watch(current, val => (cookie.value = val));
+  watch(loggedIn, isLogged => !isLogged && (current.value = undefined));
+
+  return current;
+}
+
 export const useOrganisationStore = defineStore('organisation', () => {
   const { loggedIn } = useUserSession();
 
@@ -19,24 +33,19 @@ export const useOrganisationStore = defineStore('organisation', () => {
   const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 365, // 1 year
-    // Only watch for shallow changes to the cookie value. This prevents unnecessary reactivity triggers.
-    watch: 'shallow',
     refresh: true,
   });
 
-  function setCurrentOrganisationId(id: string | null | undefined) {
-    currentOrganisationCookie.value = id;
-  }
+  // Synced ref for reactivity
+  const currentOrgIdRef = createSyncedCookie(currentOrganisationCookie, loggedIn);
+
+  const setCurrentOrganisationId = (id: string | null | undefined) => {
+    currentOrgIdRef.value = id ?? undefined;
+  };
+
   const currentOrganisationId = computed({
-    get() {
-      if (loggedIn.value) {
-        return currentOrganisationCookie.value ?? undefined;
-      }
-      return undefined;
-    },
-    set(value) {
-      setCurrentOrganisationId(value);
-    },
+    get: () => currentOrgIdRef.value,
+    set: value => setCurrentOrganisationId(value),
   });
   const currentOrganisation = computed(() => {
     const id = currentOrganisationId.value;
@@ -58,13 +67,13 @@ export const useOrganisationStore = defineStore('organisation', () => {
   function autoSelectFirstOrganisation() {
     const allOrgs = organisationsStore.getAll().value;
     const currentId = currentOrganisationId.value;
-    
+
     // No organisation selected yet → pick first available
     if (!currentId && allOrgs.length > 0) {
       setCurrentOrganisationId(allOrgs[0]?.id);
       return;
     }
-    
+
     // Current organisation no longer exists (e.g., deleted on server) → pick first available
     if (currentId && allOrgs.length > 0) {
       const currentExists = organisationsStore.findById(currentId).value;
