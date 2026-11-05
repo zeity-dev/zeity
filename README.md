@@ -141,7 +141,7 @@ docker build -t zeity:custom .
 ZEITY_DATABASE_URL=postgresql://user:password@localhost:5432/zeity
 
 # Security (IMPORTANT: Use strong, random values in production)
-ZEITY_SESSION_PASSWORD=<32-character-random-string>
+ZEITY_APP_SECRET=<32-character-random-string>
 ZEITY_JWT_SECRET=<random-secret-string>
 
 # Mailer Configuration

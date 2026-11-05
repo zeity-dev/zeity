@@ -50,7 +50,7 @@ Create a `.env` file in this directory with:
 ZEITY_DATABASE_URL=postgresql://user:password@localhost:5432/zeity
 
 # Security
-ZEITY_SESSION_PASSWORD=your-32-character-session-password
+ZEITY_APP_SECRET=your-32-character-session-password
 ZEITY_JWT_SECRET=your-jwt-secret
 
 # Email

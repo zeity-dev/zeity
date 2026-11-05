@@ -57,7 +57,7 @@ services:
       ZEITY_S3_ACCESSKEY: storage
       ZEITY_S3_SECRETKEY: storage123
       ZEITY_S3_BUCKET: zeity
-      ZEITY_SESSION_PASSWORD: abcdefghijklmnopqrstuvwxyz1234567890
+      ZEITY_APP_SECRET: abcdefghijklmnopqrstuvwxyz1234567890
       NODE_ENV: production
 
 volumes:
