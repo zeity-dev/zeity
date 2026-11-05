@@ -27,8 +27,8 @@
     "@vitest/coverage-v8": "^5.1.0",
     "eslint-plugin-regexp": "^3.3.3",
     "knip": "^6.44.1",
-    "oxfmt": "^0.75.0",
-    "oxlint": "^1.90.0",
+    "oxfmt": "^0.76.0",
+    "oxlint": "^1.91.0",
     "typescript": "^6.0.3",
     "vitest": "^5.1.0"
   },
