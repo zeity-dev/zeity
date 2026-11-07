@@ -15,7 +15,7 @@ catalogs:
   default:
     # Production Dependencies - Framework, UI, Utilities
     nuxt: "^4.6.4"
-    vue: "^3.5.44"
+    vue: "^3.5.45"
     "@nuxt/ui": "^4.12.0"
     "@nuxt/image": "^2.2.1"
     "@nuxtjs/i18n": "^10.6.0"
