@@ -19,12 +19,12 @@ export const useOrganisationStore = defineStore('organisation', () => {
   const currentOrganisationCookie = useCookie(ORGANISATION_COOKIE_NAME, {
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 365, // 1 year
-    // Only watch for shallow changes to the cookie value. This prevents unnecessary reactivity triggers.
-    watch: 'shallow',
     refresh: true,
   });
 
   function setCurrentOrganisationId(id: string | null | undefined) {
+    if (currentOrganisationCookie.value === id) return;
+
     currentOrganisationCookie.value = id;
   }
   const currentOrganisationId = computed({
@@ -58,13 +58,13 @@ export const useOrganisationStore = defineStore('organisation', () => {
   function autoSelectFirstOrganisation() {
     const allOrgs = organisationsStore.getAll().value;
     const currentId = currentOrganisationId.value;
-    
+
     // No organisation selected yet → pick first available
     if (!currentId && allOrgs.length > 0) {
       setCurrentOrganisationId(allOrgs[0]?.id);
       return;
     }
-    
+
     // Current organisation no longer exists (e.g., deleted on server) → pick first available
     if (currentId && allOrgs.length > 0) {
       const currentExists = organisationsStore.findById(currentId).value;
