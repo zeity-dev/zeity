@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',
-    strategies: 'injectManifest',
+    strategies: 'generateSW',
     srcDir: '../service-worker',
     filename: 'sw.ts',
     injectRegister: 'auto',
