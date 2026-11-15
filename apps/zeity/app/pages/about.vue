@@ -8,6 +8,8 @@ useHead({
 const { t } = useI18n();
 const config = useSystemStore();
 
+const buildDate = useAppConfig().buildDate;
+
 const linkSchema = z.object({
   to: z.url(),
   label: z.string(),
@@ -48,7 +50,7 @@ function parseLinks(data: unknown) {
     }
 
     if (Array.isArray(data)) {
-      return data.map(parseLink).filter((item) => !!item);
+      return data.map(parseLink).filter(item => !!item);
     }
 
     const link = parseLink(data);
@@ -98,6 +100,15 @@ function parseLink(data: unknown) {
       </div>
     </div>
 
+    <div class="flex justify-between items-center">
+      <span> {{ $t('about.buildDate') }} </span>
+      <div class="flex items-center gap-2">
+        <span class="text-[var(--ui-text-muted)]">
+          <nuxt-time :value="buildDate" />
+        </span>
+      </div>
+    </div>
+
     <ClientOnly>
       <div
         v-if="$pwa?.isPWAInstalled || $pwa?.showInstallPrompt"
@@ -105,12 +116,8 @@ function parseLink(data: unknown) {
       >
         <span> Web App: </span>
         <div class="flex items-center gap-2">
-          <UBadge v-if="$pwa?.offlineReady" color="neutral">
-            Offline Ready
-          </UBadge>
-          <UBadge v-if="$pwa?.isPWAInstalled" color="success">
-            Installed
-          </UBadge>
+          <UBadge v-if="$pwa?.offlineReady" color="neutral"> Offline Ready </UBadge>
+          <UBadge v-if="$pwa?.isPWAInstalled" color="success"> Installed </UBadge>
           <UButton
             v-if="$pwa?.needRefresh"
             variant="soft"

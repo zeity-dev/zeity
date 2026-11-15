@@ -504,6 +504,7 @@ export default defineI18nConfig(() => ({
         description: 'Zeity is a productivity app for getting things done.',
         privacy: 'Privacy',
         terms: 'Terms of Service',
+        buildDate: 'Build Date',
       },
       error: {
         general: {
@@ -1020,6 +1021,7 @@ export default defineI18nConfig(() => ({
         description: 'Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.',
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
+        buildDate: 'Bereitgestellt am',
       },
       error: {
         general: {

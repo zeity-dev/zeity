@@ -31,76 +31,12 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
   ],
   css: ['~/assets/css/main.css'],
+  appConfig: {
+    // you don't need to include this: only for testing purposes
+    buildDate: new Date().toISOString(),
+  },
   pwa: {
-    registerType: 'autoUpdate',
-    strategies: 'injectManifest',
-    srcDir: '../service-worker',
-    filename: 'sw.ts',
-    injectRegister: 'auto',
-    client: {
-      installPrompt: true,
-      periodicSyncForUpdates: 60 * 5, // check for updates every 5 minutes
-    },
-    manifest: {
-      scope: '/',
-
-      name: 'zeity Time Tracker',
-      name_localized: {
-        en: 'zeity Time Tracker',
-        de: 'zeity Zeiterfassung',
-      },
-
-      short_name: 'zeity',
-      short_name_localized: {
-        en: 'zeity',
-        de: 'zeity',
-      },
-
-      description: 'Time Tracking Made Simple',
-      description_locales: {
-        en: 'Time Tracking Made Simple',
-        de: 'Zeiterfassung leicht gemacht',
-      },
-
-      theme_color: '#00bbff',
-      display: 'standalone',
-      icons: [
-        {
-          src: 'favicon.svg',
-          sizes: 'any',
-          type: 'image/svg+xml',
-        },
-        {
-          src: 'icons/logo-192.png',
-          sizes: '192x192',
-          type: 'image/png',
-        },
-        {
-          src: 'icons/logo-512.png',
-          sizes: '512x512',
-          type: 'image/png',
-        },
-        {
-          src: 'icons/logo-maskable.png',
-          sizes: '512x512',
-          type: 'image/png',
-          purpose: 'maskable',
-        },
-      ],
-    },
-    injectManifest: {
-      globPatterns: ['**/*.{js,css,html,png,svg,webp,ico}'],
-    },
-    experimental: {
-      enableWorkboxPayloadQueryParams: true,
-    },
-    devOptions: {
-      enabled: !isProd,
-      suppressWarnings: true,
-      navigateFallback: '/',
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module',
-    },
+    path: '~~/pwa.config.ts',
   },
   i18n: {
     strategy: 'no_prefix',

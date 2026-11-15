@@ -1,14 +1,15 @@
 /// <reference lib="WebWorker" />
+/// <reference types="vite/client" />
 import {
   cleanupOutdatedCaches,
   createHandlerBoundToURL,
   precacheAndRoute,
-} from 'workbox-precaching';
-import { clientsClaim } from 'workbox-core';
-import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { CacheableResponsePlugin } from 'workbox-cacheable-response';
-import { NetworkFirst } from 'workbox-strategies';
-import { ExpirationPlugin } from 'workbox-expiration';
+} from '@vite-pwa/workbox-swkit/precaching';
+import { clientsClaim } from '@vite-pwa/workbox-swkit/core';
+import { NavigationRoute, registerRoute } from '@vite-pwa/workbox-swkit/routing';
+import { CacheableResponsePlugin } from '@vite-pwa/workbox-swkit/cacheable-response';
+import { NetworkFirst } from '@vite-pwa/workbox-swkit/strategies';
+import { ExpirationPlugin } from '@vite-pwa/workbox-swkit/expiration';
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -42,7 +43,7 @@ if (import.meta.env.PROD) {
       // we only need a few entries
       new ExpirationPlugin({ maxEntries: 100 }),
       {
-        cachedResponseWillBeUsed: async (params) => {
+        cachedResponseWillBeUsed: async params => {
           // When handlerDidError is invoked, then we can prevent redirecting if there is an entry in the cache.
           // To check the behavior, navigate to a product page, then disable the network and refresh the page.
           params.state ??= {};
@@ -56,9 +57,7 @@ if (import.meta.env.PROD) {
         handlerDidError: async ({ request, state, error }) => {
           if (state?.noRedirect) return state.noRedirect;
 
-          console.log(
-            `[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`,
-          );
+          console.log(`[SW] handlerDidError ${request.url}, ${state ? JSON.stringify(state) : ''}`);
           return error && 'name' in error && error.name === 'no-response'
             ? Response.redirect('/offline', 302)
             : undefined;
@@ -79,8 +78,7 @@ if (import.meta.env.PROD) {
     ];
     const result =
       sameOrigin &&
-      ((request.destination === 'document' &&
-        allowedPages.some((path) => path.test(url.pathname))) ||
+      ((request.destination === 'document' && allowedPages.some(path => path.test(url.pathname))) ||
         api.test(url.pathname));
 
     console.log(`[SW] ${result ? 'Allow' : 'Deny'} ${url.pathname}`);
@@ -90,9 +88,7 @@ if (import.meta.env.PROD) {
 }
 
 // register prerendered app shell for navigation requests
-registerRoute(
-  new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist }),
-);
+registerRoute(new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist }));
 
 self.skipWaiting();
 clientsClaim();
