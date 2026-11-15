@@ -1,0 +1,505 @@
+{
+  "appName": "Zeity",
+  "common": {
+    "actions": "Aktionen",
+    "add": "Hinzufügen",
+    "all": "Alle",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "continue": "Weiter",
+    "copyToClipboard": "In Zwischenablage kopieren",
+    "copiedToClipboard": "In Zwischenablage kopiert",
+    "copyFailed": "Kopieren fehlgeschlagen",
+    "custom": "Benutzerdefiniert",
+    "delete": "Löschen",
+    "download": "Herunterladen",
+    "edit": "Bearbeiten",
+    "error": "Fehler",
+    "general": "Allgemein",
+    "loadMore": "Mehr laden",
+    "or": "oder",
+    "refresh": "Aktualisieren",
+    "remove": "Entfernen",
+    "save": "Speichern",
+    "selectDate": "Datum auswählen",
+    "send": "Senden",
+    "start": "Start",
+    "stop": "Stop",
+    "success": "Erfolg",
+    "sync": "Synchronisieren",
+    "upload": "Hochladen",
+    "view": "Anzeigen"
+  },
+  "navigation": {
+    "timer": "Timer",
+    "projects": "Projekte",
+    "tasks": "Aufgaben",
+    "reports": "Berichte",
+    "settings": "Einstellungen",
+    "organisations": "Organisationen",
+    "login": "Anmelden",
+    "user": "Benutzer",
+    "profile": "Profil",
+    "about": "Über",
+    "more": "Mehr"
+  },
+  "hints": {
+    "auth": {
+      "title": "Sie sind abgemeldet",
+      "description": "Bitte melden Sie sich an, um Ihre Daten über Geräte hinweg zu synchronisieren und alle Funktionen von Zeity zu nutzen.",
+      "login": "Anmelden"
+    },
+    "pwaInstall": {
+      "title": "Zeity installieren",
+      "description": "Für ein besseres Erlebnis installieren Sie Zeity auf Ihrem Gerät. Es funktioniert offline und lädt schneller.",
+      "install": "Installieren"
+    },
+    "pwaRefresh": {
+      "title": "Update verfügbar",
+      "description": "Eine neue Version von Zeity ist verfügbar. Bitte aktualisieren Sie die Seite, um die neuesten Funktionen und Verbesserungen zu erhalten.",
+      "refresh": "Aktualisieren"
+    },
+    "offline": {
+      "title": "Offline",
+      "description": "Sie sind derzeit offline. Einige Funktionen sind möglicherweise nicht verfügbar."
+    }
+  },
+  "sync": {
+    "title": "Synchronisieren",
+    "description": "Sie haben Offline {timeCount} Zeiten und {projectCount} Projekte, die synchronisiert werden müssen.",
+    "button": "Jetzt synchronisieren",
+    "times": {
+      "successTitle": "Zeiten synchronisiert",
+      "successMessage": "{n} Ihrer Zeiten wurden erfolgreich synchronisiert.",
+      "errorTitle": "Fehler beim Synchronisieren der Zeiten",
+      "errorMessage": "Beim Synchronisieren Ihrer Zeiten ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "projects": {
+      "successTitle": "Projekte synchronisiert",
+      "successMessage": "{n} Ihrer Projekte wurden erfolgreich synchronisiert.",
+      "errorTitle": "Fehler beim Synchronisieren der Projekte",
+      "errorMessage": "Beim Synchronisieren Ihrer Projekte ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    }
+  },
+  "times": {
+    "title": "Zeiten",
+    "form": {
+      "startDate": "Start Datum",
+      "startTime": "Start Zeit",
+      "endDate": "End Datum",
+      "endTime": "End Zeit",
+      "project": "Projekt",
+      "notes": "Notizen"
+    },
+    "addNotes": "Notizen hinzufügen",
+    "noProject": "Kein Projekt",
+    "offline": "Zeit is nicht synchronisiert",
+    "dateFilter": "Datum",
+    "start": "Zeiterfassung starten",
+    "stop": "Zeiterfassung stoppen",
+    "recordNext": "Nächste Eintragung starten",
+    "round": "Zeit runden",
+    "empty": {
+      "title": "Keine Zeiten",
+      "description": "Es sieht so aus, als hätten Sie noch keine Zeit erfasst. Beginnen Sie mit der Zeiterfassung, indem Sie unten auf die Schaltfläche klicken.",
+      "actions": {
+        "start": "Zeiterfassung starten",
+        "stop": "Zeiterfassung stoppen",
+        "addTime": "Zeit hinzufügen"
+      }
+    },
+    "type": {
+      "manual": "Manuell",
+      "break": "Pause"
+    },
+    "break": {
+      "notes": "Pause",
+      "start": "Pause starten",
+      "stop": "Pause stoppen",
+      "continue": "Weiterarbeiten"
+    }
+  },
+  "projects": {
+    "title": "Projekte",
+    "showClosed": "Geschlossene Projekte",
+    "create": {
+      "title": "Projekt erstellen"
+    },
+    "edit": {
+      "title": "Projekt bearbeiten"
+    },
+    "form": {
+      "name": "Name",
+      "status": "Status",
+      "notes": "Notizen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "closed": "Geschlossen"
+    },
+    "noProjectNotes": "Keine Notizen für dieses Projekt",
+    "offline": "Projekt ist nicht synchronisiert",
+    "empty": {
+      "title": "Keine Projekte",
+      "description": "Sie haben noch keine Projekte. Erstellen Sie eines, um zu beginnen."
+    },
+    "filter": {
+      "all": "Alle Projekte",
+      "allDescription": "Alle aktiven Projekte"
+    }
+  },
+  "tasks": {
+    "title": "Aufgaben",
+    "ended": "Beendet",
+    "create": {
+      "title": "Aufgabe erstellen"
+    },
+    "edit": {
+      "title": "Aufgabe bearbeiten"
+    },
+    "form": {
+      "name": "Name",
+      "start": "Startdatum",
+      "end": "Enddatum",
+      "recurrence": "Wiederholung",
+      "frequency": "Häufigkeit",
+      "weekdays": "Wochentage",
+      "dayOfMonth": "Tag im Monat",
+      "recurrenceEnd": "Wiederholungsende"
+    },
+    "recurrence": {
+      "once": "Einmalig",
+      "daily": "Täglich",
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich"
+    },
+    "weekdays": {
+      "sun": "Sonntag",
+      "mon": "Montag",
+      "tue": "Dienstag",
+      "wed": "Mittwoch",
+      "thu": "Donnerstag",
+      "fri": "Freitag",
+      "sat": "Samstag",
+      "short": {
+        "0": "So",
+        "1": "Mo",
+        "2": "Di",
+        "3": "Mi",
+        "4": "Do",
+        "5": "Fr",
+        "6": "Sa"
+      }
+    },
+    "assignments": {
+      "title": "Zugewiesene Mitglieder",
+      "add": "Zuweisen",
+      "empty": "Keine Mitglieder zugewiesen",
+      "searchMember": "Mitglied suchen...",
+      "noMembers": "Keine Mitglieder verfügbar"
+    },
+    "filter": {
+      "myTasks": "Meine Aufgaben"
+    },
+    "today": {
+      "title": "Heutige Aufgaben",
+      "startTimer": "Starten",
+      "done": "Erledigt"
+    },
+    "empty": {
+      "title": "Keine Aufgaben",
+      "description": "Sie haben noch keine Aufgaben."
+    },
+    "noOrganisation": {
+      "title": "Keine Organisation",
+      "description": "Sie müssen einer Organisation angehören, um Aufgaben zu erstellen und zu verwalten."
+    },
+    "loginPrompt": {
+      "title": "Anmelden, um Aufgaben zu erstellen",
+      "description": "Aufgaben können erstellt und verwaltet werden, wenn Sie angemeldet sind."
+    }
+  },
+  "reports": {
+    "summary": "Zusammenfassung",
+    "report": "Bericht",
+    "downloadError": "Fehler beim Generieren des Berichts",
+    "fields": {
+      "user": "Benutzer",
+      "start": "Start",
+      "duration": "Dauer",
+      "project": "Projekt",
+      "notes": "Notizen",
+      "type": "Eintragstyp"
+    }
+  },
+  "offline": {
+    "title": "Offline",
+    "description": "Sie sind derzeit offline. Einige Funktionen sind möglicherweise nicht verfügbar."
+  },
+  "organisations": {
+    "title": "Organisationen",
+    "create": "Organisation erstellen",
+    "createSuccess": "Organisation erfolgreich erstellt",
+    "createError": "Fehler beim Erstellen der Organisation",
+    "manage": "Organisation verwalten",
+    "updateSuccess": "Organisation erfolgreich aktualisiert",
+    "updateError": "Fehler beim Aktualisieren der Organisation",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Organisationsname eingeben"
+    },
+    "empty": {
+      "title": "Keine Organisationen",
+      "description": "Sie sind noch kein Mitglied einer Organisation. Erstellen oder treten Sie einer Organisation bei, um mit anderen zusammenzuarbeiten."
+    },
+    "teams": {
+      "title": "Teams",
+      "create": "Team erstellen",
+      "createSuccess": "Team erfolgreich erstellt",
+      "createError": "Fehler beim Erstellen des Teams",
+      "updateSuccess": "Team erfolgreich aktualisiert",
+      "updateError": "Fehler beim Aktualisieren des Teams",
+      "deleteSuccess": "Team erfolgreich gelöscht",
+      "deleteError": "Fehler beim Löschen des Teams",
+      "count": "Keine Teams|{n} Team|{n} Teams",
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Teamnamen eingeben",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Teambeschreibung eingeben"
+      },
+      "members": {
+        "title": "Mitglieder",
+        "add": "Mitglied hinzufügen",
+        "addSuccess": "Mitglied erfolgreich hinzugefügt",
+        "addError": "Fehler beim Hinzufügen des Mitglieds",
+        "delete": "Mitglied entfernen",
+        "deleteSuccess": "Mitglied erfolgreich entfernt",
+        "deleteError": "Fehler beim Entfernen des Mitglieds"
+      },
+      "filter": {
+        "all": "Alle Teams",
+        "allDescription": "Alle Teams der Organisation"
+      }
+    },
+    "members": {
+      "title": "Mitglieder",
+      "count": "Keine Mitglieder|{n} Mitglied|{n} Mitglieder",
+      "addedAt": "Hinzugefügt am",
+      "role": {
+        "owner": "Besitzer",
+        "admin": "Admin",
+        "member": "Mitglied"
+      },
+      "setRole": "Rolle festlegen: {role}",
+      "roleUpdateSuccess": "Rolle erfolgreich aktualisiert",
+      "roleUpdateError": "Fehler beim Aktualisieren der Rolle",
+      "deleteSuccess": "Mitglied erfolgreich gelöscht",
+      "deleteError": "Fehler beim Löschen des Mitglieds",
+      "filter": {
+        "all": "Alle Mitglieder",
+        "allDescription": "Alle Mitglieder der Organisation"
+      }
+    },
+    "invites": {
+      "title": "Einladungen",
+      "create": "Einladen",
+      "createSuccess": "Einladung erfolgreich gesendet",
+      "createError": "Fehler beim Senden der Einladung",
+      "resend": "Erneut senden",
+      "resendSuccess": "Einladung erneut gesendet",
+      "resendError": "Fehler beim Senden der Einladung",
+      "deleteSuccess": "Einladung erfolgreich gelöscht",
+      "deleteError": "Fehler beim Löschen der Einladung",
+      "empty": "Keine ausstehenden Einladungen"
+    },
+    "join": {
+      "title": "Organisation beitreten",
+      "description": "Sie wurden eingeladen, {organisation} beizutreten.",
+      "error": "Fehler beim Beitreten zur Organisation",
+      "accept": "Einladung annehmen",
+      "acceptSuccess": "Einladung erfolgreich angenommen",
+      "acceptError": "Fehler beim Annehmen der Einladung",
+      "reject": "Einladung ablehnen",
+      "rejectSuccess": "Einladung erfolgreich abgelehnt",
+      "rejectError": "Fehler beim Ablehnen der Einladung",
+      "alreadyMember": "Sie sind bereits Mitglied dieser Organisation.",
+      "invalidLink": "Ungültiger oder abgelaufener Einladungslink",
+      "request": {
+        "title": "Beitrittsanfrage senden",
+        "description": "Geben Sie unten eine Nachricht ein, um eine Beitrittsanfrage an die Organisation zu senden.",
+        "messageLabel": "Nachricht",
+        "messagePlaceholder": "Geben Sie Ihre Nachricht ein (optional)",
+        "pending": "Sie haben bereits eine Beitrittsanfrage an diese Organisation gesendet.",
+        "success": "Beitrittsanfrage erfolgreich gesendet",
+        "error": "Fehler beim Senden der Beitrittsanfrage"
+      },
+      "requests": {
+        "title": "Beitrittsanfragen",
+        "noRequests": "Keine ausstehenden Beitrittsanfragen",
+        "accepted": "Akzeptiert",
+        "acceptFailed": "Fehler beim Akzeptieren der Anfrage",
+        "rejected": "Abgelehnt",
+        "rejectFailed": "Fehler beim Ablehnen der Anfrage"
+      }
+    },
+    "delete": {
+      "title": "Organisation löschen",
+      "description": "Möchten Sie diese Organisation wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+      "success": "Organisation erfolgreich gelöscht",
+      "error": "Fehler beim Löschen der Organisation"
+    },
+    "quota": {
+      "members": "Mitglieder & Einladungen Kontingent",
+      "exceeded": {
+        "title": "Kontingent überschritten",
+        "description": "Sie haben Ihr Organisationskontingent überschritten. Bitte kontaktieren Sie den Support."
+      }
+    },
+    "role": "Rolle",
+    "invitationDate": "Einladungsdatum"
+  },
+  "user": {
+    "title": "Benutzer",
+    "name": "Name",
+    "fullName": "Vollständiger Name",
+    "email": "Email",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "organisation": "Organisation",
+    "saveSuccess": "Benutzer erfolgreich gespeichert",
+    "saveError": "Fehler beim Speichern des Benutzers",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+    "security": {
+      "title": "Sicherheit",
+      "providers": {
+        "disconnect": "Trennen",
+        "disconnectSuccess": "Anbieter erfolgreich getrennt",
+        "disconnectError": "Fehler beim Trennen des Anbieters",
+        "password": {
+          "title": "Passwort",
+          "description": "Mit einem Passwort authentifizieren",
+          "change": "Passwort ändern",
+          "setup": "Passwort einrichten"
+        },
+        "google": {
+          "title": "Google",
+          "description": "Mit Ihrem Google-Konto authentifizieren"
+        },
+        "apple": {
+          "title": "Apple",
+          "description": "Mit Ihrer Apple-ID authentifizieren"
+        },
+        "microsoft": {
+          "title": "Microsoft",
+          "description": "Mit Ihrem Microsoft-Konto authentifizieren"
+        }
+      }
+    },
+    "changePassword": {
+      "title": "Passwort ändern",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "newPasswordSameAsCurrent": "Neues Passwort muss sich vom aktuellen Passwort unterscheiden",
+      "success": "Passwort erfolgreich geändert",
+      "error": "Fehler beim Ändern des Passworts"
+    },
+    "delete": {
+      "title": "Benutzer löschen",
+      "description": "Möchten Sie diesen Benutzer wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
+      "success": "Benutzer erfolgreich gelöscht",
+      "error": "Fehler beim Löschen des Benutzers"
+    },
+    "deleted": "Gelöschter Benutzer",
+    "verify": "Verifizieren",
+    "verificationSuccess": "E-Mail erfolgreich verifiziert",
+    "verificationError": "Fehler bei der E-Mail-Verifizierung",
+    "resendVerification": "Code erneut senden",
+    "resendVerificationSuccess": "Verifizierungscode erneut gesendet",
+    "resendVerificationError": "Fehler beim Senden des Verifizierungscodes"
+  },
+  "auth": {
+    "title": "Authentifizierung",
+    "expired": {
+      "title": "Session abgelaufen",
+      "description": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren."
+    },
+    "forgotPassword": {
+      "title": "Passwort vergessen",
+      "description": "Geben Sie Ihre E-Mail-Adresse ein, um Anweisungen zum Zurücksetzen des Passworts zu erhalten.",
+      "success": "Anweisungen zum Zurücksetzen des Passworts erfolgreich gesendet",
+      "error": "Fehler beim Senden der Anweisungen zum Zurücksetzen des Passworts"
+    },
+    "resetPassword": {
+      "title": "Passwort zurücksetzen",
+      "description": "Geben Sie unten Ihr neues Passwort ein.",
+      "success": "Passwort erfolgreich zurückgesetzt",
+      "error": "Fehler beim Zurücksetzen des Passworts"
+    },
+    "login": {
+      "title": "Anmelden",
+      "error": "Anmeldung fehlgeschlagen",
+      "success": "Erfolgreich angemeldet"
+    },
+    "register": {
+      "title": "Registrieren",
+      "error": "Registrierung fehlgeschlagen",
+      "success": "Erfolgreich registriert",
+      "userExists": "Benutzer existiert bereits"
+    },
+    "registerWithPasskey": "Mit Passkey registrieren",
+    "logout": "Abmelden",
+    "verify": "E-Mail verifizieren",
+    "loginWithPasskey": "Mit Passkey anmelden",
+    "loginWithGoogle": "Mit Google anmelden",
+    "loginWithApple": "Mit Apple anmelden",
+    "loginWithMicrosoft": "Mit Microsoft anmelden"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemein",
+    "language": "Sprache",
+    "appearance": "Erscheinungsbild",
+    "theme": "Thema",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "auto": "Auto",
+    "color": "Farbe",
+    "data": "Daten",
+    "import": "Importieren",
+    "export": "Exportieren",
+    "time": {
+      "title": "Timer",
+      "detailsOnStart": "Details beim Start einblenden",
+      "detailsOnStop": "Details beim Stoppen einblenden",
+      "calculateBreaks": "Pausen berechnen",
+      "roundTimes": "Zeiten automatisch aufrunden"
+    }
+  },
+  "about": {
+    "title": "Zeity",
+    "description": "Zeity ist eine Produktivitäts-App zum Erledigen von Aufgaben.",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "buildDate": "Bereitgestellt am"
+  },
+  "error": {
+    "general": {
+      "title": "Ein Fehler ist aufgetreten",
+      "description": "Entschuldigung, ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut."
+    },
+    "notFound": {
+      "title": "Nicht gefunden",
+      "description": "Es sieht so aus, als wären Sie einem defekten Link gefolgt oder hätten eine URL eingegeben, die auf dieser Seite nicht existiert."
+    },
+    "serverError": {
+      "title": "Serverfehler",
+      "description": "Entschuldigung, es gab ein Problem mit dem Server. Bitte versuchen Sie es später erneut."
+    },
+    "serviceUnavailable": {
+      "title": "Dienst nicht verfügbar",
+      "description": "Entschuldigung, der Dienst ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut."
+    }
+  }
+}

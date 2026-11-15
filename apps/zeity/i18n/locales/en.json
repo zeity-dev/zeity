@@ -1,0 +1,505 @@
+{
+    "appName": "Zeity",
+    "common": {
+        "actions": "Actions",
+        "add": "Add",
+        "all": "All",
+        "back": "Back",
+        "cancel": "Cancel",
+        "close": "Close",
+        "continue": "Continue",
+        "copyToClipboard": "Copy to clipboard",
+        "copiedToClipboard": "Copied to clipboard",
+        "copyFailed": "Copy failed",
+        "custom": "Custom",
+        "delete": "Delete",
+        "download": "Download",
+        "edit": "Edit",
+        "error": "Error",
+        "general": "General",
+        "loadMore": "Load more",
+        "or": "or",
+        "refresh": "Refresh",
+        "remove": "Remove",
+        "save": "Save",
+        "selectDate": "Select date",
+        "send": "Send",
+        "start": "Start",
+        "stop": "Stop",
+        "success": "Success",
+        "sync": "Sync",
+        "upload": "Upload",
+        "view": "View"
+    },
+    "navigation": {
+        "timer": "Timer",
+        "projects": "Projects",
+        "tasks": "Tasks",
+        "reports": "Reports",
+        "settings": "Settings",
+        "organisations": "Organisations",
+        "login": "Login",
+        "user": "User",
+        "profile": "Profile",
+        "about": "About",
+        "more": "More"
+    },
+    "hints": {
+        "auth": {
+            "title": "You are logged out",
+            "description": "Please log in to sync your data across devices and access all features of Zeity.",
+            "login": "Login"
+        },
+        "pwaInstall": {
+            "title": "Install Zeity",
+            "description": "For a better experience, install Zeity on your device. It works offline and loads faster.",
+            "install": "Install"
+        },
+        "pwaRefresh": {
+            "title": "Update Available",
+            "description": "A new version of Zeity is available. Please refresh the page to get the latest features and improvements.",
+            "refresh": "Refresh"
+        },
+        "offline": {
+            "title": "Offline",
+            "description": "You are currently offline. Some features may not be available."
+        }
+    },
+    "sync": {
+        "title": "Sync",
+        "description": "You have offline {timeCount} times and {projectCount} projects that needs to be synced.",
+        "button": "Sync Now",
+        "times": {
+            "successTitle": "Times Synced",
+            "successMessage": "{n} of your time entries have been synced successfully.",
+            "errorTitle": "Error Syncing Times",
+            "errorMessage": "There was an error syncing your time entries. Please try again."
+        },
+        "projects": {
+            "successTitle": "Projects Synced",
+            "successMessage": "{n} of your projects have been synced successfully.",
+            "errorTitle": "Error Syncing Projects",
+            "errorMessage": "There was an error syncing your projects. Please try again."
+        }
+    },
+    "times": {
+        "title": "Times",
+        "form": {
+            "startDate": "Start Date",
+            "startTime": "Start Time",
+            "endDate": "End Date",
+            "endTime": "End Time",
+            "project": "Project",
+            "notes": "Notes"
+        },
+        "addNotes": "Add notes",
+        "noProject": "No project",
+        "offline": "Time is not synced",
+        "dateFilter": "Date",
+        "start": "Start Time Tracker",
+        "stop": "Stop Time Tracker",
+        "recordNext": "Start Next Entry",
+        "round": "Round Time",
+        "empty": {
+            "title": "No Times",
+            "description": "It looks like you haven't tracked any time yet. Start tracking time by clicking the button below.",
+            "actions": {
+                "start": "Start time tracker",
+                "stop": "Stop time tracker",
+                "addTime": "Add time"
+            }
+        },
+        "type": {
+            "manual": "Manual",
+            "break": "Break"
+        },
+        "break": {
+            "notes": "Break",
+            "start": "Start Break",
+            "stop": "Stop Break",
+            "continue": "Continue Work"
+        }
+    },
+    "projects": {
+        "title": "Projects",
+        "showClosed": "closed projects",
+        "create": {
+            "title": "Create Project"
+        },
+        "edit": {
+            "title": "Edit Project"
+        },
+        "form": {
+            "name": "Name",
+            "status": "Status",
+            "notes": "Notes"
+        },
+        "status": {
+            "active": "Active",
+            "closed": "Closed"
+        },
+        "noProjectNotes": "No notes for this project",
+        "offline": "Project is not synced",
+        "empty": {
+            "title": "No Projects",
+            "description": "You have no projects yet. Create one to get started."
+        },
+        "filter": {
+            "all": "All Projects",
+            "allDescription": "All active projects"
+        }
+    },
+    "tasks": {
+        "title": "Tasks",
+        "ended": "Ended",
+        "create": {
+            "title": "Create Task"
+        },
+        "edit": {
+            "title": "Edit Task"
+        },
+        "form": {
+            "name": "Name",
+            "start": "Start Date",
+            "end": "End Date",
+            "recurrence": "Recurrence",
+            "frequency": "Frequency",
+            "weekdays": "Weekdays",
+            "dayOfMonth": "Day of Month",
+            "recurrenceEnd": "Recurrence End"
+        },
+        "recurrence": {
+            "once": "Once",
+            "daily": "Daily",
+            "weekly": "Weekly",
+            "monthly": "Monthly"
+        },
+        "weekdays": {
+            "sun": "Sunday",
+            "mon": "Monday",
+            "tue": "Tuesday",
+            "wed": "Wednesday",
+            "thu": "Thursday",
+            "fri": "Friday",
+            "sat": "Saturday",
+            "short": {
+                "0": "Sun",
+                "1": "Mon",
+                "2": "Tue",
+                "3": "Wed",
+                "4": "Thu",
+                "5": "Fri",
+                "6": "Sat"
+            }
+        },
+        "assignments": {
+            "title": "Assigned Members",
+            "add": "Assign",
+            "empty": "No members assigned",
+            "searchMember": "Search member...",
+            "noMembers": "No members available"
+        },
+        "filter": {
+            "myTasks": "My Tasks"
+        },
+        "today": {
+            "title": "Today's Tasks",
+            "startTimer": "Start",
+            "done": "Done"
+        },
+        "empty": {
+            "title": "No Tasks",
+            "description": "You have no tasks yet."
+        },
+        "noOrganisation": {
+            "title": "No Organisation",
+            "description": "You need to belong to an organisation to create and manage tasks."
+        },
+        "loginPrompt": {
+            "title": "Login to create tasks",
+            "description": "Tasks can be created and managed when you are logged in."
+        }
+    },
+    "reports": {
+        "summary": "Summary",
+        "report": "Report",
+        "downloadError": "Error generating report",
+        "fields": {
+            "user": "User",
+            "start": "Start",
+            "duration": "Duration",
+            "project": "Project",
+            "notes": "Notes",
+            "type": "Record Type"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "general": "General",
+        "language": "Language",
+        "appearance": "Appearance",
+        "theme": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "auto": "Auto",
+        "color": "Color",
+        "data": "Data",
+        "import": "Import",
+        "export": "Export",
+        "time": {
+            "title": "Timer",
+            "detailsOnStart": "Open details on start",
+            "detailsOnStop": "Open details on stop",
+            "calculateBreaks": "Calculate breaks",
+            "roundTimes": "Round times automatically"
+        }
+    },
+    "offline": {
+        "title": "Offline",
+        "description": "You are currently offline. Some features may be unavailable."
+    },
+    "organisations": {
+        "title": "Organisations",
+        "create": "Create Organisation",
+        "createSuccess": "Organisation created successfully",
+        "createError": "Error creating organisation",
+        "manage": "Manage Organisation",
+        "updateSuccess": "Organisation updated successfully",
+        "updateError": "Error updating organisation",
+        "form": {
+            "name": "Name",
+            "namePlaceholder": "Enter organisation name"
+        },
+        "empty": {
+            "title": "No Organisations",
+            "description": "You are not a member of any organisations yet. Create or join one to collaborate with others."
+        },
+        "teams": {
+            "title": "Teams",
+            "create": "Create Team",
+            "createSuccess": "Team created successfully",
+            "createError": "Error creating team",
+            "updateSuccess": "Team updated successfully",
+            "updateError": "Error updating team",
+            "deleteSuccess": "Team deleted successfully",
+            "deleteError": "Error deleting team",
+            "count": "No Teams|{n} Team|{n} Teams",
+            "form": {
+                "name": "Name",
+                "namePlaceholder": "Enter team name",
+                "description": "Description",
+                "descriptionPlaceholder": "Enter team description"
+            },
+            "members": {
+                "title": "Members",
+                "add": "Add Member",
+                "addSuccess": "Member added successfully",
+                "addError": "Error adding member",
+                "delete": "Remove Member",
+                "deleteSuccess": "Member removed successfully",
+                "deleteError": "Error removing member"
+            },
+            "filter": {
+                "all": "All Teams",
+                "allDescription": "All teams of the organisation"
+            }
+        },
+        "members": {
+            "title": "Members",
+            "count": "No Members|{n} Member|{n} Members",
+            "addedAt": "Added At",
+            "role": {
+                "owner": "Owner",
+                "admin": "Admin",
+                "member": "Member"
+            },
+            "setRole": "Set Role: {role}",
+            "roleUpdateSuccess": "Role updated successfully",
+            "roleUpdateError": "Error updating role",
+            "deleteSuccess": "Member deleted successfully",
+            "deleteError": "Error deleting member",
+            "filter": {
+                "all": "All Members",
+                "allDescription": "All members of the organisation"
+            }
+        },
+        "invites": {
+            "title": "Invitations",
+            "create": "Invite",
+            "createSuccess": "Invitation sent successfully",
+            "createError": "Error sending invitation",
+            "resend": "Resend",
+            "resendSuccess": "Invitation resent successfully",
+            "resendError": "Error resending invitation",
+            "deleteSuccess": "Invitation deleted successfully",
+            "deleteError": "Error deleting invitation",
+            "empty": "No pending invitations"
+        },
+        "join": {
+            "title": "Join Organisation",
+            "description": "You have been invited to join {organisation}.",
+            "error": "Error joining organisation",
+            "accept": "Accept Invitation",
+            "acceptSuccess": "Invitation accepted successfully",
+            "acceptError": "Error accepting invitation",
+            "reject": "Reject Invitation",
+            "rejectSuccess": "Invitation rejected successfully",
+            "rejectError": "Error rejecting invitation",
+            "alreadyMember": "You are already a member of this organisation.",
+            "invalidLink": "Invalid or expired invitation link",
+            "request": {
+                "title": "Send Join Request",
+                "description": "Enter a message below to send a join request to the organisation.",
+                "messageLabel": "Message",
+                "messagePlaceholder": "Enter your message (optional)",
+                "pending": "You have already sent a join request to this organisation.",
+                "success": "Join request sent successfully",
+                "error": "Error sending join request"
+            },
+            "requests": {
+                "title": "Join Requests",
+                "noRequests": "No pending join requests",
+                "accepted": "Accepted",
+                "acceptFailed": "Error accepting request",
+                "rejected": "Rejected",
+                "rejectFailed": "Error rejecting request"
+            }
+        },
+        "delete": {
+            "title": "Delete Organisation",
+            "description": "Are you sure you want to delete this organisation? This action cannot be undone.",
+            "success": "Organisation deleted successfully",
+            "error": "Error deleting organisation"
+        },
+        "quota": {
+            "members": "Members & Invitations Quota",
+            "exceeded": {
+                "title": "Quota Exceeded",
+                "description": "You have exceeded your organisation quota. Please contact support."
+            }
+        },
+        "role": "Role",
+        "invitationDate": "Invitation Date"
+    },
+    "user": {
+        "title": "User",
+        "name": "Name",
+        "fullName": "Full Name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "organisation": "Organisation",
+        "saveSuccess": "User saved successfully",
+        "saveError": "Error saving user",
+        "passwordsDoNotMatch": "Passwords do not match",
+        "security": {
+            "title": "Security",
+            "providers": {
+                "disconnect": "Disconnect",
+                "disconnectSuccess": "Provider disconnected successfully",
+                "disconnectError": "Error disconnecting provider",
+                "password": {
+                    "title": "Password",
+                    "description": "Authenticate using a password",
+                    "change": "Change password",
+                    "setup": "Set up password"
+                },
+                "google": {
+                    "title": "Google",
+                    "description": "Authenticate using your Google account"
+                },
+                "apple": {
+                    "title": "Apple",
+                    "description": "Authenticate using your Apple ID"
+                },
+                "microsoft": {
+                    "title": "Microsoft",
+                    "description": "Authenticate using your Microsoft account"
+                }
+            }
+        },
+        "changePassword": {
+            "title": "Change Password",
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "newPasswordSameAsCurrent": "New password must be different from current password",
+            "success": "Password changed successfully",
+            "error": "Error changing password"
+        },
+        "delete": {
+            "title": "Delete User",
+            "description": "Are you sure you want to delete your account? This action cannot be undone.",
+            "success": "User deleted successfully",
+            "error": "Error deleting user"
+        },
+        "deleted": "Deleted User",
+        "verify": "Verify",
+        "verificationSuccess": "Email verified successfully",
+        "verificationError": "Error verifying email",
+        "resendVerification": "Resend Verification code",
+        "resendVerificationSuccess": "Verification code resent successfully",
+        "resendVerificationError": "Error resending verification code"
+    },
+    "auth": {
+        "title": "Authentication",
+        "expired": {
+            "title": "Session expired",
+            "description": "Your session has expired. Please log in again to continue."
+        },
+        "forgotPassword": {
+            "title": "Forgot Password",
+            "description": "Enter your email to receive password reset instructions.",
+            "success": "Password reset instructions sent successfully",
+            "error": "Error sending password reset instructions"
+        },
+        "resetPassword": {
+            "title": "Reset Password",
+            "description": "Enter your new password below.",
+            "success": "Password reset successfully",
+            "error": "Error resetting password"
+        },
+        "login": {
+            "title": "Login",
+            "error": "Login failed",
+            "success": "Logged in successfully"
+        },
+        "register": {
+            "title": "Register",
+            "success": "Registered successfully",
+            "error": "Registration failed",
+            "userExists": "User already exists"
+        },
+        "registerWithPasskey": "Register with Passkey",
+        "logout": "Logout",
+        "verify": "Verify Email",
+        "loginWithPasskey": "Login with Passkey",
+        "loginWithGoogle": "Login with Google",
+        "loginWithApple": "Login with Apple",
+        "loginWithMicrosoft": "Login with Microsoft"
+    },
+    "about": {
+        "title": "Zeity",
+        "description": "Zeity is a productivity app for getting things done.",
+        "privacy": "Privacy",
+        "terms": "Terms of Service",
+        "buildDate": "Build Date"
+    },
+    "error": {
+        "general": {
+            "title": "An Error Occurred",
+            "description": "Sorry, an unexpected error has occurred. Please try again later."
+        },
+        "notFound": {
+            "title": "Not Found",
+            "description": "Looks like you've followed a broken link or entered a URL that doesn't exist on this site."
+        },
+        "serverError": {
+            "title": "Server Error",
+            "description": "Sorry, there was a problem with the server. Please try again later."
+        },
+        "serviceUnavailable": {
+            "title": "Service Unavailable",
+            "description": "Sorry, the service is currently unavailable. Please try again later."
+        }
+    }
+}
