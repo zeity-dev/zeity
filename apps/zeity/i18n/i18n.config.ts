@@ -81,6 +81,10 @@ export default defineI18nConfig(() => ({
             'A new version of Zeity is available. Please refresh the page to get the latest features and improvements.',
           refresh: 'Refresh',
         },
+        offline: {
+          title: 'Offline',
+          description: 'You are currently offline. Some features may not be available.',
+        },
       },
       sync: {
         title: 'Sync',
@@ -590,6 +594,10 @@ export default defineI18nConfig(() => ({
           description:
             'Eine neue Version von Zeity ist verfügbar. Bitte aktualisieren Sie die Seite, um die neuesten Funktionen und Verbesserungen zu erhalten.',
           refresh: 'Aktualisieren',
+        },
+        offline: {
+          title: 'Offline',
+          description: 'Sie sind derzeit offline. Einige Funktionen sind möglicherweise nicht verfügbar.',
         },
       },
       sync: {

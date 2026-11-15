@@ -1,12 +1,26 @@
 <script setup lang="ts">
+import { useOnline } from '@vueuse/core';
+
 const pwa = usePWA();
 const { t } = useI18n();
+const online = useOnline();
 const { loggedIn } = useUserSession();
 
 const closedHints = ref<string[]>([]);
 
 const availableHints = computed(() => {
   const result = [];
+
+  if (!online.value) {
+    result.push({
+      id: 'offline-hint',
+      color: 'warning' as const,
+      icon: 'i-lucide-wifi-off',
+      title: t('hints.offline.title'),
+      description: t('hints.offline.description'),
+      actions: [],
+    });
+  }
 
   if (!loggedIn.value) {
     result.push({
@@ -63,9 +77,7 @@ const availableHints = computed(() => {
 });
 
 const hint = computed(() =>
-  availableHints.value
-    .filter((hint) => !closedHints.value.includes(hint.id))
-    .at(0),
+  availableHints.value.filter(hint => !closedHints.value.includes(hint.id)).at(0),
 );
 
 function closeHint() {
@@ -84,6 +96,6 @@ function closeHint() {
     :actions="hint.actions"
     variant="outline"
     close
-    @update:open="(value) => !value && closeHint()"
+    @update:open="value => !value && closeHint()"
   />
 </template>
