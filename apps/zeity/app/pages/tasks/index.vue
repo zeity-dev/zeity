@@ -110,7 +110,7 @@ function hasEnded(task: Task) {
           <div class="text-sm text-muted">
             <p class="flex items-center gap-1">
               <UIcon name="i-lucide-clock" size="sm" />
-              <nuxt-time :datetime="task.start" time-style="medium" />
+              <nuxt-time :locale="$i18n.locale" :datetime="task.start" time-style="medium" />
               <template v-if="task.duration"> ({{ formatDuration(task.duration) }}) </template>
             </p>
             <p
@@ -118,7 +118,7 @@ function hasEnded(task: Task) {
               class="flex items-center gap-1"
             >
               <UIcon name="i-lucide-calendar" size="sm" />
-              <nuxt-time :datetime="task.start" date-style="medium" />
+              <nuxt-time :locale="$i18n.locale" :datetime="task.start" date-style="medium" />
               <UBadge
                 v-if="hasEnded(task)"
                 variant="subtle"
@@ -129,7 +129,11 @@ function hasEnded(task: Task) {
 
             <p v-if="task.recurrenceEnd" class="flex items-center gap-1">
               {{ $t('tasks.form.recurrenceEnd') }}:
-              <nuxt-time :datetime="task.recurrenceEnd" date-style="medium" />
+              <nuxt-time
+                :locale="$i18n.locale"
+                :datetime="task.recurrenceEnd"
+                date-style="medium"
+              />
               <UBadge
                 v-if="hasEnded(task)"
                 variant="subtle"

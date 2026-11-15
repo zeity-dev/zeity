@@ -104,7 +104,7 @@ function parseLink(data: unknown) {
       <span> {{ $t('about.buildDate') }} </span>
       <div class="flex items-center gap-2">
         <span class="text-[var(--ui-text-muted)]">
-          <nuxt-time :value="buildDate" />
+          <nuxt-time :locale="$i18n.locale" :datetime="buildDate" date-style="short" />
         </span>
       </div>
     </div>

@@ -68,12 +68,12 @@ async function handleDelete() {
           class="inline-flex items-center text-sm text-muted gap-0.5"
         >
           <UIcon name="i-lucide-calendar" size="sm" />
-          <nuxt-time :datetime="data.start" date-style="medium" />
+          <nuxt-time :locale="$i18n.locale" :datetime="data.start" date-style="medium" />
         </span>
 
         <span class="inline-flex items-center text-sm text-muted gap-0.5">
           <UIcon name="i-lucide-clock" size="sm" />
-          <nuxt-time :datetime="data.start" time-style="medium" />
+          <nuxt-time :locale="$i18n.locale" :datetime="data.start" time-style="medium" />
           <template v-if="data.duration"> ({{ formatDuration(data.duration) }}) </template>
         </span>
       </div>
@@ -95,7 +95,12 @@ async function handleDelete() {
 
       <p v-if="data.recurrenceEnd" class="flex items-center gap-1 text-sm font-medium">
         {{ $t('tasks.form.recurrenceEnd') }}:
-        <nuxt-time :datetime="data.recurrenceEnd" date-style="medium" class="text-muted" />
+        <nuxt-time
+          :locale="$i18n.locale"
+          :datetime="data.recurrenceEnd"
+          date-style="medium"
+          class="text-muted"
+        />
       </p>
 
       <div v-if="data.project">
