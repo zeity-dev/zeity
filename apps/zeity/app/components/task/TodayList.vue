@@ -135,7 +135,7 @@ async function handleTaskAction(task: Task) {
 
 <template>
   <div v-if="todayTasks.length > 0" class="mb-4">
-    <h3 class="text-sm font-semibold mb-2">
+    <h3 class="text-sm font-semibold mb-2" data-testid="title">
       {{ $t('tasks.today.title') }}
     </h3>
 
@@ -144,6 +144,7 @@ async function handleTaskAction(task: Task) {
         v-for="task in tasks"
         :key="task.id"
         class="flex items-center justify-between gap-3 p-3 rounded-lg border border-neutral-200 dark:border-neutral-800"
+        :data-testid="`task-item-${task.id}`"
       >
         <div class="flex flex-col gap-1 min-w-0">
           <NuxtLink :to="`/tasks/${task.id}`" class="text-sm font-medium truncate hover:underline">
@@ -174,6 +175,7 @@ async function handleTaskAction(task: Task) {
             icon="i-lucide-check"
             :label="$t('tasks.today.done')"
             :disabled="isSaving"
+            :data-testid="`done-button-${task.id}`"
             @click="handleTaskAction(task)"
           />
           <UButton
@@ -183,6 +185,7 @@ async function handleTaskAction(task: Task) {
             icon="i-lucide-play"
             :label="$t('tasks.today.startTimer')"
             :disabled="isSaving || timerStore.isStarted"
+            :data-testid="`start-timer-button-${task.id}`"
             @click="handleTaskAction(task)"
           />
         </div>

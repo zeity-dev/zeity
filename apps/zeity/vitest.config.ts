@@ -1,5 +1,5 @@
+import { fileURLToPath } from 'node:url';
 import { defineVitestConfig } from '@nuxt/test-utils/config';
-import { fileURLToPath } from 'url';
 
 export default defineVitestConfig({
   test: {
@@ -17,6 +17,7 @@ export default defineVitestConfig({
     },
     include: ['test/nuxt/**/*.(test|spec).ts'],
     globals: true,
+    setupFiles: ['test/setup.ts'],
   },
   // any custom Vitest config you require
 });

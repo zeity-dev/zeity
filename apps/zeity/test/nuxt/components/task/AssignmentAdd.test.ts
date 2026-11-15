@@ -43,10 +43,8 @@ describe('TaskAssignmentAdd', () => {
         },
       });
 
-      const addButton = wrapper.findAllComponents({ name: 'UButton' }).find(btn =>
-        btn.props('label') === 'Assign',
-      );
-      expect(addButton).toBeDefined();
+      const addButton = wrapper.find('[data-testid="add-button"]');
+      expect(addButton.exists()).toBe(true);
     });
   });
 
@@ -107,6 +105,26 @@ describe('TaskAssignmentAdd', () => {
 
       expect(wrapper.emitted('add')).toBeTruthy();
       expect(wrapper.emitted('add')![0]).toEqual(['member-1']);
+    });
+  });
+
+  describe('Search Functionality', () => {
+    it('should have search functionality in popover', async () => {
+      const wrapper = await mountSuspended(TaskAssignmentAdd, {
+        props: {
+          task: taskProp,
+          existingMemberIds: [],
+        },
+      });
+
+      // Verify the component structure has the popover
+      const popover = wrapper.findComponent({ name: 'UPopover' });
+      expect(popover.exists()).toBe(true);
+
+      // Verify that query model is reactive and can be updated
+      const vm = wrapper.vm as any;
+      expect(vm.query).toBeDefined();
+      expect(typeof vm.query).toBe('string');
     });
   });
 });

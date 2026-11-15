@@ -12,19 +12,6 @@ const { useColorMode } = vi.hoisted(() => ({
 }));
 mockNuxtImport('useColorMode', () => useColorMode);
 
-const { useI18n } = vi.hoisted(() => ({
-  useI18n: () => {
-    const locale = ref('en');
-    return {
-      locale,
-      setLocale: (val: string) => {
-        locale.value = val;
-      },
-    };
-  },
-}));
-mockNuxtImport('useI18n', () => useI18n);
-
 describe('useSettingsStore', () => {
   beforeEach(() => {
     vi.resetAllMocks();

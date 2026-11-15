@@ -119,7 +119,7 @@ describe('Join Organisation Page', () => {
 
       expect(alert.exists()).toBe(true);
       expect(alert.props('icon')).toBe('i-lucide-user-check');
-      expect(alert.text()).toContain('You are already a member of this organisation');
+      expect(alert.props('title')).toBe('organisations.join.alreadyMember');
     });
 
     it('should show pending request alert when already requested', async () => {
@@ -134,7 +134,7 @@ describe('Join Organisation Page', () => {
 
       expect(alert.exists()).toBe(true);
       expect(alert.props('icon')).toBe('i-lucide-clock');
-      expect(alert.text()).toContain('You have already sent a join request to this organisation.');
+      expect(alert.props('title')).toBe('organisations.join.request.pending');
     });
 
     it('should show back button when user cannot apply', async () => {
@@ -149,7 +149,7 @@ describe('Join Organisation Page', () => {
 
       const backButton = buttons.find(b => b.props('icon') === 'i-lucide-chevron-left');
       expect(backButton?.exists()).toBe(true);
-      expect(backButton?.text()).toBe('Back');
+      expect(backButton?.props('label')).toBe('common.back');
     });
   });
 
@@ -209,8 +209,8 @@ describe('Join Organisation Page', () => {
 
       expect(addToastMock).toHaveBeenCalledWith({
         color: 'error',
-        description: 'Error sending join request',
-        title: 'Error',
+        description: 'organisations.join.request.error',
+        title: 'common.error',
       });
       expect(navigateToMock).not.toHaveBeenCalled();
     });

@@ -26,7 +26,6 @@ vi.mock('@vueuse/core', () => ({
 }));
 
 mockNuxtImport('useUserSession', () => useUserSessionMock);
-mockNuxtImport('useI18n', () => () => ({ t: (key: string) => key }));
 mockNuxtImport('useToast', () => () => ({ add: addToastMock }));
 mockNuxtImport('useOrganisation', () => () => ({
   currentOrganisationId: ref(undefined),

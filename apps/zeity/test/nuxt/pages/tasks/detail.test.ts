@@ -85,7 +85,7 @@ describe('Task Detail Page', () => {
 
       const badge = wrapper.findComponent({ name: 'UBadge' });
       expect(badge.exists()).toBe(true);
-      expect(badge.text()).toContain('Daily');
+      expect(badge.text()).toContain('tasks.recurrence.daily');
     });
 
     it('should show notes when present', async () => {
@@ -107,9 +107,9 @@ describe('Task Detail Page', () => {
       const wrapper = await mountSuspended(TaskDetailPage);
 
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const editButton = buttons.find(btn => btn.props('label') === 'Edit');
+      const editButton = buttons.find(btn => btn.props('label') === 'common.edit');
       const deleteButton = buttons.find(
-        btn => btn.props('label') === 'Delete',
+        btn => btn.props('label') === 'common.delete',
       );
 
       expect(editButton).toBeDefined();
@@ -122,8 +122,8 @@ describe('Task Detail Page', () => {
       const wrapper = await mountSuspended(TaskDetailPage);
 
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const editButton = buttons.find(btn => btn.props('label') === 'Edit');
-      const deleteButton = buttons.find(btn => btn.props('label') === 'Delete');
+      const editButton = buttons.find(btn => btn.props('label') === 'common.edit');
+      const deleteButton = buttons.find(btn => btn.props('label') === 'common.delete');
 
       expect(editButton).toBeUndefined();
       expect(deleteButton).toBeUndefined();
@@ -139,7 +139,7 @@ describe('Task Detail Page', () => {
       // Find the page-level delete button (variant=outline), not assignment remove buttons (variant=ghost)
       const deleteButton = wrapper
         .findAllComponents({ name: 'UButton' })
-        .find(btn => btn.props('label') === 'Delete');
+        .find(btn => btn.props('label') === 'common.delete');
 
       expect(deleteButton).toBeDefined();
       await deleteButton!.find('button').trigger('click');
@@ -160,7 +160,7 @@ describe('Task Detail Page', () => {
 
       const wrapper = await mountSuspended(TaskDetailPage);
 
-      expect(wrapper.text()).toContain('Weekdays');
+      expect(wrapper.text()).toContain('tasks.form.weekdays');
     });
   });
 
@@ -174,7 +174,7 @@ describe('Task Detail Page', () => {
 
       const wrapper = await mountSuspended(TaskDetailPage);
 
-      expect(wrapper.text()).toContain('Day of Month');
+      expect(wrapper.text()).toContain('tasks.form.dayOfMonth');
       expect(wrapper.text()).toContain('15');
     });
   });
@@ -188,7 +188,7 @@ describe('Task Detail Page', () => {
 
       const wrapper = await mountSuspended(TaskDetailPage);
 
-      expect(wrapper.text()).toContain('Recurrence End');
+      expect(wrapper.text()).toContain('tasks.form.recurrenceEnd');
     });
   });
 

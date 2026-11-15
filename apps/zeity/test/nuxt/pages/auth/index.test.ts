@@ -4,13 +4,6 @@ import { flushPromises } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
 import AuthPage from '~/pages/auth/index.vue';
 
-// Mock useI18n
-mockNuxtImport('useI18n', () => {
-  return () => ({
-    t: (key: string) => key,
-  });
-});
-
 // Mock useToast
 const addToastMock = vi.fn();
 mockNuxtImport('useToast', () => {

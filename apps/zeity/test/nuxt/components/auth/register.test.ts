@@ -4,13 +4,6 @@ import { flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import RegisterComponent from '~/components/auth/register.vue';
 
-// Mock useI18n
-mockNuxtImport('useI18n', () => {
-  return () => ({
-    t: (key: string) => key,
-  });
-});
-
 // Mock useToast
 const addToastMock = vi.fn();
 mockNuxtImport('useToast', () => {
@@ -47,31 +40,29 @@ describe('Register Component', () => {
       expect(slides[0]!.isVisible()).toBe(true); // Email step visible
       expect(slides[1]!.isVisible()).toBe(false); // Password step hidden
 
-      expect(wrapper.find('input[type="email"]').isVisible()).toBe(true);
-      expect(wrapper.find('input[type="text"]').isVisible()).toBe(true);
+      // Use data-testid selectors
+      expect(wrapper.find('[data-testid="email-input"]').isVisible()).toBe(true);
+      expect(wrapper.find('[data-testid="name-input"]').isVisible()).toBe(true);
     });
 
     it('should render password inputs (hidden initially)', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Both password fields exist in DOM (using v-show)
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      expect(passwordInputs.length).toBe(2); // password and confirmPassword
-      expect(passwordInputs[0]!.exists()).toBe(true);
-      expect(passwordInputs[1]!.exists()).toBe(true);
+      expect(wrapper.find('[data-testid="password-input"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="confirm-password-input"]').exists()).toBe(true);
 
-      expect(passwordInputs[0]!.isVisible()).toBe(false);
-      expect(passwordInputs[1]!.isVisible()).toBe(false);
+      expect(wrapper.find('[data-testid="password-input"]').isVisible()).toBe(false);
+      expect(wrapper.find('[data-testid="confirm-password-input"]').isVisible()).toBe(false);
     });
 
     it('should show register with passkey button', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButton = buttons.find(btn => btn.props('label') === 'Register with Passkey');
+      const passkeyButton = wrapper.find('[data-testid="passkey-button"]');
 
-      expect(passkeyButton).toBeDefined();
-      expect(passkeyButton?.isVisible()).toBe(true);
+      expect(passkeyButton.exists()).toBe(true);
+      expect(passkeyButton.isVisible()).toBe(true);
     });
   });
 
@@ -79,38 +70,34 @@ describe('Register Component', () => {
     it('should transition to password step when continue is clicked', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const continueButton = buttons.find(btn => btn.props('label') === 'Continue')!;
-      await continueButton.find('button').trigger('click');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
       // Password fields should be visible
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      expect(passwordInputs[0]!.isVisible()).toBe(true);
+      expect(wrapper.find('[data-testid="password-input"]').isVisible()).toBe(true);
     });
 
     it('should go back to email step when back button is clicked', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-
       // Go to password step
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = buttons.find(btn => btn.props('label') === 'Continue')!;
-      await continueButton.find('button').trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
       // Click back button
-      const backButton = wrapper.find('button[aria-label="Back"]')!;
+      const backButton = wrapper.find('[data-testid="back-button"]');
       await backButton.trigger('click');
       await nextTick();
 
       // Email field should be visible again
-      expect(wrapper.find('input[type="email"]').isVisible()).toBe(true);
+      expect(wrapper.find('[data-testid="email-input"]').isVisible()).toBe(true);
     });
   });
 
@@ -119,48 +106,50 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Navigate to password step
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0]!;
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
       await continueButton.trigger('click');
       await nextTick();
 
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      const passwordInput = passwordInputs[0];
-      expect(passwordInput?.attributes('type')).toBe('password');
+      // Find password input by autocomplete attribute
+      let passwordInput = wrapper.find('input[autocomplete="new-password"]');
+      expect(passwordInput.attributes('type')).toBe('password');
 
-      // Find and click the eye icon button for password
-      const eyeButtons = wrapper.findAll('button[aria-pressed="false"]');
-      await eyeButtons[0]!.trigger('click');
+      // Click the eye icon button for password
+      const eyeButton = wrapper.find('[data-testid="password-visibility-toggle"]');
+      await eyeButton.trigger('click');
       await nextTick();
 
       // Password should now be visible as text
-      const passwordInputAfter = wrapper.findAll('input[autocomplete="new-password"]')[0];
-      expect(passwordInputAfter?.attributes('type')).toBe('text');
+      passwordInput = wrapper.find('input[autocomplete="new-password"]');
+      expect(passwordInput.attributes('type')).toBe('text');
     });
 
     it('should toggle confirm password visibility independently', async () => {
-      const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
+      const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body })!;
 
       // Navigate to password step
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const continueButton = buttons.find(btn => btn.props('label') === 'Continue')!;
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
       await continueButton.trigger('click');
       await nextTick();
 
+      // Find both password inputs
       const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      const confirmPasswordInput = passwordInputs[1];
-      expect(confirmPasswordInput?.attributes('type')).toBe('password');
+      const confirmPasswordInput = passwordInputs[1]!;
+      expect(confirmPasswordInput.attributes('type')).toBe('password');
 
-      const eyeButtons = wrapper.findAll('button[aria-pressed="false"]');
-      await eyeButtons[1]!.trigger('click');
+      // Click the eye icon button for confirm password
+      const eyeButton = wrapper.find('[data-testid="confirm-password-visibility-toggle"]');
+      await eyeButton.trigger('click');
       await nextTick();
 
       // Confirm password should now be visible as text
-      const confirmPasswordInputAfter = wrapper.findAll('input[autocomplete="new-password"]')[1];
-      expect(confirmPasswordInputAfter?.attributes('type')).toBe('text');
+      expect(wrapper.findAll('input[autocomplete="new-password"]')[1]!.attributes('type')).toBe(
+        'text',
+      );
     });
   });
 
@@ -173,18 +162,17 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
       // Go to password step
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0]!;
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
       await continueButton.trigger('click');
       await nextTick();
 
       // Fill in passwords
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]!.setValue('password123');
-      await passwordInputs[1]!.setValue('password123');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('password123');
 
       // Submit form
       await wrapper.find('form').trigger('submit.prevent');
@@ -210,15 +198,14 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in all fields
-      await wrapper.find('input[type="email"]').setValue('existing@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0];
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('existing@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('password123');
-      await passwordInputs[1]?.setValue('password123');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('password123');
 
       // Submit form
       await wrapper.find('form').trigger('submit.prevent');
@@ -241,15 +228,14 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in all fields
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0];
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('password123');
-      await passwordInputs[1]?.setValue('password123');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('password123');
 
       // Submit form
       await wrapper.find('form').trigger('submit.prevent');
@@ -272,15 +258,14 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in all fields
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0];
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('password123');
-      await passwordInputs[1]?.setValue('password123');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('password123');
 
       // Submit form
       await wrapper.find('form').trigger('submit.prevent');
@@ -302,18 +287,15 @@ describe('Register Component', () => {
 
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-
       // Fill in all fields
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = buttons.find(btn => btn.props('label') === 'Continue')!;
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('password123');
-      await passwordInputs[1]?.setValue('password123');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('password123');
 
       // Submit form without awaiting
       const submitPromise = wrapper.find('form').trigger('submit.prevent');
@@ -322,7 +304,7 @@ describe('Register Component', () => {
       await flushPromises();
 
       // Check that pending state is set
-      const submitButton = buttons.find(btn => btn.props('type') === 'submit')!;
+      const submitButton = wrapper.findComponent('[data-testid="submit-button"]')!;
       expect(submitButton.props('loading')).toBe(true);
 
       // Resolve the registration
@@ -331,7 +313,7 @@ describe('Register Component', () => {
       await flushPromises();
 
       // After completion, pending should be false
-      expect(submitButton.props('loading')).toBe(false);
+      expect(wrapper.findComponent('[data-testid="submit-button"]').props('loading')).toBe(false);
     });
   });
 
@@ -342,15 +324,12 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
       // Click passkey button
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'Register with Passkey',
-      )!;
-      await passkeyButtonComponent.find('button').trigger('click');
+      const passkeyButton = wrapper.find('[data-testid="passkey-button"]');
+      await passkeyButton.trigger('click');
 
       // Wait for async operations
       await flushPromises();
@@ -367,15 +346,12 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
       // Click passkey button
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'Register with Passkey',
-      )!;
-      await passkeyButtonComponent.find('button').trigger('click');
+      const passkeyButton = wrapper.find('[data-testid="passkey-button"]');
+      await passkeyButton.trigger('click');
 
       // Wait for async operations
       await flushPromises();
@@ -398,15 +374,12 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
       // Click passkey button
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'Register with Passkey',
-      )!;
-      await passkeyButtonComponent.find('button').trigger('click');
+      const passkeyButton = wrapper.find('[data-testid="passkey-button"]');
+      await passkeyButton.trigger('click');
 
       // Wait for async operations
       await flushPromises();
@@ -426,11 +399,8 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Leave fields empty
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'Register with Passkey',
-      )!;
-      await passkeyButtonComponent.find('button').trigger('click');
+      const passkeyButton = wrapper.find('[data-testid="passkey-button"]');
+      await passkeyButton.trigger('click');
 
       // Wait a bit
       await flushPromises();
@@ -443,9 +413,9 @@ describe('Register Component', () => {
     it('should validate email format', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      const emailInput = wrapper.find('input[type="email"]');
+      const emailInput = wrapper.find('[data-testid="email-input"]');
       await emailInput.setValue('invalid-email');
-      await wrapper.find('input[type="text"]').setValue('Test User');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
 
       // Try to submit - form validation should prevent submission
       await wrapper.find('form').trigger('submit.prevent');
@@ -461,7 +431,7 @@ describe('Register Component', () => {
     it('should validate name is required', async () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
       // Leave name empty
 
       // Try to submit - form validation should prevent submission
@@ -483,16 +453,15 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0];
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
       // Fill in short password
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('short');
-      await passwordInputs[1]?.setValue('short');
+      await wrapper.find('[data-testid="password-input"]').setValue('short');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('short');
 
       // Try to submit - form validation should prevent submission
       await wrapper.find('form').trigger('submit.prevent');
@@ -513,16 +482,15 @@ describe('Register Component', () => {
       const wrapper = await mountSuspended(RegisterComponent, { attachTo: document.body });
 
       // Fill in email and name
-      await wrapper.find('input[type="email"]').setValue('test@example.com');
-      await wrapper.find('input[type="text"]').setValue('Test User');
-      const continueButton = wrapper.findAllComponents({ name: 'UButton' })[0];
-      await continueButton?.trigger('click');
+      await wrapper.find('[data-testid="email-input"]').setValue('test@example.com');
+      await wrapper.find('[data-testid="name-input"]').setValue('Test User');
+      const continueButton = wrapper.find('[data-testid="continue-button"]');
+      await continueButton.trigger('click');
       await nextTick();
 
       // Fill in mismatched passwords
-      const passwordInputs = wrapper.findAll('input[autocomplete="new-password"]');
-      await passwordInputs[0]?.setValue('password123');
-      await passwordInputs[1]?.setValue('different456');
+      await wrapper.find('[data-testid="password-input"]').setValue('password123');
+      await wrapper.find('[data-testid="confirm-password-input"]').setValue('different456');
 
       // Try to submit - form validation should prevent submission
       await wrapper.find('form').trigger('submit.prevent');

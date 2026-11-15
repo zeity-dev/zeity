@@ -57,7 +57,8 @@ describe('TaskAssignmentList', () => {
         props: { task: taskProp, isAdmin: true },
       });
 
-      expect(wrapper.text()).toContain('Assigned Members');
+      const title = wrapper.find('[data-testid="title"]');
+      expect(title.exists()).toBe(true);
     });
 
     it('should render assigned members', async () => {
@@ -76,7 +77,8 @@ describe('TaskAssignmentList', () => {
         props: { task: taskProp, isAdmin: false },
       });
 
-      expect(wrapper.text()).toContain('No members assigned');
+      const emptyMessage = wrapper.find('[data-testid="empty-message"]');
+      expect(emptyMessage.exists()).toBe(true);
     });
   });
 
@@ -104,9 +106,7 @@ describe('TaskAssignmentList', () => {
         props: { task: taskProp, isAdmin: true },
       });
 
-      const removeButtons = wrapper
-        .findAllComponents({ name: 'UButton' })
-        .filter(btn => btn.find('button').attributes('aria-label') === 'Remove');
+      const removeButtons = wrapper.findAll('[data-testid^="remove-button-"]');
       expect(removeButtons.length).toBe(2);
     });
 
@@ -115,9 +115,7 @@ describe('TaskAssignmentList', () => {
         props: { task: taskProp, isAdmin: false },
       });
 
-      const removeButtons = wrapper
-        .findAllComponents({ name: 'UButton' })
-        .filter(btn => btn.find('button').attributes('aria-label') === 'Remove');
+      const removeButtons = wrapper.findAll('[data-testid^="remove-button-"]');
       expect(removeButtons.length).toBe(0);
     });
   });
@@ -130,11 +128,8 @@ describe('TaskAssignmentList', () => {
         props: { task: taskProp, isAdmin: true },
       });
 
-      const removeButton = wrapper
-        .findAllComponents({ name: 'UButton' })
-        .find(btn => btn.find('button').attributes('aria-label') === 'Remove');
-
-      await removeButton!.find('button').trigger('click');
+      const removeButton = wrapper.find('[data-testid="remove-button-member-1"]');
+      await removeButton.trigger('click');
       await flushPromises();
 
       expect(removeAssignmentMock).toHaveBeenCalledWith('task-1', 'member-1');

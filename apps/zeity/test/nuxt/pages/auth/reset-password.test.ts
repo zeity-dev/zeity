@@ -5,13 +5,6 @@ import { nextTick, ref } from 'vue';
 import { readBody } from 'h3';
 import ResetPasswordPage from '~/pages/auth/reset-password.vue';
 
-// Mock useI18n
-mockNuxtImport('useI18n', () => {
-  return () => ({
-    t: (key: string) => key,
-  });
-});
-
 // Mock useToast
 const addToastMock = vi.fn();
 mockNuxtImport('useToast', () => {

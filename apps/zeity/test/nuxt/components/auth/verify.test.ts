@@ -5,13 +5,6 @@ import { nextTick } from 'vue';
 import { readBody } from 'h3';
 import VerifyComponent from '~/components/auth/verify.vue';
 
-// Mock useI18n
-mockNuxtImport('useI18n', () => {
-  return () => ({
-    t: (key: string) => key,
-  });
-});
-
 // Mock useToast
 const addToastMock = vi.fn();
 mockNuxtImport('useToast', () => {

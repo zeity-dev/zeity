@@ -55,6 +55,7 @@ function handleSelect(id: string) {
       icon="i-lucide-plus"
       variant="outline"
       size="xs"
+      data-testid="add-button"
     />
 
     <template #content>
@@ -65,10 +66,15 @@ function handleSelect(id: string) {
           :placeholder="$t('tasks.assignments.searchMember')"
           size="sm"
           class="w-full"
+          data-testid="search-input"
         />
 
-        <div v-if="pending" class="text-sm text-muted p-2">...</div>
-        <div v-else-if="availableMembers.length === 0" class="text-sm text-muted p-2">
+        <div v-if="pending" class="text-sm text-muted p-2" data-testid="loading">...</div>
+        <div
+          v-else-if="availableMembers.length === 0"
+          class="text-sm text-muted p-2"
+          data-testid="no-members"
+        >
           {{ $t('tasks.assignments.noMembers') }}
         </div>
         <div v-else class="max-h-48 overflow-y-auto space-y-1">
@@ -76,6 +82,7 @@ function handleSelect(id: string) {
             v-for="member in availableMembers"
             :key="member.id"
             class="flex items-center gap-2 w-full p-2 rounded-md hover:bg-elevated text-left"
+            :data-testid="`member-option-${member.id}`"
             @click="handleSelect(member.id)"
           >
             <UAvatar :src="getUserImagePath(member.user)" :alt="member.user?.name" size="xs" />

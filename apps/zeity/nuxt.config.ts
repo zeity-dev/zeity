@@ -30,9 +30,21 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@vite-pwa/nuxt',
   ],
+  $test: {
+    pwa: {
+      disable: true,
+      pwaAssets: {
+        disabled: true,
+      },
+    },
+  },
+  $production: {
+    testUtils: {
+      removeTestIdAttribute: true,
+    },
+  },
   css: ['~/assets/css/main.css'],
   appConfig: {
-    // you don't need to include this: only for testing purposes
     buildDate: new Date().toISOString(),
   },
   pwa: {
@@ -49,12 +61,12 @@ export default defineNuxtConfig({
       {
         code: 'de',
         name: 'Deutsch',
-        file: 'de.json'
+        file: 'de.json',
       },
       {
         code: 'en',
         name: 'English',
-        file: 'en.json'
+        file: 'en.json',
       },
     ],
     defaultLocale: 'en',

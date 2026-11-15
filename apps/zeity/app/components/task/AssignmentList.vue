@@ -40,7 +40,7 @@ async function handleRemove(memberId: string) {
 <template>
   <div>
     <div class="flex items-center justify-between mb-2">
-      <h4 class="text-sm font-semibold">
+      <h4 class="text-sm font-semibold" data-testid="title">
         {{ $t('tasks.assignments.title') }}
       </h4>
       <TaskAssignmentAdd
@@ -51,7 +51,11 @@ async function handleRemove(memberId: string) {
       />
     </div>
 
-    <div v-if="assignedMemberIds.length === 0" class="text-sm text-muted">
+    <div
+      v-if="assignedMemberIds.length === 0"
+      class="text-sm text-muted"
+      data-testid="empty-message"
+    >
       {{ $t('tasks.assignments.empty') }}
     </div>
 
@@ -60,6 +64,7 @@ async function handleRemove(memberId: string) {
         v-for="assignment in data"
         :key="assignment.organisationMemberId"
         class="flex items-center justify-between gap-2 p-2 rounded-md border border-default"
+        :data-testid="`assignment-item-${assignment.organisationMemberId}`"
       >
         <div class="flex items-center gap-2 min-w-0">
           <UAvatar
@@ -81,6 +86,7 @@ async function handleRemove(memberId: string) {
           variant="ghost"
           size="xs"
           :aria-label="$t('common.remove')"
+          :data-testid="`remove-button-${assignment.organisationMemberId}`"
           @click="handleRemove(assignment.organisationMemberId)"
         />
       </div>

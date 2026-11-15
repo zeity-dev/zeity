@@ -140,11 +140,17 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="handleSubmit">
     <UFormField :label="$t('tasks.form.name')" name="name">
-      <UInput v-model="state.name" class="w-full" />
+      <UInput v-model="state.name" class="w-full" data-testid="name-input" />
     </UFormField>
 
     <UFormField ref="startDateRef" :label="$t('times.form.startDate')" name="start">
-      <UInputDate v-model="startDate" hide-time-zone granularity="day" class="w-full">
+      <UInputDate
+        v-model="startDate"
+        hide-time-zone
+        granularity="day"
+        class="w-full"
+        data-testid="start-date-input"
+      >
         <template #trailing>
           <UPopover :reference="startDateRef?.$el">
             <UButton
@@ -154,6 +160,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
               icon="i-lucide-calendar"
               aria-label="Select a date"
               class="px-0"
+              data-testid="start-date-calendar-button"
             />
 
             <template #content>
@@ -165,17 +172,30 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
     </UFormField>
 
     <UFormField :label="$t('times.form.startTime')" name="start">
-      <UInputTime v-model="startDate" hide-time-zone granularity="second" class="w-full" />
+      <UInputTime
+        v-model="startDate"
+        hide-time-zone
+        granularity="second"
+        class="w-full"
+        data-testid="start-time-input"
+      />
     </UFormField>
 
     <UFormField :label="$t('times.form.endTime')" name="end">
-      <UInputTime v-model="endDate" hide-time-zone granularity="second" class="w-full">
+      <UInputTime
+        v-model="endDate"
+        hide-time-zone
+        granularity="second"
+        class="w-full"
+        data-testid="end-time-input"
+      >
         <template #trailing>
           <UButton
             color="neutral"
             variant="link"
             size="sm"
             icon="i-lucide-x"
+            data-testid="clear-end-time-button"
             @click="endDate = undefined"
           />
         </template>
@@ -183,18 +203,28 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
     </UFormField>
 
     <UFormField :label="$t('times.form.project')" name="projectId">
-      <ProjectSelect v-model="state.projectId" allow-null class="w-full" />
+      <ProjectSelect
+        v-model="state.projectId"
+        allow-null
+        class="w-full"
+        data-testid="project-select"
+      />
     </UFormField>
 
     <UFormField :label="$t('times.form.notes')" name="notes">
-      <UTextarea v-model="state.notes" class="w-full" autoresize />
+      <UTextarea v-model="state.notes" class="w-full" autoresize data-testid="notes-textarea" />
     </UFormField>
 
     <fieldset class="space-y-3">
       <legend class="text-sm font-medium">{{ $t('tasks.form.recurrence') }}</legend>
 
       <UFormField :label="$t('tasks.form.frequency')" name="recurrenceFrequency">
-        <USelect v-model="state.recurrenceFrequency" :items="frequencyItems" class="w-full" />
+        <USelect
+          v-model="state.recurrenceFrequency"
+          :items="frequencyItems"
+          class="w-full"
+          data-testid="frequency-select"
+        />
       </UFormField>
 
       <UFormField
@@ -209,6 +239,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
             :variant="state.recurrenceWeekdays?.includes(day.value) ? 'solid' : 'subtle'"
             :color="state.recurrenceWeekdays?.includes(day.value) ? 'primary' : 'neutral'"
             size="sm"
+            :data-testid="`weekday-button-${day.value}`"
             @click="
               state.recurrenceWeekdays = state.recurrenceWeekdays?.includes(day.value)
                 ? state.recurrenceWeekdays.filter(d => d !== day.value)
@@ -231,6 +262,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
           :min="1"
           :max="31"
           class="w-full"
+          data-testid="day-of-month-input"
         />
       </UFormField>
 
@@ -240,13 +272,20 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
         name="recurrenceEndDate"
         ref="recurrenceEndDateRef"
       >
-        <UInputDate v-model="recurrenceEndDate" hide-time-zone granularity="day" class="w-full">
+        <UInputDate
+          v-model="recurrenceEndDate"
+          hide-time-zone
+          granularity="day"
+          class="w-full"
+          data-testid="recurrence-end-input"
+        >
           <template #trailing>
             <UButton
               color="neutral"
               variant="link"
               size="sm"
               icon="i-lucide-x"
+              data-testid="clear-recurrence-end-button"
               @click="recurrenceEndDate = undefined"
             />
 
@@ -258,6 +297,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
                 icon="i-lucide-calendar"
                 :aria-label="$t('common.selectDate')"
                 class="px-0"
+                data-testid="recurrence-end-calendar-button"
               />
 
               <template #content>
@@ -269,7 +309,7 @@ function handleSubmit(event: FormSubmitEvent<Schema>) {
       </UFormField>
     </fieldset>
 
-    <UButton block type="submit">
+    <UButton block type="submit" data-testid="submit-button">
       {{ $t('common.save') }}
     </UButton>
   </UForm>

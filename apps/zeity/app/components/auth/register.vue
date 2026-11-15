@@ -105,14 +105,21 @@ async function registerPasskey() {
           type="email"
           autocomplete="username webauthn"
           class="w-full"
+          data-testid="email-input"
         />
       </UFormField>
 
       <UFormField name="name" :label="$t('user.fullName')">
-        <UInput v-model="state.name" class="w-full" />
+        <UInput v-model="state.name" class="w-full" data-testid="name-input" />
       </UFormField>
 
-      <UButton block type="button" :label="$t('common.continue')" @click="toggleShowPasswordStep" />
+      <UButton
+        block
+        type="button"
+        :label="$t('common.continue')"
+        @click="toggleShowPasswordStep"
+        data-testid="continue-button"
+      />
     </div>
     <div v-show="!showPasswordStep" class="slide space-y-4">
       <UFormField name="password" :label="$t('user.password')">
@@ -121,6 +128,7 @@ async function registerPasskey() {
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility.password ? 'text' : 'password'"
+          data-testid="password-input"
         >
           <template #trailing>
             <UButton
@@ -129,6 +137,7 @@ async function registerPasskey() {
               size="sm"
               :icon="passwordVisibility.password ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.password"
+              data-testid="password-visibility-toggle"
               @click="passwordVisibility.password = !passwordVisibility.password"
             />
           </template>
@@ -141,6 +150,7 @@ async function registerPasskey() {
           autocomplete="new-password"
           class="w-full"
           :type="passwordVisibility.confirmPassword ? 'text' : 'password'"
+          data-testid="confirm-password-input"
         >
           <template #trailing>
             <UButton
@@ -149,6 +159,7 @@ async function registerPasskey() {
               size="sm"
               :icon="passwordVisibility.confirmPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.confirmPassword"
+              data-testid="confirm-password-visibility-toggle"
               @click="passwordVisibility.confirmPassword = !passwordVisibility.confirmPassword"
             />
           </template>
@@ -162,9 +173,16 @@ async function registerPasskey() {
           icon="i-lucide-chevron-left"
           color="neutral"
           variant="subtle"
+          data-testid="back-button"
           @click="toggleShowPasswordStep"
         />
-        <UButton block type="submit" :label="$t('auth.register.title')" :loading="pending" />
+        <UButton
+          block
+          type="submit"
+          :label="$t('auth.register.title')"
+          :loading="pending"
+          data-testid="submit-button"
+        />
       </div>
     </div>
 
@@ -176,6 +194,7 @@ async function registerPasskey() {
       color="neutral"
       :label="$t('auth.registerWithPasskey')"
       :loading="pending"
+      data-testid="passkey-button"
       @click="registerPasskey"
     />
   </UForm>

@@ -95,7 +95,8 @@ describe('TaskTodayList', () => {
     it('should render section title', async () => {
       const wrapper = await mountAndWait();
 
-      expect(wrapper.text()).toContain("Today's Tasks");
+      const title = wrapper.find('[data-testid="title"]');
+      expect(title.exists()).toBe(true);
     });
 
     it('should render task names', async () => {
@@ -105,20 +106,18 @@ describe('TaskTodayList', () => {
       expect(wrapper.text()).toContain('Code review');
     });
 
-    it('should show "done" label for tasks with duration', async () => {
+    it('should show "done" button for tasks with duration', async () => {
       const wrapper = await mountAndWait();
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const doneButton = buttons.find(btn => btn.props('label') === 'Done');
-      expect(doneButton).toBeDefined();
+      const doneButton = wrapper.find('[data-testid="done-button-task-1"]');
+      expect(doneButton.exists()).toBe(true);
     });
 
-    it('should show "start timer" label for tasks without duration', async () => {
+    it('should show "start timer" button for tasks without duration', async () => {
       const wrapper = await mountAndWait();
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const startButton = buttons.find(btn => btn.props('label') === 'Start');
-      expect(startButton).toBeDefined();
+      const startButton = wrapper.find('[data-testid="start-timer-button-task-2"]');
+      expect(startButton.exists()).toBe(true);
     });
   });
 
@@ -128,7 +127,8 @@ describe('TaskTodayList', () => {
 
       const wrapper = await mountAndWait();
 
-      expect(wrapper.find('h3').exists()).toBe(false);
+      const title = wrapper.find('[data-testid="title"]');
+      expect(title.exists()).toBe(false);
     });
   });
 
@@ -138,10 +138,8 @@ describe('TaskTodayList', () => {
 
       const wrapper = await mountAndWait();
 
-      const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const startButton = buttons.find(btn => btn.props('label') === 'Start');
-      expect(startButton).toBeDefined();
-      expect(startButton!.props('disabled')).toBe(true);
+      const startButton = wrapper.find('[data-testid="start-timer-button-task-2"]');
+      expect(startButton.attributes('disabled')).toBeDefined();
     });
   });
 
@@ -198,7 +196,8 @@ describe('TaskTodayList', () => {
 
       expect(wrapper.text()).not.toContain('Daily standup');
       expect(wrapper.text()).not.toContain('Code review');
-      expect(wrapper.find('h3').exists()).toBe(false);
+      const title = wrapper.find('[data-testid="title"]');
+      expect(title.exists()).toBe(false);
     });
 
     it('should still show a task when time entry belongs to a different task', async () => {
