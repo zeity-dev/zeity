@@ -5,7 +5,7 @@ import type { Time } from '@zeity/types/time';
 import type { Project } from '@zeity/types/project';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
 
-const { t } = useI18n();
+const { locale, t } = useI18n();
 const projectStore = useProjectStore();
 
 const props = defineProps({
@@ -126,7 +126,7 @@ async function generateXLSXReport(data: EnhancedTime[]) {
     }, {} as Record<keyof EnhancedTime, string>);
 
     const { generateXLSX, toXLSXBlob } = await import('@zeity/utils/xslx');
-    const sheet = generateXLSX(exportedFields, redactedData, labels);
+    const sheet = generateXLSX(exportedFields, redactedData, labels, locale.value);
 
     return toXLSXBlob(sheet);
 }

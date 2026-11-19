@@ -1,4 +1,32 @@
-import { utils, writeXLSX } from 'xlsx';
+import { CellObject, utils, writeXLSX } from 'xlsx';
+
+type Locale = 'de' | 'en';
+
+interface CellConfig {
+  type: 'datetime' | 'duration' | 'number' | 'string';
+  width?: number;
+}
+
+const localeFormats: Record<Locale, Record<string, string>> = {
+  de: {
+    datetime: 'dd.mm.yyyy hh:mm:ss',
+    duration: '[hh]:mm:ss',
+  },
+  en: {
+    datetime: 'yyyy-mm-dd hh:mm:ss',
+    duration: '[hh]:mm:ss',
+  },
+};
+
+const cellConfigs: Record<string, CellConfig> = {
+  start: { type: 'datetime', width: 20 },
+  end: { type: 'datetime', width: 20 },
+  duration: { type: 'duration', width: 12 },
+  notes: { type: 'string', width: 40 },
+  user: { type: 'string', width: 15 },
+  type: { type: 'string', width: 15 },
+  project: { type: 'string', width: 20 },
+};
 
 export function toXLSXBlob(content: string): Blob {
   return new Blob([content], {
@@ -6,27 +34,29 @@ export function toXLSXBlob(content: string): Blob {
   });
 }
 
-export function generateXLSX<T = Record<string, unknown>>(
+export function generateXLSX<T extends Record<string, unknown> = Record<string, unknown>>(
   keys: (keyof T)[],
   data: T[],
-  labels?: Record<keyof T, string>
+  labels?: Record<keyof T, string>,
+  locale: Locale = 'en',
 ): string {
   const workbook = utils.book_new();
 
   const worksheet = utils.json_to_sheet(
-    data.map((item) => convertDataToCell(item)),
+    data.map(item => convertDataToCell(item as Record<string, unknown>, locale)),
     {
       header: keys as string[],
-    }
+    },
   );
 
-  worksheet['!cols'] = keys.map((key) => getColumnSetting(key as string));
+  applyColumnWidths(worksheet, keys as string[]);
 
-  const translatedLabels = keys.map((key) => labels?.[key] || key);
-
+  const translatedLabels = keys.map(key => labels?.[key] || String(key));
   utils.sheet_add_aoa(worksheet, [translatedLabels], {
     origin: 'A1',
   });
+
+  freezeHeaderRow(worksheet);
 
   utils.book_append_sheet(workbook, worksheet, 'Sheet1');
   const xlsxData = writeXLSX(workbook, { bookType: 'xlsx', type: 'buffer' });
@@ -34,43 +64,58 @@ export function generateXLSX<T = Record<string, unknown>>(
   return xlsxData;
 }
 
-function convertDataToCell<T = Record<string, unknown>>(value: T) {
-  const cell: Record<string, unknown> = {};
+function convertDataToCell(
+  value: Record<string, unknown>,
+  locale: Locale = 'en',
+): Record<string, CellObject> {
+  const formats = localeFormats[locale] ?? localeFormats.en;
+  const cell: Record<string, CellObject> = {};
 
   for (const key in value) {
     const cellValue = value[key];
-    switch (key) {
-      case 'start':
-      case 'end':
+    const config = cellConfigs[key] ?? { type: 'string' };
+
+    switch (config.type) {
+      case 'datetime':
         cell[key] = {
           t: 'd',
-          v: cellValue,
-        };
+          v: cellValue as Date | string,
+          z: formats['datetime'],
+        } as CellObject;
         break;
+
       case 'duration':
-        // Expected: cellValue is the duration in milliseconds
-        // Excel expects days: 1 day = 86400000 ms
         cell[key] = {
-          t: 'n', // number type
+          t: 'n',
           v: typeof cellValue === 'number' ? cellValue / 86400000 : 0,
-          z: '[hh]:mm:ss',
+          z: formats['duration'],
         };
         break;
+
+      case 'number':
+        cell[key] = {
+          t: 'n',
+          v: typeof cellValue === 'number' ? cellValue : 0,
+        };
+        break;
+
       default:
-        cell[key] = { t: 's', v: cellValue || '' };
+        cell[key] = {
+          t: 's',
+          v: String(cellValue || ''),
+        };
     }
   }
 
   return cell;
 }
 
-function getColumnSetting(key: string) {
-  switch (key) {
-    case 'duration':
-      return { wch: 12 };
-    case 'notes':
-      return { wch: 40 };
-    default:
-      return { wch: 15 };
-  }
+function applyColumnWidths(worksheet: any, keys: string[]): void {
+  worksheet['!cols'] = keys.map(key => ({
+    wch: cellConfigs[key]?.width ?? 15,
+  }));
+}
+
+function freezeHeaderRow(worksheet: any): void {
+  worksheet['!freeze'] = { xSplit: 0, ySplit: 1 };
 }
