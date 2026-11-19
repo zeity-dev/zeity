@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@number-flow/vue": "catalog:",
-    "@nuxt/content": "^3.16.2",
-    "@nuxt/icon": "^2.6.2",
+    "@nuxt/content": "^3.17.0",
+    "@nuxt/icon": "^2.6.3",
     "@nuxt/image": "catalog:",
     "@nuxt/ui": "catalog:",
     "@nuxtjs/i18n": "catalog:",

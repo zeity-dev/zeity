@@ -37,7 +37,7 @@
   "devDependencies": {
     "@iconify-json/lucide": "catalog:dev",
     "@iconify-json/ri": "catalog:dev",
-    "@iconify-json/simple-icons": "^1.2.102",
+    "@iconify-json/simple-icons": "^1.2.103",
     "@nuxt/hints": "catalog:dev",
     "@nuxt/image": "catalog:",
     "@nuxt/test-utils": "^4.4.0",
@@ -45,14 +45,14 @@
     "@nuxtjs/i18n": "catalog:",
     "@types/etag": "^1.8.4",
     "@vite-pwa/assets-generator": "^2.0.0",
-    "@vite-pwa/nuxt": "^2.0.1",
+    "@vite-pwa/nuxt": "^2.0.2",
     "@vitejs/plugin-vue": "^6.0.11",
     "@vue/test-utils": "^2.6.0",
     "happy-dom": "^21.0.4",
     "nuxt": "catalog:",
     "nuxt-auth-utils": "^0.6.2",
     "nuxt-security": "catalog:dev",
-    "vue-i18n": "^11.4.20",
+    "vue-i18n": "^11.4.22",
     "vue-tsc": "^3.3.14"
   }
 }
