@@ -28,7 +28,7 @@
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
     "date-fns": "catalog:",
-    "jose": "^6.2.17",
+    "jose": "^6.2.18",
     "qrcode.vue": "catalog:",
     "unemail": "^0.7.0",
     "vue": "catalog:",
@@ -52,7 +52,7 @@
     "nuxt": "catalog:",
     "nuxt-auth-utils": "^0.6.2",
     "nuxt-security": "catalog:dev",
-    "vue-i18n": "^11.4.22",
+    "vue-i18n": "^11.4.23",
     "vue-tsc": "^3.3.14"
   }
 }

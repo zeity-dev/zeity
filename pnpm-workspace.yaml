@@ -15,7 +15,7 @@ catalogs:
   default:
     # Production Dependencies - Framework, UI, Utilities
     nuxt: "^4.6.4"
-    vue: "^3.5.45"
+    vue: "^3.5.46"
     "@nuxt/ui": "^4.13.0"
     "@nuxt/image": "^2.2.1"
     "@nuxtjs/i18n": "^10.6.0"
@@ -28,7 +28,7 @@ catalogs:
     "@simplewebauthn/browser": "^14.0.0"
     "@simplewebauthn/server": "^14.1.0"
     # Other dependencies
-    "qrcode.vue": "^3.11.0"
+    "qrcode.vue": "^3.11.1"
     "@vue-email/components": "^0.0.21"
     "drizzle-orm": "^0.45.4"
     pg: "^8.23.1"
@@ -39,7 +39,7 @@ catalogs:
     "@types/node": "^26.6.6"
     "@nuxt/hints": "^1.1.5"
     nuxt-security: "^2.7.0"
-    "@iconify-json/lucide": "^1.2.156"
+    "@iconify-json/lucide": "^1.2.157"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 
