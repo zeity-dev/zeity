@@ -16,10 +16,10 @@ catalogs:
     # Production Dependencies - Framework, UI, Utilities
     nuxt: "^4.6.4"
     vue: "^3.5.46"
-    "@nuxt/ui": "^4.13.0"
+    "@nuxt/ui": "^4.13.1"
     "@nuxt/image": "^2.2.1"
     "@nuxtjs/i18n": "^10.6.0"
-    "@vueuse/core": "^15.0.0"
+    "@vueuse/core": "^15.1.0"
     "@number-flow/vue": "^0.5.2"
     "@pinia/nuxt": "^1.0.3"
     date-fns: "^4.4.0"
@@ -37,7 +37,7 @@ catalogs:
     # Development Dependencies - Tooling, Types, Testing
     typescript: "^6.0.3"
     "@types/node": "^26.6.6"
-    "@nuxt/hints": "^1.1.5"
+    "@nuxt/hints": "^1.1.6"
     nuxt-security: "^2.7.0"
     "@iconify-json/lucide": "^1.2.158"
     "@iconify-json/ri": "^1.2.10"
