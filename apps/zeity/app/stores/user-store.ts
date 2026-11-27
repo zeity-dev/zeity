@@ -1,3 +1,5 @@
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
 import type { LocalUser } from '~/types/local-user';
 
 export const useUserStore = defineStore('user', () => {

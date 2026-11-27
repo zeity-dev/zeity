@@ -1,8 +1,8 @@
-import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,
+  type OrganisationMemberRole,
 } from '@zeity/types/organisation';
 
 export function findRoleLabel(role: OrganisationMemberRole) {

@@ -1,12 +1,16 @@
-import type { User } from '@zeity/database/user';
 import type { Organisation } from '@zeity/database/organisation';
 import type { OrganisationMember } from '@zeity/database/organisation-member';
+import type { User } from '@zeity/database/user';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types';
-import { getOrganisationMembersByUserIds, getOrganisationMemberByUserId } from './organisation';
+import {
+  getOrganisationMemberByUserId,
+  getOrganisationMembersByUserIds,
+  hasUserOrganisationMemberRole,
+} from './organisation';
 
 const privilegedRoles = new Set([ORGANISATION_MEMBER_ROLE_OWNER, ORGANISATION_MEMBER_ROLE_ADMIN]);
 

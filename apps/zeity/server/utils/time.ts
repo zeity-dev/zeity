@@ -1,5 +1,6 @@
 import { eq } from '@zeity/database';
 import { times } from '@zeity/database/time';
+import { useDrizzle } from './drizzle';
 
 export function doesTimeExist(timeId: string): Promise<boolean> {
   return useDrizzle()

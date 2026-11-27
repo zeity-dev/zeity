@@ -1,9 +1,12 @@
+import { createError, defineHandler, readValidatedBody } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { refreshUserSession } from '#server/utils/user-session';
 import { eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   const schema = z

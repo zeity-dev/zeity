@@ -1,9 +1,7 @@
 import type { Component } from 'vue';
-import type { ExtractComponentProps } from '@vue-email/render';
-import { render } from '@vue-email/render';
-
-import MailWelcome from '../mail/MailWelcome.vue';
+import { render, type ExtractComponentProps } from '@vue-email/render';
 import MailMessage from '../mail/MailMessage.vue';
+import MailWelcome from '../mail/MailWelcome.vue';
 
 async function renderVueMail<T extends Component>(component: T, props?: ExtractComponentProps<T>) {
   const [html, text] = await Promise.all([

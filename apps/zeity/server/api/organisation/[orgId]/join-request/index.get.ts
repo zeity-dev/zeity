@@ -1,15 +1,17 @@
+import { createError, defineHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { and, desc, eq, useDrizzle } from '#server/utils/drizzle';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { users } from '@zeity/database/user';
-
-import { canUserReadOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 import { JOIN_REQUEST_STATUSES } from '@zeity/types';
+import { canUserReadOrganisationByOrgId } from '~~/server/utils/organisation-permission';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       orgId: z.string().uuid(),

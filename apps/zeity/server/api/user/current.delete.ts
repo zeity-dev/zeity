@@ -1,7 +1,10 @@
+import { createError, defineHandler } from 'nuxt/server';
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
 import { eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   if (!session.user.id) {
@@ -13,5 +16,5 @@ export default defineEventHandler(async event => {
 
   await useDrizzle().delete(users).where(eq(users.id, session.user.id));
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

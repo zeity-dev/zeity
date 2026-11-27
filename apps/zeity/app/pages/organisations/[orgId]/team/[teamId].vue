@@ -1,8 +1,25 @@
 <script setup lang="ts">
-import z from 'zod';
+import { computed, ref } from 'vue';
 import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
-import type { User } from '@zeity/types/user';
+import { useI18n } from 'vue-i18n';
+import z from 'zod';
+import { useFetch, useRoute } from '#app';
+import {
+  UAvatar,
+  UButton,
+  UForm,
+  UFormField,
+  UInput,
+  UModal,
+  USeparator,
+  UTable,
+  UTextarea,
+} from '#components';
+import { $fetch, useToast } from '#imports';
 import type { OrganisationMemberRole } from '@zeity/types/organisation';
+import type { User } from '@zeity/types/user';
+import OrganisationMemberSelectField from '~/components/organisation/MemberSelectField.vue';
+import { useImagePaths } from '~/composables/useImagePaths';
 
 interface TeamMemberData {
   memberId: string;

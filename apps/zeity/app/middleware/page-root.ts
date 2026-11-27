@@ -1,4 +1,6 @@
-export default defineNuxtRouteMiddleware((to) => {
+import { defineNuxtRouteMiddleware, navigateTo } from '#app';
+
+export default defineNuxtRouteMiddleware(to => {
   // skip on server side
   if (import.meta.server) return;
 

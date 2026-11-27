@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { ref } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
+import { useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UButton, UForm, UFormField, UInput, UPageCard } from '#components';
+import { $fetch, useToast, useUserSession } from '#imports';
 
 definePageMeta({
   middleware: 'guest',
@@ -47,31 +53,13 @@ async function submit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UPageCard
-    :title="$t('auth.forgotPassword.title')"
-    class="max-w-md m-auto my-3"
-  >
-    <UForm
-      class="space-y-4 max-w-lg"
-      :schema="schema"
-      :state="state"
-      @submit.prevent="submit"
-    >
+  <UPageCard :title="$t('auth.forgotPassword.title')" class="max-w-md m-auto my-3">
+    <UForm class="space-y-4 max-w-lg" :schema="schema" :state="state" @submit.prevent="submit">
       <UFormField name="email" :label="$t('user.email')">
-        <UInput
-          v-model="state.email"
-          type="email"
-          autocomplete="email"
-          class="w-full"
-        />
+        <UInput v-model="state.email" type="email" autocomplete="email" class="w-full" />
       </UFormField>
 
-      <UButton
-        block
-        type="submit"
-        :label="$t('auth.resetPassword.title')"
-        :loading="pending"
-      />
+      <UButton block type="submit" :label="$t('auth.resetPassword.title')" :loading="pending" />
     </UForm>
   </UPageCard>
 </template>

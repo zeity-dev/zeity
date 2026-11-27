@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { DropdownMenuItem } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { UButton, UDropdownMenu, UIcon } from '#components';
+import { useOrganisation } from '~/composables/organisation';
+import { useImagePaths } from '~/composables/useImagePaths';
+import { useUser } from '~/composables/user';
+import { useSystemStore } from '~/stores/systemStore';
 
 defineProps({
   collapsed: {

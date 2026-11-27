@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { navigateTo, useLazyFetch, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UAlert, UButton, UPageCard, USkeleton } from '#components';
+import { $fetch, useToast } from '#imports';
+import OrganisationImage from '~/components/organisation/Image.vue';
+
 definePageMeta({
   middleware: 'auth',
 });
@@ -29,7 +37,7 @@ async function acceptInvite() {
       });
     })
     .then(async () => await navigateTo('/user'))
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       useToast().add({
         title: t('common.error'),
@@ -41,10 +49,7 @@ async function acceptInvite() {
 </script>
 
 <template>
-  <UPageCard
-    :title="$t('organisations.join.title')"
-    class="max-w-full w-lg m-auto"
-  >
+  <UPageCard :title="$t('organisations.join.title')" class="max-w-full w-lg m-auto">
     <div v-if="isLoading" class="flex flex-col items-center gap-4">
       <USkeleton class="rounded-full h-16 w-16" />
       <USkeleton class="h-8 w-64" />
@@ -52,10 +57,7 @@ async function acceptInvite() {
       <USkeleton class="h-8 w-32" />
     </div>
     <div v-else-if="status === 'success'" class="space-y-4">
-      <div
-        v-if="data?.organisation"
-        class="flex flex-col items-center gap-3 m-auto"
-      >
+      <div v-if="data?.organisation" class="flex flex-col items-center gap-3 m-auto">
         <OrganisationImage :org="data.organisation" />
         <h2 class="text-2xl font-semibold">{{ data.organisation.name }}</h2>
         <i18n-t keypath="organisations.join.description" tag="p">

@@ -1,3 +1,5 @@
+import { navigateTo, useCookie } from '#app';
+
 const STORAGE_KEY = 'zeity_redirect';
 
 export function useAuthRedirect() {

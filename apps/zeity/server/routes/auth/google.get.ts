@@ -1,3 +1,6 @@
+import { createError, sendRedirect } from 'nuxt/server';
+import { defineOAuthGoogleEventHandler } from '#imports';
+import { storeUserSession } from '#server/utils/user-session';
 import { handleOAuthLogin } from '~~/server/utils/auth';
 import { GOOGLE_PROVIDER_ID } from '~~/server/utils/auth-providers';
 

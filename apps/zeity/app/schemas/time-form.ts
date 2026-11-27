@@ -1,18 +1,8 @@
-import {
-  type ZonedDateTime,
-  getLocalTimeZone,
-  parseAbsolute,
-} from '@internationalized/date';
+import { getLocalTimeZone, parseAbsolute, type ZonedDateTime } from '@internationalized/date';
 import { addMilliseconds } from 'date-fns';
 import { nanoid } from 'nanoid';
 import z from 'zod';
-
-import {
-  TIME_TYPE_MANUAL,
-  TIME_TYPES,
-  type DraftTime,
-  type Time,
-} from '@zeity/types';
+import { TIME_TYPES, TIME_TYPE_MANUAL, type DraftTime, type Time } from '@zeity/types';
 import { timeDiff } from '@zeity/utils/date';
 import { pick } from '@zeity/utils/object';
 
@@ -97,9 +87,7 @@ export function isDraftValue(
 ): value is DraftTime {
   return !!value && !('duration' in value) && !('end' in value);
 }
-export function isTimeValue(
-  value?: Time | DraftTime | Schema | undefined | null,
-): value is Time {
+export function isTimeValue(value?: Time | DraftTime | Schema | undefined | null): value is Time {
   if (!value) return false;
 
   return ('id' in value && 'duration' in value) || 'end' in value;

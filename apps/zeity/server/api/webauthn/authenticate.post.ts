@@ -1,3 +1,7 @@
+import { createError } from 'nuxt/server';
+import { defineWebAuthnAuthenticateEventHandler } from '#imports';
+import { eq, useDrizzle } from '#server/utils/drizzle';
+import { storeUserSession } from '#server/utils/user-session';
 import { users } from '@zeity/database/user';
 import { userCredentials } from '@zeity/database/user-credential';
 import { getChallenge, storeChallenge } from '../../utils/webauthn';

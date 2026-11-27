@@ -1,17 +1,21 @@
+import { createError, defineHandler } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { eq } from '@zeity/database';
-import { taskAssignments } from '@zeity/database/task-assignment';
 import { organisationMembers } from '@zeity/database/organisation-member';
+import { taskAssignments } from '@zeity/database/task-assignment';
 import { users } from '@zeity/database/user';
-import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
+import { doesTasksBelongToOrganisation } from '~~/server/utils/task';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       id: z.uuid(),

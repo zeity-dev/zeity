@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+import { UPageCard } from '#components';
+import OrganisationMembersTable from '~/components/organisation/MembersTable.vue';
+import OrganisationUserQuotaInfo from '~/components/organisation/UserQuotaInfo.vue';
 import type { OrganisationWithStats } from '~/types/organisation';
 
 defineProps({

@@ -1,9 +1,25 @@
 <script setup lang="ts">
+import { computed, defineAsyncComponent, ref } from 'vue';
 import { isBefore } from 'date-fns';
-
-import { type Task, TASK_RECURRENCE_ONCE } from '@zeity/types';
+import { useLazyFetch } from '#app';
+import {
+  NuxtTime,
+  UBadge,
+  UButton,
+  UEmpty,
+  UIcon,
+  UPageCard,
+  UPagination,
+  USwitch,
+} from '#components';
+import { TASK_RECURRENCE_ONCE, type Task } from '@zeity/types';
 import { formatDuration, toStartOfDay } from '@zeity/utils/date';
+import { useOrganisation } from '~/composables/organisation';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
+
+const LazyOrganisationMemberFilter = defineAsyncComponent(
+  () => import('~/components/organisation/MemberFilter.vue'),
+);
 
 const { currentOrganisation, userHasPrivilegedOrganisationRole } = useOrganisation();
 const isAdmin = computed(

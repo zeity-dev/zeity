@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRuntimeConfig } from '#app';
+import { UAvatar, UAvatarGroup, UButton, UDropdownMenu, UIcon, ULink } from '#components';
+import { storeToRefs, useUserSession } from '#imports';
+import { useAuth } from '~/composables/auth';
+import { useOrganisation } from '~/composables/organisation';
+import { useImagePaths } from '~/composables/useImagePaths';
+import { useUserStore } from '~/stores/user-store';
+
 const appConfig = useRuntimeConfig();
 const { getUserImagePath, getOrganisationImagePath } = useImagePaths();
 

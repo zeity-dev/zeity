@@ -1,6 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { clearNuxtData } from '#imports';
 import TaskAssignmentAdd from '~/components/task/AssignmentAdd.vue';
 
 // Register session endpoint

@@ -1,6 +1,7 @@
 import { eq } from '@zeity/database';
-import { users, type User } from '@zeity/database/user';
+import { type User, users } from '@zeity/database/user';
 import { userAccounts } from '@zeity/database/user-account';
+import { and, useDrizzle } from './drizzle';
 
 export function linkUserAccount(
   userId: string,

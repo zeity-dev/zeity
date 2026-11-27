@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { parseAbsolute } from '@internationalized/date';
+import { describe, expect, it } from 'vitest';
 import { timeSchema } from '../../../app/schemas/time-form';
 
 describe('time form schema', () => {

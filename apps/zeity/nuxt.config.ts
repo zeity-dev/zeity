@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuePlugin from '@vitejs/plugin-vue';
-
 import packageJson from '../../package.json' with { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -17,7 +16,7 @@ export default defineNuxtConfig({
     typescriptPlugin: true,
     viteEnvironmentApi: true,
     viewTransition: true,
-    nitroAutoImports: true,
+    nitroAutoImports: false,
   },
   modules: [
     '@nuxt/hints',
@@ -233,6 +232,9 @@ export default defineNuxtConfig({
   },
   nitro: {
     compressPublicAssets: true,
+    imports: {
+      autoImport: false,
+    },
     rollupConfig: {
       plugins: [vuePlugin()],
     },
@@ -241,6 +243,13 @@ export default defineNuxtConfig({
         target: 'es2024',
       },
     },
+    typescript: {
+      strict: true,
+    },
+  },
+
+  imports: {
+    autoImport: false,
   },
 
   vite: {

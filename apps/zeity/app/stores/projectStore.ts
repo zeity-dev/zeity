@@ -1,8 +1,8 @@
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
-
-import { useEntityStore } from './entityStore';
 import type { Project } from '@zeity/types/project';
 import { useLocalStorage } from '~/utils/localstorage';
+import { useEntityStore } from './entityStore';
 
 export const useProjectStore = defineStore('project', () => {
   const loading = ref(false);

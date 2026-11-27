@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { computed, ref, type PropType } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
 import z from 'zod';
+import { navigateTo } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UButton, UForm, UFormField, UInput, UPageCard } from '#components';
+import { $fetch, useToast } from '#imports';
 
 definePageMeta({
   middleware: 'auth',
@@ -33,11 +39,11 @@ const schema = z
     newPassword: z.string().min(8),
     confirmPassword: z.string(),
   })
-  .refine((data) => data.newPassword === data.confirmPassword, {
+  .refine(data => data.newPassword === data.confirmPassword, {
     message: t('user.passwordsDoNotMatch'),
     path: ['confirmPassword'], // Highlights the confirm password field
   })
-  .refine((data) => data.currentPassword !== data.newPassword, {
+  .refine(data => data.currentPassword !== data.newPassword, {
     message: t('user.changePassword.newPasswordSameAsCurrent'),
     path: ['newPassword'], // Highlights the confirm password field
   });
@@ -81,12 +87,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UPageCard :title="$t('user.changePassword.title')">
-    <UForm
-      class="space-y-4"
-      :schema="schema"
-      :state="state"
-      @submit="updatePassword"
-    >
+    <UForm class="space-y-4" :schema="schema" :state="state" @submit="updatePassword">
       <UFormField
         v-if="hasPassword"
         name="currentPassword"
@@ -103,9 +104,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
               color="neutral"
               variant="link"
               size="sm"
-              :icon="
-                passwordVisibility.current ? 'i-lucide-eye-off' : 'i-lucide-eye'
-              "
+              :icon="passwordVisibility.current ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.current"
               @click="passwordVisibility.current = !passwordVisibility.current"
             />
@@ -113,10 +112,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
         </UInput>
       </UFormField>
 
-      <UFormField
-        name="newPassword"
-        :label="$t('user.changePassword.newPassword')"
-      >
+      <UFormField name="newPassword" :label="$t('user.changePassword.newPassword')">
         <UInput
           v-model="state.newPassword"
           autocomplete="new-password"
@@ -128,9 +124,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
               color="neutral"
               variant="link"
               size="sm"
-              :icon="
-                passwordVisibility.new ? 'i-lucide-eye-off' : 'i-lucide-eye'
-              "
+              :icon="passwordVisibility.new ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.new"
               @click="passwordVisibility.new = !passwordVisibility.new"
             />
@@ -150,9 +144,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
               color="neutral"
               variant="link"
               size="sm"
-              :icon="
-                passwordVisibility.confirm ? 'i-lucide-eye-off' : 'i-lucide-eye'
-              "
+              :icon="passwordVisibility.confirm ? 'i-lucide-eye-off' : 'i-lucide-eye'"
               :aria-pressed="passwordVisibility.confirm"
               @click="passwordVisibility.confirm = !passwordVisibility.confirm"
             />
@@ -160,12 +152,7 @@ async function updatePassword(event: FormSubmitEvent<Schema>) {
         </UInput>
       </UFormField>
 
-      <UButton
-        block
-        type="submit"
-        :label="$t('common.save')"
-        :loading="pending"
-      />
+      <UButton block type="submit" :label="$t('common.save')" :loading="pending" />
     </UForm>
   </UPageCard>
 </template>

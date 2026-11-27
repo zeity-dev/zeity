@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RegisterComponent from '~/components/auth/register.vue';
+import type { UButton } from '#components';
 
 // Mock useToast
 const addToastMock = vi.fn();
@@ -304,7 +305,7 @@ describe('Register Component', () => {
       await flushPromises();
 
       // Check that pending state is set
-      const submitButton = wrapper.findComponent('[data-testid="submit-button"]')!;
+      const submitButton = wrapper.findComponent<typeof UButton>('[data-testid="submit-button"]')!;
       expect(submitButton.props('loading')).toBe(true);
 
       // Resolve the registration
@@ -313,7 +314,7 @@ describe('Register Component', () => {
       await flushPromises();
 
       // After completion, pending should be false
-      expect(wrapper.findComponent('[data-testid="submit-button"]').props('loading')).toBe(false);
+      expect(wrapper.findComponent<typeof UButton>('[data-testid="submit-button"]').props('loading')).toBe(false);
     });
   });
 

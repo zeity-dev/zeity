@@ -1,15 +1,19 @@
+import { createError, defineHandler } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { eq } from '@zeity/database';
 import { projects } from '@zeity/database/project';
-import { doesProjectExist } from '~~/server/utils/project';
 import { userIdBelongsToOrganisation } from '~~/server/utils/organisation-permission';
+import { doesProjectExist } from '~~/server/utils/project';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       id: z.uuid(),
@@ -44,5 +48,5 @@ export default defineEventHandler(async event => {
 
   await useDrizzle().delete(projects).where(eq(projects.id, params.data.id)).returning();
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

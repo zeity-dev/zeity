@@ -1,7 +1,7 @@
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
-
-import { useEntityStore } from './entityStore';
 import type { Task } from '@zeity/types/task';
+import { useEntityStore } from './entityStore';
 
 export const useTaskStore = defineStore('task', () => {
   const loading = ref(false);

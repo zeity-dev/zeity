@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import { useOnline } from '@vueuse/core';
+import { useI18n } from 'vue-i18n';
+import { UAlert } from '#components';
+import { usePWA, useUserSession } from '#imports';
 
 const pwa = usePWA();
 const { t } = useI18n();
@@ -77,7 +81,7 @@ const availableHints = computed(() => {
 });
 
 const hint = computed(() =>
-  availableHints.value.filter(hint => !closedHints.value.includes(hint.id)).at(0),
+  availableHints.value.find(hint => !closedHints.value.includes(hint.id)),
 );
 
 function closeHint() {

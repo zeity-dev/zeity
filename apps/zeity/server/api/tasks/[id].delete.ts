@@ -1,15 +1,20 @@
+import { createError, defineHandler } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
+import { doesTasksBelongToOrganisation } from '#server/utils/task';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { and, eq } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
-import { doesTaskExist } from '~~/server/utils/task';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
+import { doesTaskExist } from '~~/server/utils/task';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       id: z.uuid(),
@@ -50,5 +55,5 @@ export default defineEventHandler(async event => {
     .delete(tasks)
     .where(and(eq(tasks.id, params.data.id), eq(tasks.organisationId, organisation.value)));
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

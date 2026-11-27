@@ -1,21 +1,35 @@
 <script setup lang="ts">
+import { computed, ref, type PropType, useTemplateRef, watch } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import {
-  type ZonedDateTime,
   getLocalTimeZone,
   parseAbsolute,
   toZoned,
+  type ZonedDateTime,
 } from '@internationalized/date';
+import { useI18n } from 'vue-i18n';
 import { z } from 'zod';
-
+import {
+  UButton,
+  UCalendar,
+  UForm,
+  UFormField,
+  UInput,
+  UInputDate,
+  UInputTime,
+  UPopover,
+  USelect,
+  UTextarea,
+} from '#components';
 import {
   TASK_RECURRENCE_FREQUENCIES,
   TASK_RECURRENCE_MONTHLY,
   TASK_RECURRENCE_ONCE,
   TASK_RECURRENCE_WEEKLY,
 } from '@zeity/types/task';
-import { pick } from '@zeity/utils/object';
 import { sortDatesAscending, timeDiff } from '@zeity/utils/date';
+import { pick } from '@zeity/utils/object';
+import ProjectSelect from '~/components/project/Select.vue';
 
 const props = defineProps({
   data: {

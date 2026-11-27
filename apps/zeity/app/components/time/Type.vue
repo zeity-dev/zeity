@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, type PropType } from 'vue';
+import { LazyUTooltip, UIcon } from '#components';
 import { TIME_TYPE_BREAK, TIME_TYPE_MANUAL, type DraftTime, type Time } from '@zeity/types/time';
 
 const props = defineProps({

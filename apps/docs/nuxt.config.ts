@@ -78,6 +78,11 @@ export default defineNuxtConfig({
     '/*': { prerender: true },
   },
 
+  // imports: {
+  // TODO: docus currently relies on autoimports
+  //   autoImport: false,
+  // },
+
   devServer: {
     port: 4000,
   },

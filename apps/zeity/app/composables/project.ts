@@ -1,4 +1,7 @@
+import { computed } from 'vue';
+import { $fetch, useUserSession } from '#imports';
 import type { Project } from '@zeity/types';
+import { useOrganisation } from '~/composables/organisation';
 import { useProjectStore } from '~/stores/projectStore';
 
 interface FetchProjectsOptions {
@@ -63,15 +66,13 @@ export function useProject() {
 
   function getOrganisationProjects() {
     const ref = store.findProjects(
-      (project) =>
-        !project.organisationId ||
-        project.organisationId === currentOrganisationId.value,
+      project => !project.organisationId || project.organisationId === currentOrganisationId.value,
     );
     return computed(() => ref.value);
   }
 
   function getOfflineProjects() {
-    const ref = store.findProjects((project) => !project.organisationId);
+    const ref = store.findProjects(project => !project.organisationId);
     return computed(() => ref.value);
   }
 
@@ -127,9 +128,7 @@ export function useProject() {
 
   function isOnlineProject(idOrProject: string | Project) {
     const project =
-      typeof idOrProject === 'object'
-        ? idOrProject
-        : findProjectById(idOrProject).value;
+      typeof idOrProject === 'object' ? idOrProject : findProjectById(idOrProject).value;
     return !!project?.organisationId;
   }
 

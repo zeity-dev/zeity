@@ -1,7 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick, ref, type Ref } from 'vue';
 import { mockNuxtImport } from '@nuxt/test-utils/runtime';
-import type { Ref } from 'vue';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useAuth } from '~/composables/auth';
 
 const { useUserSessionMock } = vi.hoisted(() => ({

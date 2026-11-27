@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+import { UPageCard, USeparator } from '#components';
+import OrganisationInvitesTable from '~/components/organisation/InvitesTable.vue';
+import OrganisationJoinRequests from '~/components/organisation/JoinRequests.vue';
+import OrganisationUserQuotaInfo from '~/components/organisation/UserQuotaInfo.vue';
 import type { OrganisationWithStats } from '~/types/organisation';
 
 defineProps({
@@ -16,10 +21,7 @@ const emit = defineEmits(['refresh']);
       <OrganisationUserQuotaInfo :org="org" />
     </UPageCard>
 
-    <OrganisationJoinRequests
-      :organisation-id="org.id"
-      @refresh="emit('refresh')"
-    />
+    <OrganisationJoinRequests :organisation-id="org.id" @refresh="emit('refresh')" />
 
     <USeparator />
 

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const UChip = resolveComponent('UChip');
+import { defineAsyncComponent, watch } from 'vue';
+import { useRoute } from '#app';
+import { UIcon, ULink, USlideover, UChip } from '#components';
+import { useNavigation } from '~/composables/navigation';
+
+const LazyAppAsideNavigation = defineAsyncComponent(
+  () => import('~/components/app/AsideNavigation.vue'),
+);
 
 const { openMoreMenu, horizontalMenu } = useNavigation();
 

@@ -1,5 +1,9 @@
-import { defineStore } from 'pinia';
+import { computed, shallowRef, watch } from 'vue';
+import { defineStore, storeToRefs } from 'pinia';
+import { useEntityStore } from '~/stores/entityStore';
+import { useOrganisationStore } from '~/stores/organisationStore';
 import type { SettingsState } from '~/types/settings';
+import { useLocalStorage } from '~/utils/localstorage';
 
 const defaultSettings: SettingsState = {
   id: 'local',

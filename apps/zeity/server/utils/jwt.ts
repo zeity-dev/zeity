@@ -1,5 +1,4 @@
 import { SignJWT, jwtVerify } from 'jose';
-
 import { JWT_ALGORITHM } from './jwt-secret';
 
 const JWT_ISSUER = 'zeity';

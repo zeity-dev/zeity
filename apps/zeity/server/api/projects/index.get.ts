@@ -1,11 +1,14 @@
+import { createError, defineHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
-import { PROJECT_STATUSES } from '@zeity/types';
-import { eq, desc, ilike, inArray } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { and, useDrizzle } from '#server/utils/drizzle';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
+import { desc, eq, ilike, inArray } from '@zeity/database';
 import { projects } from '@zeity/database/project';
+import { PROJECT_STATUSES } from '@zeity/types';
 import { coerceArray } from '~~/server/utils/zod';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 

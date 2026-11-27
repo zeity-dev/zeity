@@ -1,21 +1,40 @@
 <script setup lang="ts">
+import { computed, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { useIntervalFn } from '@vueuse/core';
-
 import { nanoid } from 'nanoid';
-
-import type { DraftTime, Time } from '@zeity/types/time';
-import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
-import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
-
+import { useI18n } from 'vue-i18n';
+import { navigateTo } from '#app';
 import {
-  type Schema,
-  schema,
-  parseSchema,
-  toSchema,
-  isTimeValue,
+  UButton,
+  UCalendar,
+  UForm,
+  UFormField,
+  UIcon,
+  UInputDate,
+  UInputTime,
+  UPopover,
+  USelectMenu,
+  UTextarea,
+} from '#components';
+import { useUserSession } from '#imports';
+import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
+import type { DraftTime, Time } from '@zeity/types/time';
+import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
+import TimeDurationFlowing from '~/components/time/DurationFlowing.vue';
+import TimeType from '~/components/time/Type.vue';
+import { useProject } from '~/composables/project';
+import { useTime } from '~/composables/time';
+import { useSync } from '~/composables/useSync';
+import {
   isDraftValue,
+  isTimeValue,
+  parseSchema,
+  schema,
+  toSchema,
+  type Schema,
 } from '~/schemas/time-form';
+import { useTimerStore } from '~/stores/timerStore';
 
 const model = defineModel<Time | DraftTime | undefined>();
 
@@ -27,12 +46,10 @@ const { loadProjects, getOrganisationProjects } = useProject();
 loadProjects({ status: [PROJECT_STATUS_ACTIVE] });
 const orgProjects = getOrganisationProjects();
 const activeProjects = computed(() =>
-  orgProjects.value.filter(
-    (project) => project.status === PROJECT_STATUS_ACTIVE,
-  ),
+  orgProjects.value.filter(project => project.status === PROJECT_STATUS_ACTIVE),
 );
 const projectItems = computed(() => {
-  const projectOptions = activeProjects.value.map((project) => ({
+  const projectOptions = activeProjects.value.map(project => ({
     label: project.name,
     value: project.id,
   }));
@@ -40,14 +57,7 @@ const projectItems = computed(() => {
 });
 
 const { syncOfflineTimes } = useSync();
-const {
-  createTime,
-  updateTime,
-  removeTime,
-  stopDraft,
-  roundTime,
-  isOnlineTime,
-} = useTime();
+const { createTime, updateTime, removeTime, stopDraft, roundTime, isOnlineTime } = useTime();
 const timeStore = useTimerStore();
 
 const isDraft = computed(() => isDraftValue(model.value));
@@ -115,7 +125,7 @@ onUnmounted(() => {
 
 watch(
   isDraft,
-  (value) => {
+  value => {
     if (value) {
       resume();
     } else {
@@ -229,11 +239,7 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
       <div class="flex justify-between items-center gap-4">
         <div class="flex flex-1 justify-center items-center gap-2">
           <Transition appear>
-            <UIcon
-              v-if="loading"
-              name="i-lucide-loader-2"
-              class="animate-spin text-xl"
-            />
+            <UIcon v-if="loading" name="i-lucide-loader-2" class="animate-spin text-xl" />
           </Transition>
         </div>
         <div class="flex-2">
@@ -249,17 +255,8 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
       </div>
 
       <div v-if="state?.start" class="grid grid-cols-2 gap-2">
-        <UFormField
-          ref="startDateRef"
-          :label="$t('times.form.startDate')"
-          name="start"
-        >
-          <UInputDate
-            v-model="state.start"
-            hide-time-zone
-            granularity="day"
-            class="w-full"
-          >
+        <UFormField ref="startDateRef" :label="$t('times.form.startDate')" name="start">
+          <UInputDate v-model="state.start" hide-time-zone granularity="day" class="w-full">
             <template #trailing>
               <UPopover :reference="startDateRef?.$el">
                 <UButton
@@ -279,30 +276,13 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
           </UInputDate>
         </UFormField>
         <UFormField :label="$t('times.form.startTime')" name="start">
-          <UInputTime
-            v-model="state.start"
-            hide-time-zone
-            granularity="second"
-            class="w-full"
-          />
+          <UInputTime v-model="state.start" hide-time-zone granularity="second" class="w-full" />
         </UFormField>
       </div>
 
-      <div
-        v-if="state && 'end' in state && isTimeValue(state)"
-        class="grid grid-cols-2 gap-2"
-      >
-        <UFormField
-          ref="endDateRef"
-          :label="$t('times.form.endDate')"
-          name="end"
-        >
-          <UInputDate
-            v-model="state.end"
-            hide-time-zone
-            granularity="day"
-            class="w-full"
-          >
+      <div v-if="state && 'end' in state && isTimeValue(state)" class="grid grid-cols-2 gap-2">
+        <UFormField ref="endDateRef" :label="$t('times.form.endDate')" name="end">
+          <UInputDate v-model="state.end" hide-time-zone granularity="day" class="w-full">
             <template #trailing>
               <UPopover :reference="endDateRef?.$el">
                 <UButton
@@ -322,12 +302,7 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
           </UInputDate>
         </UFormField>
         <UFormField :label="$t('times.form.endTime')" name="end">
-          <UInputTime
-            v-model="state.end"
-            hide-time-zone
-            granularity="second"
-            class="w-full"
-          />
+          <UInputTime v-model="state.end" hide-time-zone granularity="second" class="w-full" />
         </UFormField>
       </div>
 
@@ -341,12 +316,7 @@ function showLoading<T>(fn: () => Promise<T>): Promise<T> {
       </UFormField>
 
       <UFormField :label="$t('times.form.notes')" name="notes">
-        <UTextarea
-          v-model="state.notes"
-          type="text"
-          class="w-full"
-          autoresize
-        />
+        <UTextarea v-model="state.notes" type="text" class="w-full" autoresize />
       </UFormField>
     </div>
 

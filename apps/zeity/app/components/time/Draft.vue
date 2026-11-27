@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useIntervalFn } from '@vueuse/core';
-
+import { UButton } from '#components';
+import { storeToRefs } from '#imports';
 import { TIME_TYPE_BREAK } from '@zeity/types';
 import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
+import TimeDurationFlowing from '~/components/time/DurationFlowing.vue';
+import TimeToggleButton from '~/components/time/ToggleButton.vue';
 import { useTimerStore } from '~/stores/timerStore';
 
 const store = useTimerStore();
@@ -41,7 +45,7 @@ onUnmounted(() => {
   pause();
 });
 
-watch(isStarted, (value) => {
+watch(isStarted, value => {
   if (value === true) {
     resume();
   } else {

@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { navigateTo } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UPageCard } from '#components';
+import { useToast, useUserSession } from '#imports';
+import AuthVerify from '~/components/auth/verify.vue';
+import { useAuthRedirect } from '~/composables/useAuthRedirect';
+import { useUser } from '~/composables/user';
+
 definePageMeta({
   middleware: 'auth',
 });
@@ -10,7 +18,7 @@ const { reloadUser } = useUser();
 async function refresh() {
   await fetch()
     .then(handleRedirect)
-    .catch((error) => {
+    .catch(error => {
       toast.add({
         title: error.data?.message || error.message,
         description: error.data?.data?.issues[0]?.message || error.data?.data,

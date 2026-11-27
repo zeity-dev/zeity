@@ -1,13 +1,17 @@
+import { createError, defineHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
-import { and, eq, desc, inArray } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { gte, lte, useDrizzle } from '#server/utils/drizzle';
+import { getOrganisationMemberByUserId } from '#server/utils/organisation';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
+import { and, desc, eq, inArray } from '@zeity/database';
 import { times } from '@zeity/database/time';
-import { coerceArray } from '~~/server/utils/zod';
-import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
 import { getOrganisationMembersByMemberIds } from '~~/server/utils/organisation';
 import { isPrivilegedOrganisationMember } from '~~/server/utils/organisation-permission';
+import { doesProjectsBelongsToOrganisation } from '~~/server/utils/project';
+import { coerceArray } from '~~/server/utils/zod';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 

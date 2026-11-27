@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { UAlert } from '#components';
+import { storeToRefs } from '#imports';
+import TimeForm from '~/components/time/Form.vue';
+import { useTimerStore } from '~/stores/timerStore';
+
 const draft = storeToRefs(useTimerStore()).draft;
 </script>
 

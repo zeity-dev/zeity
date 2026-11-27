@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { navigateTo, useFetch, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UAlert, UButton, UPageCard } from '#components';
+import { $fetch, useToast } from '#imports';
+import OrganisationImage from '~/components/organisation/Image.vue';
+
 definePageMeta({
   middleware: 'auth',
 });
@@ -14,9 +22,7 @@ const { status, data } = await useFetch('/api/organisation/join-request', {
 
 const message = ref('');
 
-const canApply = computed(
-  () => data.value && !data.value.isMember && !data.value.requested,
-);
+const canApply = computed(() => data.value && !data.value.isMember && !data.value.requested);
 
 async function requestJoin() {
   await $fetch(`/api/organisation/join-request`, {
@@ -34,7 +40,7 @@ async function requestJoin() {
       });
     })
     .then(async () => await navigateTo('/user'))
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
       useToast().add({
         title: t('common.error'),
@@ -46,10 +52,7 @@ async function requestJoin() {
 </script>
 
 <template>
-  <UPageCard
-    :title="$t('organisations.join.title')"
-    class="max-w-lg m-auto my-8"
-  >
+  <UPageCard :title="$t('organisations.join.title')" class="max-w-lg m-auto my-8">
     <div v-if="data?.organisation" class="flex flex-col items-center gap-3">
       <OrganisationImage :org="data.organisation" />
       <h2 class="text-2xl font-semibold">{{ data.organisation.name }}</h2>
@@ -98,12 +101,6 @@ async function requestJoin() {
       :label="$t('organisations.join.request.title')"
       @click="requestJoin"
     />
-    <UButton
-      v-else
-      block
-      icon="i-lucide-chevron-left"
-      to="/user"
-      :label="$t('common.back')"
-    />
+    <UButton v-else block icon="i-lucide-chevron-left" to="/user" :label="$t('common.back')" />
   </UPageCard>
 </template>

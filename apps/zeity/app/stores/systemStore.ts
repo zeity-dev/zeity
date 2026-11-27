@@ -1,3 +1,6 @@
+import { useRuntimeConfig } from '#app';
+import { defineStore } from 'pinia';
+
 export const useSystemStore = defineStore('systemStore', () => {
   const config = useRuntimeConfig();
 

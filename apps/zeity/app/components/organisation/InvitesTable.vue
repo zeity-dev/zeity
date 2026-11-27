@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { computed, h, ref } from 'vue';
+import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
 import type { Row } from '@tanstack/vue-table';
 import QrcodeVue from 'qrcode.vue';
-import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
+import { useFetch } from '#app';
+import {
+  UForm,
+  UFormField,
+  UInput,
+  UModal,
+  UPagination,
+  USeparator,
+  UTable,
+  UButton,
+  UDropdownMenu,
+  NuxtTime,
+} from '#components';
+import { $fetch, useToast } from '#imports';
+import type { PaginatedResponse } from '#shared/types/pagination';
 import type { OrganisationInvite } from '@zeity/types/organisation';
-
-const UButton = resolveComponent('UButton');
-const UDropdownMenu = resolveComponent('UDropdownMenu');
-const NuxtTime = resolveComponent('NuxtTime');
 
 const { t, locale } = useI18n();
 const toast = useToast();

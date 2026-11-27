@@ -1,4 +1,8 @@
+import { computed, ref } from 'vue';
 import type { NavigationMenuItem } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { storeToRefs } from '#imports';
+import { useTimerStore } from '~/stores/timerStore';
 
 export function useNavigation() {
   const { t } = useI18n();

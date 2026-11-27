@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { nextTick } from 'vue';
 import { readBody } from 'h3';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import VerifyComponent from '~/components/auth/verify.vue';
 
 // Mock useToast

@@ -1,4 +1,4 @@
-import { type RequestEvent, getCookie, setCookie, createError } from 'nuxt/server';
+import { createError, getCookie, setCookie, type RequestEvent } from 'nuxt/server';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 

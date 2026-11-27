@@ -1,3 +1,4 @@
+import { useRuntimeConfig } from 'nuxt/server';
 import { S3Client } from '@bradenmacdonald/s3-lite-client';
 
 let storage: S3Client | null = null;
@@ -25,7 +26,9 @@ export async function readStorageFile(key: string) {
 
 export function saveStorageFile(key: string, file: { name: string; type: string; data: Buffer }) {
   const storage = getStorage();
-  return storage.putObject(key, file.data, {
+  const data = Uint8Array.from(file.data);
+
+  return storage.putObject(key, data, {
     size: file.data.byteLength,
     metadata: {
       'Content-Type': file.type,

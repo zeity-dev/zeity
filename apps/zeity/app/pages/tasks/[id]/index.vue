@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { navigateTo, useFetch, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { NuxtTime, UBadge, UBreadcrumb, UButton, UIcon, USeparator } from '#components';
 import {
   TASK_RECURRENCE_MONTHLY,
   TASK_RECURRENCE_ONCE,
   TASK_RECURRENCE_WEEKLY,
 } from '@zeity/types/task';
 import { formatDuration } from '@zeity/utils/date';
+import TaskAssignmentList from '~/components/task/AssignmentList.vue';
+import { useOrganisation } from '~/composables/organisation';
+import { useTask } from '~/composables/task';
 
 definePageMeta({
   validate: async route => {

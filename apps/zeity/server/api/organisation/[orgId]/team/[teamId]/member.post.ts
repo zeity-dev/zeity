@@ -1,13 +1,17 @@
+import { createError, defineHandler, readValidatedBody } from 'nuxt/server';
 import { z } from 'zod';
-
-import { eq, and, inArray } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { canUserUpdateOrganisationByOrgId } from '#server/utils/organisation-permission';
+import { getSafeRouterParams } from '#server/utils/zod';
+import { and, eq, inArray } from '@zeity/database';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       orgId: z.uuid(),
@@ -66,5 +70,5 @@ export default defineEventHandler(async event => {
     }
   });
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

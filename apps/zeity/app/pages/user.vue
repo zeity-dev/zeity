@@ -1,4 +1,16 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import { useHead } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import {
+  NuxtPage,
+  UDashboardNavbar,
+  UDashboardPanel,
+  UDashboardToolbar,
+  UNavigationMenu,
+} from '#components';
+import { useUser } from '~/composables/user';
+
 definePageMeta({
   middleware: 'auth',
 });

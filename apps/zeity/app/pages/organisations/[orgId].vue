@@ -1,6 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { NavigationMenuItem } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { navigateTo, useFetch, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import {
+  NuxtPage,
+  UBreadcrumb,
+  UDashboardNavbar,
+  UDashboardPanel,
+  UDashboardToolbar,
+  UNavigationMenu,
+} from '#components';
 import { ORGANISATION_MEMBER_ROLE_ADMIN, ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types';
+import { useOrganisation } from '~/composables/organisation';
+import { useUser } from '~/composables/user';
 import type { OrganisationWithStats } from '~/types/organisation';
 
 definePageMeta({

@@ -1,10 +1,10 @@
-import { type RequestEvent, getRequestURL } from 'nuxt/server';
+import { getRequestURL, type RequestEvent } from 'nuxt/server';
 import { randomBytes } from 'node:crypto';
 import {
-  deleteUsersOTPs,
   OTP_TYPE_PASSWORD_RESET,
   createOTP,
   deleteExpiredOTPs,
+  deleteUsersOTPs,
   findOTP,
 } from './auth-otp';
 

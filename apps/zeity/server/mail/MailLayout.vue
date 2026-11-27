@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { useRuntimeConfig } from 'nuxt/server';
 import {
-  Tailwind,
-  Html,
-  Head,
   Body,
-  Preview,
   Container,
-  Section,
+  Head,
+  Html,
   Img,
+  Preview,
+  Section,
+  Tailwind,
   Text,
 } from '@vue-email/components';
 import colors from 'tailwindcss/colors';
@@ -16,7 +17,7 @@ const config = {
   theme: {
     extend: {
       colors: {
-        primary: colors.sky[500],
+        'primary': colors.sky[500],
         'primary-50': colors.sky[50],
         'primary-100': colors.sky[100],
         'primary-200': colors.sky[200],
@@ -28,7 +29,7 @@ const config = {
         'primary-800': colors.sky[800],
         'primary-900': colors.sky[900],
 
-        neutral: colors.stone[500],
+        'neutral': colors.stone[500],
         'neutral-50': colors.stone[50],
         'neutral-100': colors.stone[100],
         'neutral-200': colors.stone[200],
@@ -40,8 +41,8 @@ const config = {
         'neutral-800': colors.stone[800],
         'neutral-900': colors.stone[900],
 
-        bg: colors.white,
-        text: colors.stone[700],
+        'bg': colors.white,
+        'text': colors.stone[700],
       },
     },
   },
@@ -70,9 +71,7 @@ const appName = useRuntimeConfig().public.appName;
             <slot />
           </Section>
 
-          <Text
-            class="text-center font-bold text-xl text-neutral-900 dark:text-white min-w-0"
-          >
+          <Text class="text-center font-bold text-xl text-neutral-900 dark:text-white min-w-0">
             <Img
               src="https://www.zeity.dev/favicon.svg"
               width="40"

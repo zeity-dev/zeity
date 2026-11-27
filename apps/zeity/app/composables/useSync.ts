@@ -1,11 +1,13 @@
+import { $fetch } from '#imports';
+import { useProjectStore } from '~/stores/projectStore';
+import { useTimerStore } from '~/stores/timerStore';
+
 export function useSync() {
   const timeStore = useTimerStore();
   const projectStore = useProjectStore();
 
   async function syncOfflineTimes(ids: string[]) {
-    const offlineTimes = timeStore.findTimes((time) =>
-      ids.includes(time.id)
-    ).value;
+    const offlineTimes = timeStore.findTimes(time => ids.includes(time.id)).value;
     if (offlineTimes.length === 0) return;
 
     console.log('Syncing offline times:', offlineTimes);
@@ -24,9 +26,7 @@ export function useSync() {
   }
 
   async function syncOfflineProjects(ids: string[]) {
-    const offlineProjects = projectStore.findProjects((project) =>
-      ids.includes(project.id)
-    ).value;
+    const offlineProjects = projectStore.findProjects(project => ids.includes(project.id)).value;
     if (offlineProjects.length === 0) return;
 
     const newProjects = await $fetch('/api/projects/sync', {
@@ -36,10 +36,8 @@ export function useSync() {
 
     for (const [index, value] of offlineProjects.entries()) {
       const timeStore = useTimerStore();
-      const times = timeStore.findTimes(
-        (time) => time.projectId === value.id
-      ).value;
-      times.forEach((time) => {
+      const times = timeStore.findTimes(time => time.projectId === value.id).value;
+      times.forEach(time => {
         time.projectId = newProjects[index]?.id || null;
         timeStore.updateTime(time.id, time);
       });

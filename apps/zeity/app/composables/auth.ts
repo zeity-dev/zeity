@@ -1,5 +1,11 @@
-import type { FetchError } from 'ofetch';
+import { watch } from 'vue';
 import { useDocumentVisibility, useIntervalFn, useOnline } from '@vueuse/core';
+import type { FetchError } from 'ofetch';
+import { useI18n } from 'vue-i18n';
+import { navigateTo } from '#app';
+import { $fetch, useToast, useUserSession } from '#imports';
+import { useOrganisation } from '~/composables/organisation';
+import { useUser } from '~/composables/user';
 
 export function useAuth() {
   const { t } = useI18n();

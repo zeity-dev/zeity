@@ -1,3 +1,9 @@
+import { watch } from 'vue';
+import { defineNuxtPlugin } from '#app';
+import { useUserSession } from '#imports';
+import { useOrganisation } from '~/composables/organisation';
+import { useUser } from '~/composables/user';
+
 export default defineNuxtPlugin(async () => {
   const { loggedIn } = useUserSession();
   const { fetchUser, reset } = useUser();
@@ -10,7 +16,7 @@ export default defineNuxtPlugin(async () => {
 
   watch(
     loggedIn,
-    async (value) => {
+    async value => {
       if (value) {
         await fetchUser();
         const orgId = currentOrganisationId.value;
@@ -23,6 +29,6 @@ export default defineNuxtPlugin(async () => {
         reset();
       }
     },
-    { immediate: true }
+    { immediate: true },
   );
 });

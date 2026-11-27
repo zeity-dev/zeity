@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { computed, type PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { UButton, UCard, UIcon, UPageCard } from '#components';
+import { $fetch, useToast } from '#imports';
+
 const props = defineProps({
   providers: {
     type: Array as PropType<string[]>,
@@ -17,8 +22,8 @@ const hasPasswordProvider = computed(() => {
 
 const providers = computed(() => {
   return props.providers
-    .filter((provider) => provider !== 'password')
-    .map((provider) => ({
+    .filter(provider => provider !== 'password')
+    .map(provider => ({
       id: provider,
       label: t(`user.security.providers.${provider}.title`),
       description: t(`user.security.providers.${provider}.description`),

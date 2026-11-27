@@ -1,7 +1,7 @@
-import type { ProjectStatus } from '@zeity/types/project';
 import {
   PROJECT_STATUS_ACTIVE,
   PROJECT_STATUS_CLOSED,
+  type ProjectStatus,
 } from '@zeity/types/project';
 
 const projectStatusColorMap = {

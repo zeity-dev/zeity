@@ -1,19 +1,30 @@
 <script setup lang="ts">
+import { computed, h, ref } from 'vue';
 import type { TableColumn } from '@nuxt/ui';
 import type { Column, Row } from '@tanstack/vue-table';
-import type { OrganisationMember, OrganisationMemberRole } from '@zeity/types/organisation';
+import { useI18n } from 'vue-i18n';
+import { useFetch } from '#app';
+import {
+  UAvatar,
+  UPageCard,
+  UPagination,
+  UTable,
+  UBadge,
+  UButton,
+  UDropdownMenu,
+  NuxtTime,
+} from '#components';
+import { $fetch, useToast } from '#imports';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_MEMBER,
   ORGANISATION_MEMBER_ROLE_OWNER,
+  type OrganisationMember,
+  type OrganisationMemberRole,
 } from '@zeity/types/organisation';
-import type { PaginatedResponse } from '~~/shared/types/pagination';
+import { useImagePaths } from '~/composables/useImagePaths';
 import { findRoleColor, findRoleIcon, findRoleLabel } from '~/utils/organisation';
-
-const UBadge = resolveComponent('UBadge');
-const UButton = resolveComponent('UButton');
-const UDropdownMenu = resolveComponent('UDropdownMenu');
-const NuxtTime = resolveComponent('NuxtTime');
+import type { PaginatedResponse } from '~~/shared/types/pagination';
 
 const { getUserImagePath } = useImagePaths();
 const { t, locale } = useI18n();

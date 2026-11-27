@@ -1,15 +1,33 @@
 <script setup lang="ts">
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { isAfter, isBefore } from 'date-fns';
+import { UCard } from '#components';
+import type { OrganisationTeam } from '@zeity/database/organisation-team';
 import {
-  type Time,
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_OWNER,
   TIME_TYPE_BREAK,
+  type Time,
 } from '@zeity/types';
 import { calculateDiffSum, parseDate, toISOString } from '@zeity/utils/date';
-import type { OrganisationTeam } from '@zeity/database/organisation-team';
-import type { OrganisationMemberWithUser } from '~/types/organisation';
+import DateFilter from '~/components/DateFilter.vue';
+import ProjectFilter from '~/components/project/Filter.vue';
+import ReportDownload from '~/components/ReportDownload.vue';
+import TimeDurationFlowing from '~/components/time/DurationFlowing.vue';
+import { useAuth } from '~/composables/auth';
+import { useOrganisation } from '~/composables/organisation';
+import { useTime } from '~/composables/time';
+import { useUser } from '~/composables/user';
+import { useSettingsStore } from '~/stores/settingsStore';
 import type { DateRange } from '~/types/date-filter';
+import type { OrganisationMemberWithUser } from '~/types/organisation';
+
+const LazyOrganisationTeamFilter = defineAsyncComponent(
+  () => import('~/components/organisation/TeamFilter.vue'),
+);
+const LazyOrganisationMemberFilter = defineAsyncComponent(
+  () => import('~/components/organisation/MemberFilter.vue'),
+);
 
 const { user } = useUser();
 const { isLoggedIn } = useAuth();

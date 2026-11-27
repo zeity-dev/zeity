@@ -1,11 +1,10 @@
+import { getRequestURL, type RequestEvent } from 'nuxt/server';
 import { randomInt } from 'node:crypto';
-import { type RequestEvent, getRequestURL } from 'nuxt/server';
-
 import { users } from '@zeity/database/user';
-import { useJwtSecret } from './jwt-secret';
-import { generateToken, verifyToken } from './jwt';
-import { createOTP, OTP_TYPE_EMAIL_VERIFICATION, verifyOTP } from './auth-otp';
+import { OTP_TYPE_EMAIL_VERIFICATION, createOTP, verifyOTP } from './auth-otp';
 import { eq, useDrizzle } from './drizzle';
+import { generateToken, verifyToken } from './jwt';
+import { useJwtSecret } from './jwt-secret';
 
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 

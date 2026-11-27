@@ -1,6 +1,7 @@
+import { createError, defineEventHandler } from 'nuxt/server';
 import { isReady } from '../utils/readyness';
 
-export default eventHandler(async () => {
+export default defineEventHandler(async () => {
   if (!isReady()) {
     throw createError({
       status: 400,

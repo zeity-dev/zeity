@@ -1,5 +1,6 @@
-import { eq, and, inArray } from '@zeity/database';
+import { and, eq, inArray } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
+import { useDrizzle } from './drizzle';
 
 export function doesTaskExist(taskId: string): Promise<boolean> {
   return useDrizzle()

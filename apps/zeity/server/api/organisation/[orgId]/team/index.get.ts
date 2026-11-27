@@ -1,10 +1,15 @@
+import { createError, defineHandler } from 'nuxt/server';
 import z from 'zod';
+import { requireUserSession } from '#imports';
+import { doesOrganisationExist } from '#server/utils/organisation';
+import { canUserUpdateOrganisationByOrgId } from '#server/utils/organisation-permission';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { getOrganisationTeamsByOrgId } from '~~/server/utils/organisation';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       orgId: z.uuid(),

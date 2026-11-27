@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { TIME_TYPE_MANUAL, type Time } from '@zeity/types/time';
+import TimeForm from '~/components/time/Form.vue';
 
 const time = ref<Time>({
   id: 'new',

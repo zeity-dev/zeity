@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import { useFetch } from '#app';
+import { UAvatar, UButton, UCard, UFieldGroup, UTooltip } from '#components';
+import { $fetch, useToast } from '#imports';
+import { useImagePaths } from '~/composables/useImagePaths';
+
 const props = defineProps<{
   organisationId: string;
 }>();
