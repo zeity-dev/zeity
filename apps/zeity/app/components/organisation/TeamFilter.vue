@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef, defineModel } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useLazyFetch } from '#app';
 import { UIcon, USelectMenu } from '#components';

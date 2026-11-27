@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef, type PropType, defineModel } from 'vue';
+import { computed, shallowRef, type PropType } from 'vue';
 import { useLazyFetch } from '#app';
 import { UIcon, USelectMenu } from '#components';
 import type { PaginatedResponse } from '#shared/types/pagination';
