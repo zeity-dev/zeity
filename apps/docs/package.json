@@ -19,7 +19,7 @@
     "@vueuse/core": "catalog:",
     "@zeity/types": "workspace:^",
     "@zeity/utils": "workspace:^",
-    "docus": "^5.15.0",
+    "docus": "^5.15.1",
     "nuxt": "catalog:",
     "vue": "catalog:"
   },
