@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { navigateTo, useRoute, useRouter } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { AuthOauth, UPageCard, UTabs } from '#components';
+import { useToast, useUserSession } from '#imports';
+import AuthLogin from '~/components/auth/login.vue';
+import AuthRegister from '~/components/auth/register.vue';
+import { useAuthRedirect } from '~/composables/useAuthRedirect';
+import { useUser } from '~/composables/user';
+
 definePageMeta({
   middleware: 'guest',
 });
 
 const toast = useToast();
+const { t: $t } = useI18n();
 const { fetch, user } = useUserSession();
 const { reloadUser } = useUser();
 

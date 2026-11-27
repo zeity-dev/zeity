@@ -1,3 +1,7 @@
+import { createError, sendRedirect } from 'nuxt/server';
+import { defineOAuthAppleEventHandler } from '#imports';
+import { handleOAuthLogin } from '#server/utils/auth';
+import { storeUserSession } from '#server/utils/user-session';
 import { APPLE_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
 export default defineOAuthAppleEventHandler({

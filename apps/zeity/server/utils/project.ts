@@ -1,5 +1,6 @@
 import { eq, inArray } from '@zeity/database';
 import { projects } from '@zeity/database/project';
+import { and, useDrizzle } from './drizzle';
 
 export function doesProjectExist(projectId: string): Promise<boolean> {
   return useDrizzle()

@@ -1,7 +1,7 @@
+import { useRuntimeConfig } from 'nuxt/server';
 import { fileURLToPath } from 'node:url';
-import { resolve } from 'pathe';
 import { createConsola } from 'consola';
-
+import { resolve } from 'pathe';
 import { createDrizzle, createDrizzleMigration, createPool } from '@zeity/database';
 import { setReady } from './readyness';
 

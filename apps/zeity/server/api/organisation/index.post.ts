@@ -1,11 +1,11 @@
-import { defineEventHandler, createError, readValidatedBody, useRuntimeConfig } from 'nuxt/server';
+import { createError, defineEventHandler, readValidatedBody, useRuntimeConfig } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
 import { organisations } from '@zeity/database/organisation';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { ORGANISATION_MEMBER_ROLE_OWNER } from '@zeity/types/organisation';
-import { getDefaultOrganisationQuota } from '~~/server/utils/organisation';
 import { useDrizzle } from '~~/server/utils/drizzle';
+import { getDefaultOrganisationQuota } from '~~/server/utils/organisation';
 
 export default defineEventHandler(async event => {
   const allowed = useRuntimeConfig().public.allow.organisation.create;

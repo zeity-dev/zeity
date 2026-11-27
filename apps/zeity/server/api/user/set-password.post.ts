@@ -1,9 +1,11 @@
+import { createError, defineHandler, readValidatedBody, setResponseStatus } from 'nuxt/server';
 import z from 'zod';
-
+import { hashPassword, requireUserSession, verifyPassword } from '#imports';
+import { and, eq, useDrizzle } from '#server/utils/drizzle';
 import { userAccounts } from '@zeity/database/user-account';
 import { PASSWORD_PROVIDER_ID } from '~~/server/utils/auth-providers';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   const { currentPassword, newPassword } = await readValidatedBody(

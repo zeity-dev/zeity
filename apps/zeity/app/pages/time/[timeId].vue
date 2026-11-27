@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import TimeForm from '~/components/time/Form.vue';
+import { useTime } from '~/composables/time';
+import { useTimerStore } from '~/stores/timerStore';
+
 definePageMeta({
-  validate: async (route) => {
+  validate: async route => {
     // Check if the id is made up of digits
     return typeof route.params.timeId === 'string';
   },

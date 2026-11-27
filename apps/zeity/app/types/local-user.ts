@@ -1,5 +1,5 @@
-import type { User } from '@zeity/database/user';
 import type { Organisation } from '@zeity/database/organisation';
+import type { User } from '@zeity/database/user';
 import type { OrganisationMemberRole } from '@zeity/types';
 
 export type LocalUser = Pick<User, 'id' | 'name' | 'email' | 'image'> & {

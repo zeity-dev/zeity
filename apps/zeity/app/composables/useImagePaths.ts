@@ -1,5 +1,6 @@
-import type { User } from '@zeity/database/user';
 import type { Organisation } from '@zeity/database/organisation';
+import type { User } from '@zeity/database/user';
+import { useRequestOrigin } from '~/composables/useRequestOrigin';
 
 export const useImagePaths = () => {
   const origin = useRequestOrigin();

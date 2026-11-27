@@ -1,10 +1,13 @@
+import { createError, defineHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { useUserInvite } from '#server/utils/user-invite';
 import { eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationInvites } from '@zeity/database/organisation-invite';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   const query = await getValidatedQuery(

@@ -1,7 +1,7 @@
-import { defineEventHandler, createError, getValidatedQuery } from 'nuxt/server';
+import { createError, defineEventHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
-import { eq, and } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { and, eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { organisationMembers } from '@zeity/database/organisation-member';

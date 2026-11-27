@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { computed, shallowRef, type PropType, defineModel } from 'vue';
+import { useLazyFetch } from '#app';
+import { UIcon, USelectMenu } from '#components';
+import type { PaginatedResponse } from '#shared/types/pagination';
+import { useOrganisation } from '~/composables/organisation';
+import { useUser } from '~/composables/user';
 import type { OrganisationMemberWithUser } from '~/types/organisation';
 
 const model = defineModel<OrganisationMemberWithUser[]>({

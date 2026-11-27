@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed, ref, type PropType, watch } from 'vue';
+import { NuxtImg } from '#components';
 import type { User } from '@zeity/types';
+import { useImagePaths } from '~/composables/useImagePaths';
 
 const props = defineProps({
   user: {

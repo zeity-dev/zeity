@@ -1,3 +1,4 @@
+import { createError } from 'nuxt/server';
 import { eq } from '@zeity/database';
 import { authChallenge } from '@zeity/database/auth-challenge';
 import { useDrizzle } from './drizzle';

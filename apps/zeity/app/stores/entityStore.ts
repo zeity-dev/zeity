@@ -1,3 +1,4 @@
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 
 interface EntitiesMap<T> {
@@ -9,9 +10,7 @@ interface EntityStoreState<T> {
   ids: (string | number)[];
 }
 
-export function useEntityStore<T extends { id: string | number }>(
-  name: string
-) {
+export function useEntityStore<T extends { id: string | number }>(name: string) {
   return defineStore(name, function () {
     const state = ref<EntityStoreState<T>>({
       entities: {},
@@ -30,7 +29,7 @@ export function useEntityStore<T extends { id: string | number }>(
         acc[entity.id] = entity;
         return acc;
       }, {});
-      state.value.ids = entities.map((e) => e.id);
+      state.value.ids = entities.map(e => e.id);
     }
 
     function upsertMany(entities: T[]) {
@@ -75,16 +74,13 @@ export function useEntityStore<T extends { id: string | number }>(
 
     function remove(id: string | number) {
       const updatedState = {
-        ids: state.value.ids.filter((i) => i !== id),
-        entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>(
-          (acc, entity) => {
-            if (entity.id !== id) {
-              acc[entity.id] = entity;
-            }
-            return acc;
-          },
-          {}
-        ),
+        ids: state.value.ids.filter(i => i !== id),
+        entities: Object.values(state.value.entities).reduce<EntitiesMap<T>>((acc, entity) => {
+          if (entity.id !== id) {
+            acc[entity.id] = entity;
+          }
+          return acc;
+        }, {}),
       };
 
       state.value = updatedState;
@@ -101,9 +97,7 @@ export function useEntityStore<T extends { id: string | number }>(
       return computed(() => state.value.entities[id]);
     }
     function getAll() {
-      return computed(() =>
-        state.value.ids.map((id) => state.value.entities[id]!)
-      );
+      return computed(() => state.value.ids.map(id => state.value.entities[id]!));
     }
     function find(predicate: (entity: T) => boolean) {
       return computed(() =>
@@ -113,7 +107,7 @@ export function useEntityStore<T extends { id: string | number }>(
             acc.push(entity);
           }
           return acc;
-        }, [])
+        }, []),
       );
     }
 

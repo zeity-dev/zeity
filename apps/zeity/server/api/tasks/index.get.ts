@@ -1,20 +1,24 @@
-import { z } from 'zod';
 import { endOfDay, startOfDay } from 'date-fns';
-
+import { createError, defineHandler, getValidatedQuery } from 'nuxt/server';
+import { z } from 'zod';
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { getOrganisationMemberByUserId } from '#server/utils/organisation';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
 import {
-  type SQL,
   and,
-  or,
-  eq,
-  ilike,
-  isNull,
-  inArray,
   arrayContains,
   between,
-  lte,
-  gte,
-  desc,
   count,
+  desc,
+  eq,
+  gte,
+  ilike,
+  inArray,
+  isNull,
+  lte,
+  or,
+  type SQL,
 } from '@zeity/database';
 import { tasks } from '@zeity/database/task';
 import { taskAssignments } from '@zeity/database/task-assignment';
@@ -24,10 +28,10 @@ import {
   TASK_RECURRENCE_ONCE,
   TASK_RECURRENCE_WEEKLY,
 } from '@zeity/types/task';
-import { coerceArray } from '~~/server/utils/zod';
 import { isPrivilegedOrganisationMember } from '~~/server/utils/organisation-permission';
+import { coerceArray } from '~~/server/utils/zod';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 

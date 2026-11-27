@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useProjectStore } from '../../../app/stores/projectStore';
 
 describe('projectStore', () => {

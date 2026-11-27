@@ -1,9 +1,13 @@
+import { createError } from 'nuxt/server';
 import { z } from 'zod';
-
+import { defineWebAuthnRegisterEventHandler } from '#imports';
+import { eq, useDrizzle } from '#server/utils/drizzle';
+import { useMailer } from '#server/utils/mailer';
+import { storeUserSession } from '#server/utils/user-session';
 import { users } from '@zeity/database/user';
 import { userCredentials } from '@zeity/database/user-credential';
-import { getChallenge, storeChallenge } from '../../utils/webauthn';
 import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
+import { getChallenge, storeChallenge } from '../../utils/webauthn';
 
 export default defineWebAuthnRegisterEventHandler({
   storeChallenge(event, challenge, attemptId) {

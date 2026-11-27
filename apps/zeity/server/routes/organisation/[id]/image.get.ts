@@ -1,11 +1,14 @@
+import getEtag from 'etag';
+import { createError, defineHandler, getRequestHeader } from 'nuxt/server';
 import { z } from 'zod';
+import { useDrizzle } from '#server/utils/drizzle';
+import { readStorageFile } from '#server/utils/storage';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 
-import getEtag from 'etag';
-
-export default defineEventHandler(async event => {
-  const params = await getValidatedRouterParams(
+export default defineHandler(async event => {
+  const params = await getSafeRouterParams(
     event,
     z.object({
       id: z.uuid(),
@@ -55,16 +58,14 @@ export default defineEventHandler(async event => {
 
   const buffer = Buffer.from(await blob.arrayBuffer());
   const etag = getEtag(buffer);
-  setResponseHeader(event, 'etag', etag);
+  event.res.headers.set('etag', etag);
 
   // // Check for if-none-match request header
   if (etag && getRequestHeader(event, 'if-none-match') === etag) {
-    setResponseStatus(event, 304);
-    return send(event);
+    return new Response(null, { status: 304 });
   }
 
-  // Content-Type header
-  setResponseHeader(event, 'content-type', file.type);
+  event.res.headers.set('content-type', file.type);
 
-  return blob;
+  return new Response(blob);
 });

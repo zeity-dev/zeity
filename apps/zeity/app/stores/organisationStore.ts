@@ -1,7 +1,9 @@
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-
-import { useEntityStore } from './entityStore';
+import { useCookie } from '#app';
+import { useUserSession } from '#imports';
 import type { LocalOrganisation } from '~/types/local-user';
+import { useEntityStore } from './entityStore';
 
 const ORGANISATION_COOKIE_NAME = 'organisation';
 

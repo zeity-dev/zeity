@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { computed, watch } from 'vue';
+import { navigateTo, useFetch, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UBreadcrumb } from '#components';
 import type { Task } from '@zeity/types/task';
+import TaskForm from '~/components/task/Form.vue';
+import { useOrganisation } from '~/composables/organisation';
+import { useTask } from '~/composables/task';
 
 definePageMeta({
   validate: async route => {

@@ -1,6 +1,6 @@
 import { createError, defineEventHandler, readValidatedBody, setResponseStatus } from 'nuxt/server';
 import z from 'zod';
-
+import { hashPassword, passwordNeedsReHash, verifyPassword } from '#imports';
 import { and, eq } from '@zeity/database';
 import { users } from '@zeity/database/user';
 import { userAccounts } from '@zeity/database/user-account';

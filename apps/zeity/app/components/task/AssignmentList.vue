@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import { computed, type PropType } from 'vue';
+import { useFetch } from '#app';
+import { UAvatar, UButton } from '#components';
 import type { Task } from '@zeity/types';
+import TaskAssignmentAdd from '~/components/task/AssignmentAdd.vue';
+import { useTask } from '~/composables/task';
+import { useImagePaths } from '~/composables/useImagePaths';
 
 const props = defineProps({
   task: {

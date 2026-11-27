@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { nextTick, toRef } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTimerStore } from '../../../app/stores/timerStore';
 
 describe('timerStore', () => {
@@ -66,17 +66,17 @@ describe('timerStore', () => {
       expect(store.isStarted).toStrictEqual(false);
     });
 
-    it.skip('should be true when a draft is started', () => {
+    it('should be true when a draft is started', () => {
       const store = useTimerStore();
-      store.startDraft();
+      store.setDraft({ start: '2021-08-01T00:00:00.000Z', notes: '', type: 'manual' });
 
       expect(store.isStarted).toStrictEqual(true);
     });
 
-    it.skip('should be false when a draft is stopped', () => {
+    it('should be false when a draft is stopped', () => {
       const store = useTimerStore();
-      store.startDraft();
-      store.stopDraft();
+      store.setDraft({ start: '2021-08-01T00:00:00.000Z', notes: '', type: 'manual' });
+      store.setDraft(null);
 
       expect(store.isStarted).toStrictEqual(false);
     });

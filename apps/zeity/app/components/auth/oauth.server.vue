@@ -1,20 +1,17 @@
 <script setup lang="ts">
+import { useRuntimeConfig } from '#app';
+import { UButton, USeparator } from '#components';
+
 const { oauth } = useRuntimeConfig();
 
-const hasOauth = [
-  oauth?.google?.clientId,
-  oauth?.apple?.clientId,
-  oauth?.microsoft?.clientId,
-].some(Boolean);
+const hasOauth = [oauth?.google?.clientId, oauth?.apple?.clientId, oauth?.microsoft?.clientId].some(
+  Boolean,
+);
 </script>
 
 <template>
   <div class="space-y-6">
-    <USeparator
-      v-if="hasOauth"
-      orientation="horizontal"
-      :label="$t('common.or')"
-    />
+    <USeparator v-if="hasOauth" orientation="horizontal" :label="$t('common.or')" />
 
     <div class="flex flex-col gap-2 justify-between">
       <UButton

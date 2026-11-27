@@ -1,6 +1,5 @@
-import { type RequestEvent, getRequestURL } from 'nuxt/server';
+import { getRequestURL, type RequestEvent } from 'nuxt/server';
 import { SignJWT, jwtVerify } from 'jose';
-
 import type { Organisation } from '@zeity/database/organisation';
 import type { OrganisationInvite } from '@zeity/database/organisation-invite';
 import { JWT_ALGORITHM, useJwtSecret } from './jwt-secret';

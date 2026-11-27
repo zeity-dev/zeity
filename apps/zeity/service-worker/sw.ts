@@ -1,15 +1,16 @@
 /// <reference lib="WebWorker" />
 /// <reference types="vite/client" />
+
+import { CacheableResponsePlugin } from '@vite-pwa/workbox-swkit/cacheable-response';
+import { clientsClaim } from '@vite-pwa/workbox-swkit/core';
+import { ExpirationPlugin } from '@vite-pwa/workbox-swkit/expiration';
 import {
   cleanupOutdatedCaches,
   createHandlerBoundToURL,
   precacheAndRoute,
 } from '@vite-pwa/workbox-swkit/precaching';
-import { clientsClaim } from '@vite-pwa/workbox-swkit/core';
 import { NavigationRoute, registerRoute } from '@vite-pwa/workbox-swkit/routing';
-import { CacheableResponsePlugin } from '@vite-pwa/workbox-swkit/cacheable-response';
 import { NetworkFirst } from '@vite-pwa/workbox-swkit/strategies';
-import { ExpirationPlugin } from '@vite-pwa/workbox-swkit/expiration';
 
 declare let self: ServiceWorkerGlobalScope;
 

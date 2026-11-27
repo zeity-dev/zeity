@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { LazyUTooltip, UBadge, UButton, UEmpty, UIcon, UPageCard, USwitch } from '#components';
+import { useUserSession } from '#imports';
 import {
+  PROJECT_STATUSES,
   PROJECT_STATUS_ACTIVE,
   PROJECT_STATUS_CLOSED,
-  PROJECT_STATUSES,
 } from '@zeity/types/project';
+import { useOrganisation } from '~/composables/organisation';
+import { useProject } from '~/composables/project';
+import { getProjectStatusColor } from '~/utils/project-staus';
 
 const showClosed = ref(false);
 
@@ -109,7 +115,10 @@ watch(
           </h3>
 
           <div class="flex items-center gap-2">
-            <LazyUTooltip v-if="loggedIn && !isOnlineProject(project)" :text="$t('projects.offline')">
+            <LazyUTooltip
+              v-if="loggedIn && !isOnlineProject(project)"
+              :text="$t('projects.offline')"
+            >
               <UIcon name="i-lucide-cloud-off" />
             </LazyUTooltip>
             <UBadge variant="subtle" :color="getProjectStatusColor(project.status)">

@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { computed, ref, shallowRef } from 'vue';
 import type { SelectMenuItem } from '@nuxt/ui';
 import { watchDebounced } from '@vueuse/core';
+import { useI18n } from 'vue-i18n';
+import { UIcon, USelectMenu } from '#components';
 import { PROJECT_STATUS_ACTIVE } from '@zeity/types/project';
+import { useProject } from '~/composables/project';
 
 const model = defineModel<string[]>({ default: [] });
 

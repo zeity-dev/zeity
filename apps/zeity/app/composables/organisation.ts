@@ -1,11 +1,15 @@
+import { computed } from 'vue';
+import { $fetch, storeToRefs } from '#imports';
 import type { NewOrganisationTeam } from '@zeity/database/organisation-team';
 import {
+  ORGANISATION_MEMBER_ROLE_ADMIN,
+  ORGANISATION_MEMBER_ROLE_OWNER,
   type NewOrganisation,
   type Organisation,
   type OrganisationMemberRole,
-  ORGANISATION_MEMBER_ROLE_ADMIN,
-  ORGANISATION_MEMBER_ROLE_OWNER,
 } from '@zeity/types/organisation';
+import { useUser } from '~/composables/user';
+import { useOrganisationStore } from '~/stores/organisationStore';
 
 export function useOrganisation() {
   const store = useOrganisationStore();

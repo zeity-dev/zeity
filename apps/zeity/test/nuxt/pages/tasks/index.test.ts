@@ -1,9 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ref } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { ref } from 'vue';
-import TasksIndexPage from '~/pages/tasks/index.vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { clearNuxtData } from '#imports';
 import type { Task } from '@zeity/types/task';
+import TasksIndexPage from '~/pages/tasks/index.vue';
 
 // Mock useOrganisation
 const currentOrganisationRef = ref<any>({

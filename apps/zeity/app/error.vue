@@ -1,4 +1,9 @@
 <script setup>
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { clearError, useHead } from '#app';
+import { NuxtLayout, UButton, UIcon } from '#components';
+
 const props = defineProps({
   error: {
     type: Object,

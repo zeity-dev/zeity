@@ -1,5 +1,6 @@
-import { type RequestEvent } from 'nuxt/server';
+import { type RequestEvent, useRuntimeConfig } from 'nuxt/server';
 import { add } from 'date-fns';
+import { getUserSession, setUserSession } from '#imports';
 import { type User, users } from '@zeity/database/user';
 import { eq, useDrizzle } from './drizzle';
 

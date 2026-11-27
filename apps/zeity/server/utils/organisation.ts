@@ -1,20 +1,18 @@
 import { useRuntimeConfig } from 'nuxt/server';
 import z from 'zod';
-
 import { and, count, eq, inArray, isNotNull, sql } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
+import { organisationMembers } from '@zeity/database/organisation-member';
 import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationTeamMembers } from '@zeity/database/organisation-team-member';
-import { organisationMembers } from '@zeity/database/organisation-member';
 import { users } from '@zeity/database/user';
-
-import type { OrganisationMemberRole } from '@zeity/types/organisation';
 import {
   ORGANISATION_MEMBER_ROLE_ADMIN,
   ORGANISATION_MEMBER_ROLE_OWNER,
+  type OrganisationMemberRole,
 } from '@zeity/types/organisation';
-import { nonEmptyString } from './zod';
 import { useDrizzle } from './drizzle';
+import { nonEmptyString } from './zod';
 
 export function doesOrganisationExist(organisationId: string) {
   return useDrizzle()

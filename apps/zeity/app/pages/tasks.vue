@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useHead } from '#app';
+import { LazyUEmpty, NuxtPage } from '#components';
+import { useAuth } from '~/composables/auth';
+import { useOrganisation } from '~/composables/organisation';
+
 useHead({
   title: useI18n().t('tasks.title'),
 });

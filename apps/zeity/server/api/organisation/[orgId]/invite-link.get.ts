@@ -1,6 +1,7 @@
 import { createError, defineEventHandler, getRequestURL } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { generateToken } from '~~/server/utils/jwt';
 import { useJwtSecret } from '~~/server/utils/jwt-secret';
 import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-permission';
@@ -8,7 +9,7 @@ import { canUserUpdateOrganisationByOrgId } from '~~/server/utils/organisation-p
 export default defineEventHandler(async event => {
   const session = await requireUserSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       orgId: z.string().uuid(),

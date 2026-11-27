@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ref } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { ref } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import TaskEditPage from '~/pages/tasks/[id]/edit.vue';
 
 // Mock useOrganisation

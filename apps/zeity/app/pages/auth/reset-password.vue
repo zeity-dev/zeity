@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { ref } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
+import { navigateTo, useRoute } from '#app';
+import { definePageMeta } from '#app/composables/pages';
+import { UButton, UForm, UFormField, UInput, UPageCard } from '#components';
+import { $fetch, useToast, useUserSession } from '#imports';
 
 definePageMeta({
   middleware: 'guest',
@@ -26,7 +32,7 @@ const schema = z
     password: z.string().min(8),
     confirmPassword: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: t('user.passwordsDoNotMatch'),
     path: ['confirmPassword'], // Highlights the confirm password field
   });
@@ -66,16 +72,8 @@ async function resetPassword(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UPageCard
-    :title="$t('auth.resetPassword.title')"
-    class="max-w-md m-auto my-3"
-  >
-    <UForm
-      class="space-y-4"
-      :schema="schema"
-      :state="state"
-      @submit.prevent="resetPassword"
-    >
+  <UPageCard :title="$t('auth.resetPassword.title')" class="max-w-md m-auto my-3">
+    <UForm class="space-y-4" :schema="schema" :state="state" @submit.prevent="resetPassword">
       <UFormField name="password" :label="$t('user.password')">
         <UInput
           v-model="state.password"
@@ -116,12 +114,7 @@ async function resetPassword(event: FormSubmitEvent<Schema>) {
         </UInput>
       </UFormField>
 
-      <UButton
-        block
-        type="submit"
-        :label="$t('auth.resetPassword.title')"
-        :loading="pending"
-      />
+      <UButton block type="submit" :label="$t('auth.resetPassword.title')" :loading="pending" />
     </UForm>
   </UPageCard>
 </template>

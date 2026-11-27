@@ -1,6 +1,22 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useLazyFetch } from '#app';
+import {
+  UAvatar,
+  UButton,
+  UCard,
+  UFieldGroup,
+  UPageCard,
+  URadioGroup,
+  USkeleton,
+  UTooltip,
+} from '#components';
+import { $fetch, useToast } from '#imports';
 import type { Organisation } from '@zeity/database/organisation';
 import type { User } from '@zeity/types';
+import { useOrganisation } from '~/composables/organisation';
+import { useImagePaths } from '~/composables/useImagePaths';
 
 defineProps({
   user: {

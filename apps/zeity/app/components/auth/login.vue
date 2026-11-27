@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { ref } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
+import { UButton, UForm, UFormField, UInput, ULink, USeparator } from '#components';
+import { $fetch, useToast, useWebAuthn } from '#imports';
 
 const pending = ref(false);
 const emits = defineEmits(['submit']);
@@ -78,7 +82,7 @@ async function loginPasskey() {
       });
       emits('submit');
     })
-    .catch((error) => {
+    .catch(error => {
       toast.add({
         title: error.data?.message || error.message,
         description: error.data?.data,
@@ -92,12 +96,7 @@ async function loginPasskey() {
 </script>
 
 <template>
-  <UForm
-    class="space-y-4"
-    :schema="schema"
-    :state="state"
-    @submit.prevent="loginPassword"
-  >
+  <UForm class="space-y-4" :schema="schema" :state="state" @submit.prevent="loginPassword">
     <div v-show="showPasswordStep" class="slide space-y-4">
       <UFormField name="email" :label="$t('user.email')">
         <UInput
@@ -108,12 +107,7 @@ async function loginPasskey() {
         />
       </UFormField>
 
-      <UButton
-        block
-        type="button"
-        :label="$t('common.continue')"
-        @click="toggleShowPasswordStep"
-      />
+      <UButton block type="button" :label="$t('common.continue')" @click="toggleShowPasswordStep" />
     </div>
     <div v-show="!showPasswordStep" class="slide space-y-4">
       <UFormField name="password" :label="$t('user.password')">
@@ -155,12 +149,7 @@ async function loginPasskey() {
           @click="toggleShowPasswordStep"
         />
 
-        <UButton
-          block
-          type="submit"
-          :label="$t('auth.login.title')"
-          :loading="pending"
-        />
+        <UButton block type="submit" :label="$t('auth.login.title')" :loading="pending" />
       </div>
     </div>
 

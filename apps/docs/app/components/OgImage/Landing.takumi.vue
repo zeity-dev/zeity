@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useSiteConfig } from '#site-config/app';
+
 const props = withDefaults(
   defineProps<{
     title?: string;

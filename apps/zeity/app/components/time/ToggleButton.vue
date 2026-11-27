@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { ButtonProps } from '@nuxt/ui';
-// import { TIME_TYPE_BREAK } from '@zeity/types';
+import { UButton, UTooltip } from '#components';
+import { storeToRefs } from '#imports';
+import { useTime } from '~/composables/time';
 import { useTimerStore } from '~/stores/timerStore';
 
 const store = useTimerStore();

@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ref } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { ref } from 'vue';
-import TaskCreatePage from '~/pages/tasks/create.vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TASK_RECURRENCE_ONCE } from '@zeity/types';
+import TaskCreatePage from '~/pages/tasks/create.vue';
 
 // Mock useOrganisation
 const currentOrganisationIdRef = ref<string | null>('org-1');

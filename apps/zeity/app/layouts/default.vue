@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import { LazyAppHints, UContainer } from '#components';
+import AppAsideNavigation from '~/components/app/AsideNavigation.vue';
+import AppBottomNavigation from '~/components/app/BottomNavigation.vue';
+import AppHeader from '~/components/app/Header.vue';
+</script>
+
 <template>
   <div class="isolate">
     <AppHeader />

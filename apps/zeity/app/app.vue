@@ -1,5 +1,19 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { de, en } from '@nuxt/ui/locale';
+import { useHead, useRuntimeConfig } from '#app';
+import {
+  Head,
+  NuxtLayout,
+  NuxtLoadingIndicator,
+  NuxtPage,
+  NuxtPwaManifest,
+  UApp,
+} from '#components';
+import { useAuth } from '~/composables/auth';
+import { useSettings } from '~/composables/settings';
+import { useProjectStore } from '~/stores/projectStore';
+import { useTimerStore } from '~/stores/timerStore';
 
 const locales = {
   en,
@@ -25,9 +39,7 @@ useHead({
     dir,
   },
   title: useRuntimeConfig().public.appName,
-  link: [
-    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-  ],
+  link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
 });
 
 const auth = useAuth();

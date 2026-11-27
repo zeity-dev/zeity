@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { ref } from 'vue';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { z } from 'zod';
+import { UButton, UForm, UFormField, UInput, USeparator } from '#components';
+import { $fetch, useToast, useWebAuthn } from '#imports';
 
 const pending = ref(false);
 const emits = defineEmits(['submit']);

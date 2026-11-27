@@ -1,5 +1,8 @@
-import type { NuxtError } from '#app';
+import { type NuxtError, useLazyFetch } from '#app';
+import { $fetch, storeToRefs, useUserSession } from '#imports';
 import type { User } from '@zeity/database/user';
+import { useOrganisationStore } from '~/stores/organisationStore';
+import { useUserStore } from '~/stores/user-store';
 import type { LocalOrganisation, LocalUser } from '~/types/local-user';
 
 function uploadImage(file: File) {

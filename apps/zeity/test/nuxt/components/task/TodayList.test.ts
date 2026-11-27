@@ -1,10 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { reactive, ref } from 'vue';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import { reactive, ref } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
-import TaskTodayList from '~/components/task/TodayList.vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TIME_TYPE_MANUAL, type Time } from '@zeity/types';
+import TaskTodayList from '~/components/task/TodayList.vue';
 
 // Mock useOrganisation
 const currentOrganisationRef = ref<any>({

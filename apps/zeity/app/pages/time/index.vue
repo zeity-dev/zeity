@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { UButton, UEmpty } from '#components';
 import { sortDatesDescending } from '@zeity/utils/date';
+import TaskTodayList from '~/components/task/TodayList.vue';
+import TimeDraft from '~/components/time/Draft.vue';
+import TimeList from '~/components/time/List.vue';
+import { useOrganisation } from '~/composables/organisation';
+import { useTime } from '~/composables/time';
+import { useUser } from '~/composables/user';
+import { useSettingsStore } from '~/stores/settingsStore';
+import { useTimerStore } from '~/stores/timerStore';
+
+const LazySyncAlert = defineAsyncComponent(() => import('~/components/SyncAlert.vue'));
 
 const { user } = useUser();
 const timerStore = useTimerStore();

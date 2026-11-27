@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import { computed, shallowRef, defineModel } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useLazyFetch } from '#app';
+import { UIcon, USelectMenu } from '#components';
 import type { OrganisationTeam } from '@zeity/database/organisation-team';
+import { useOrganisation } from '~/composables/organisation';
 
 const model = defineModel<OrganisationTeam[]>({
   default: [],

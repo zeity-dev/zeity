@@ -1,16 +1,16 @@
-import { defineEventHandler, readValidatedBody, createError, getRequestURL } from 'nuxt/server';
+import { createError, defineEventHandler, getRequestURL, readValidatedBody } from 'nuxt/server';
 import { z } from 'zod';
-
-import { eq, and } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { and, eq } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
 import { organisationJoinRequests } from '@zeity/database/organisation-join-request';
 import { organisationMembers } from '@zeity/database/organisation-member';
 import { JOIN_REQUEST_STATUS_PENDING } from '@zeity/types';
-import { getOrganisationAdmins } from '~~/server/utils/organisation';
-import { useJwtSecret } from '~~/server/utils/jwt-secret';
-import { verifyToken } from '~~/server/utils/jwt';
 import { useDrizzle } from '~~/server/utils/drizzle';
+import { verifyToken } from '~~/server/utils/jwt';
+import { useJwtSecret } from '~~/server/utils/jwt-secret';
 import { useMailer } from '~~/server/utils/mailer';
+import { getOrganisationAdmins } from '~~/server/utils/organisation';
 
 const invalidTokenError = createError({
   status: 400,

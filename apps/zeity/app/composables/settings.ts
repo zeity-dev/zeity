@@ -1,3 +1,9 @@
+import { watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { updateAppConfig, useLazyFetch } from '#app';
+import { $fetch, storeToRefs, useColorMode, useUserSession } from '#imports';
+import { useOrganisation } from '~/composables/organisation';
+import { useSettingsStore } from '~/stores/settingsStore';
 import type { SettingsState } from '~/types/settings';
 
 function patchSettings(orgId: string, data: Partial<SettingsState>): Promise<SettingsState> {

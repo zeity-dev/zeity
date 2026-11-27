@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { computed, shallowRef } from 'vue';
 import { refDebounced } from '@vueuse/core';
+import { useLazyFetch } from '#app';
+import { UAvatar, UInputMenu } from '#components';
+import { useImagePaths } from '~/composables/useImagePaths';
 
 const model = defineModel<string[]>();
 const { organisationId, excludeTeam } = defineProps({

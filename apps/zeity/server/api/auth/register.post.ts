@@ -1,13 +1,13 @@
+import { createError, defineEventHandler, readValidatedBody, setResponseStatus } from 'nuxt/server';
 import { z } from 'zod';
-import { defineEventHandler, readValidatedBody, setResponseStatus, createError } from 'nuxt/server';
-
+import { hashPassword } from '#imports';
 import { users } from '@zeity/database/user';
 import { userAccounts } from '@zeity/database/user-account';
-import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
-import { useDrizzle } from '~~/server/utils/drizzle';
 import { PASSWORD_PROVIDER_ID } from '~~/server/utils/auth-providers';
-import { storeUserSession } from '~~/server/utils/user-session';
+import { useDrizzle } from '~~/server/utils/drizzle';
 import { useMailer } from '~~/server/utils/mailer';
+import { storeUserSession } from '~~/server/utils/user-session';
+import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
 
 export default defineEventHandler(async event => {
   const { name, email, password } = await readValidatedBody(

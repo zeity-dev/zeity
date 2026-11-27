@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import type { User } from '@zeity/database/user';
+import { computed, ref, type PropType } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { navigateTo } from '#app';
+import { UAlert, UButton, UModal, UPageCard } from '#components';
+import { useToast } from '#imports';
 import type { Organisation } from '@zeity/database/organisation';
+import type { User } from '@zeity/database/user';
+import UserForm from '~/components/user/Form.vue';
+import { useAuth } from '~/composables/auth';
+import { useUser } from '~/composables/user';
 
 const props = defineProps({
   pending: {

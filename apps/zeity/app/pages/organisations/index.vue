@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { ButtonProps } from '@nuxt/ui';
+import { useI18n } from 'vue-i18n';
+import { useFetch } from '#app';
+import { UAvatar, UButton, UCard, UEmpty, USkeleton } from '#components';
+import { useOrganisation } from '~/composables/organisation';
+import { useImagePaths } from '~/composables/useImagePaths';
+import { useSystemStore } from '~/stores/systemStore';
 
 const { t } = useI18n();
 const { getOrganisationImagePath } = useImagePaths();

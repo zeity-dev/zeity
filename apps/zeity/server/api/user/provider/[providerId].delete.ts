@@ -1,13 +1,16 @@
+import { createError, defineHandler } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { and, useDrizzle } from '#server/utils/drizzle';
+import { getSafeRouterParams } from '#server/utils/zod';
 import { eq } from '@zeity/database';
 import { userAccounts } from '@zeity/database/user-account';
 import { AUTH_PROVIDERS } from '~~/server/utils/auth-providers';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
-  const params = await getValidatedRouterParams(
+  const params = await getSafeRouterParams(
     event,
     z.object({
       providerId: z.enum(AUTH_PROVIDERS),
@@ -42,5 +45,5 @@ export default defineEventHandler(async event => {
 
   await useDrizzle().delete(userAccounts).where(eq(userAccounts.id, account.id)).returning();
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

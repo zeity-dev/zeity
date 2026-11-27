@@ -1,10 +1,13 @@
+import { createError, defineHandler, readValidatedBody } from 'nuxt/server';
 import { z } from 'zod';
+import { requireUserSession } from '#imports';
+import { eq, useDrizzle } from '#server/utils/drizzle';
 import { users } from '@zeity/database/user';
-import { deleteUsersOTPs, OTP_TYPE_EMAIL_VERIFICATION } from '~~/server/utils/auth-otp';
-import { isUserVerified, verifyEmailVerificationOTP } from '~~/server/utils/user-verification';
+import { OTP_TYPE_EMAIL_VERIFICATION, deleteUsersOTPs } from '~~/server/utils/auth-otp';
 import { refreshUserSession } from '~~/server/utils/user-session';
+import { isUserVerified, verifyEmailVerificationOTP } from '~~/server/utils/user-verification';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const { user } = await requireUserSession(event);
 
   const query = await readValidatedBody(
@@ -57,5 +60,5 @@ export default defineEventHandler(async event => {
 
   await refreshUserSession(event);
 
-  return sendNoContent(event, 202);
+  return new Response(null, { status: 202 });
 });

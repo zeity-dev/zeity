@@ -1,9 +1,7 @@
 import { useRuntimeConfig } from 'nuxt/server';
 import { createConsola } from 'consola';
-import type { EmailAddress } from 'unemail';
-import { createEmail } from 'unemail';
+import { createEmail, type EmailAddress } from 'unemail';
 import smtpDriver from 'unemail/drivers/smtp';
-
 import type { MailSection } from '~~/shared/types/mail';
 import { useMailTemplate } from './mail-template';
 

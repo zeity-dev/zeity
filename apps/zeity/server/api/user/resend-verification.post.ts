@@ -1,8 +1,12 @@
+import { createError, defineHandler } from 'nuxt/server';
+import { requireUserSession } from '#imports';
+import { eq, useDrizzle } from '#server/utils/drizzle';
+import { useMailer } from '#server/utils/mailer';
 import { users } from '@zeity/database/user';
-import { deleteUsersOTPs, OTP_TYPE_EMAIL_VERIFICATION } from '~~/server/utils/auth-otp';
+import { OTP_TYPE_EMAIL_VERIFICATION, deleteUsersOTPs } from '~~/server/utils/auth-otp';
 import { createEmailVerificationOTP } from '~~/server/utils/user-verification';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   const user = await useDrizzle()
@@ -36,5 +40,5 @@ export default defineEventHandler(async event => {
     [{ children: [{ text: otp, class: 'font-bold text-2xl' }] }],
   );
 
-  return sendNoContent(event);
+  return new Response(null, { status: 204 });
 });

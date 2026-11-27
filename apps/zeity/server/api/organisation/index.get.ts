@@ -1,10 +1,10 @@
 import { createError, defineEventHandler, getValidatedQuery } from 'nuxt/server';
 import { z } from 'zod';
-
-import { eq, asc, sql } from '@zeity/database';
+import { requireUserSession } from '#imports';
+import { asc, eq, sql } from '@zeity/database';
 import { organisations } from '@zeity/database/organisation';
-import { organisationTeams } from '@zeity/database/organisation-team';
 import { organisationMembers } from '@zeity/database/organisation-member';
+import { organisationTeams } from '@zeity/database/organisation-team';
 import { useDrizzle } from '~~/server/utils/drizzle';
 
 export default defineEventHandler(async event => {

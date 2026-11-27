@@ -1,7 +1,10 @@
+import { defineHandler } from 'nuxt/server';
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
 import { eq } from '@zeity/database';
 import { userSettings } from '@zeity/database/user-settings';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
 
   const db = useDrizzle();

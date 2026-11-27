@@ -8,3 +8,5 @@ declare module '#auth-utils' {
   }
 }
 
+// do not remove this export, it ensures this file is treated as a module
+export {};

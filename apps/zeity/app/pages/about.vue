@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import z from 'zod';
+import { useAppConfig, useHead } from '#app';
+import { ClientOnly, NuxtTime, UBadge, UButton, USeparator } from '#components';
+import AppLogo from '~/components/app/Logo.vue';
+import { useSystemStore } from '~/stores/systemStore';
 
 useHead({
   title: useI18n().t('about.title'),

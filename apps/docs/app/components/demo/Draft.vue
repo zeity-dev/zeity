@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useIntervalFn } from '@vueuse/core';
-
+import { UButton } from '#components';
 import { TIME_TYPE_BREAK, type DraftTime } from '@zeity/types';
 import { nowWithoutMillis, timeDiff } from '@zeity/utils/date';
+import DemoDurationFlowing from '~/components/demo/DurationFlowing.vue';
+import DemoToggleButton from '~/components/demo/ToggleButton.vue';
 
 const emits = defineEmits(['start', 'stop']);
 const model = defineModel<DraftTime | null>();
@@ -42,7 +45,7 @@ onUnmounted(() => {
   pause();
 });
 
-watch(isStarted, (value) => {
+watch(isStarted, value => {
   if (value === true) {
     resume();
   } else {
@@ -70,11 +73,7 @@ watch(isStarted, (value) => {
     </div>
 
     <div class="absolute bottom-1 right-1">
-      <DemoToggleButton
-        v-model="model"
-        @start="emits('start')"
-        @stop="emits('stop')"
-      />
+      <DemoToggleButton v-model="model" @start="emits('start')" @stop="emits('stop')" />
     </div>
   </div>
 </template>

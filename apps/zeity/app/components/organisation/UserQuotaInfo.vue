@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, type PropType } from 'vue';
+import { UAlert, UProgress } from '#components';
 import type { OrganisationWithStats } from '~/types/organisation';
 
 const props = defineProps({
@@ -51,21 +53,13 @@ const color = computed(() => {
       :description="$t('organisations.quota.exceeded.description')"
     />
 
-    <div
-      class="text-lg text-center space-x-2 tabular-nums"
-      :class="`text-${color}`"
-    >
+    <div class="text-lg text-center space-x-2 tabular-nums" :class="`text-${color}`">
       <span class="font-bold">{{ count }}</span>
       <span>/</span>
       <span class="font-bold">
         {{ quotaLimit === Infinity ? '∞' : quotaLimit }}
       </span>
     </div>
-    <UProgress
-      v-if="quotaLimit !== Infinity"
-      v-model="count"
-      :max="quotaLimit"
-      :color="color"
-    />
+    <UProgress v-if="quotaLimit !== Infinity" v-model="count" :max="quotaLimit" :color="color" />
   </div>
 </template>

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+import { UButton } from '#components';
+
 const props = defineProps({
   time: {
     type: Object as PropType<Time | DraftTime | undefined | null>,

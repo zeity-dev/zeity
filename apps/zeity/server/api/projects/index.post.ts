@@ -1,9 +1,12 @@
+import { createError, defineHandler, readValidatedBody } from 'nuxt/server';
 import { z } from 'zod';
-
+import { requireUserSession } from '#imports';
+import { useDrizzle } from '#server/utils/drizzle';
+import { requireOrganisationSession } from '#server/utils/organisation-session';
 import { projects } from '@zeity/database/project';
-import { PROJECT_STATUS_ACTIVE, PROJECT_STATUSES } from '@zeity/types';
+import { PROJECT_STATUSES, PROJECT_STATUS_ACTIVE } from '@zeity/types';
 
-export default defineEventHandler(async event => {
+export default defineHandler(async event => {
   const session = await requireUserSession(event);
   const organisation = await requireOrganisationSession(event);
 

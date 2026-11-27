@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { flushPromises } from '@vue/test-utils';
-import TaskAssignmentList from '~/components/task/AssignmentList.vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { clearNuxtData } from '#imports';
 import { TASK_RECURRENCE_ONCE } from '@zeity/types/task';
+import TaskAssignmentList from '~/components/task/AssignmentList.vue';
 
 // Mock useTask
 const addAssignmentMock = vi.fn();
