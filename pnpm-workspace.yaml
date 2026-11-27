@@ -14,11 +14,11 @@ trustPolicyExclude:
 catalogs:
   default:
     # Production Dependencies - Framework, UI, Utilities
-    nuxt: "^4.6.4"
+    nuxt: "^4.7.0"
     vue: "^3.5.46"
     "@nuxt/ui": "^4.13.1"
     "@nuxt/image": "^2.2.1"
-    "@nuxtjs/i18n": "^10.6.0"
+    "@nuxtjs/i18n": "^10.7.0"
     "@vueuse/core": "^15.1.0"
     "@number-flow/vue": "^0.5.2"
     "@pinia/nuxt": "^1.0.3"
@@ -36,10 +36,10 @@ catalogs:
   dev:
     # Development Dependencies - Tooling, Types, Testing
     typescript: "^6.0.3"
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.11"
     "@nuxt/hints": "^1.1.6"
     nuxt-security: "^2.7.0"
-    "@iconify-json/lucide": "^1.2.158"
+    "@iconify-json/lucide": "^1.2.160"
     "@iconify-json/ri": "^1.2.10"
     drizzle-kit: "^0.31.11"
 
