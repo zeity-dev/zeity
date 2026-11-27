@@ -61,7 +61,7 @@ describe('Task Edit Page', () => {
     it('should render the edit page title', async () => {
       const wrapper = await mountSuspended(TaskEditPage);
 
-      expect(wrapper.find('h2').text()).toBe('tasks.edit.title');
+      expect(wrapper.find('h2').text()).toBe('Edit Task');
     });
 
     it('should render breadcrumb', async () => {

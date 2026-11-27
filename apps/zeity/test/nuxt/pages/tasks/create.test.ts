@@ -43,7 +43,7 @@ describe('Task Create Page', () => {
     it('should render the page title', async () => {
       const wrapper = await mountSuspended(TaskCreatePage);
 
-      expect(wrapper.find('h2').text()).toBe('tasks.create.title');
+      expect(wrapper.find('h2').text()).toBe('Create Task');
     });
 
     it('should render breadcrumb with link to tasks', async () => {

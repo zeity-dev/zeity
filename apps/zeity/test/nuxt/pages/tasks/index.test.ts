@@ -72,7 +72,7 @@ describe('Tasks Index Page', () => {
     it('should render the page title', async () => {
       const wrapper = await mountAndWait();
 
-      expect(wrapper.find('h2').text()).toBe('tasks.title');
+      expect(wrapper.find('h2').text()).toBe('Tasks');
     });
 
     it('should render task cards', async () => {

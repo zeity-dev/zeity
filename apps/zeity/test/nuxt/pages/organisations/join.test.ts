@@ -119,7 +119,7 @@ describe('Join Organisation Page', () => {
 
       expect(alert.exists()).toBe(true);
       expect(alert.props('icon')).toBe('i-lucide-user-check');
-      expect(alert.props('title')).toBe('organisations.join.alreadyMember');
+      expect(alert.props('title')).toBe('You are already a member of this organisation.');
     });
 
     it('should show pending request alert when already requested', async () => {
@@ -134,7 +134,9 @@ describe('Join Organisation Page', () => {
 
       expect(alert.exists()).toBe(true);
       expect(alert.props('icon')).toBe('i-lucide-clock');
-      expect(alert.props('title')).toBe('organisations.join.request.pending');
+      expect(alert.props('title')).toBe(
+        'You have already sent a join request to this organisation.',
+      );
     });
 
     it('should show back button when user cannot apply', async () => {
@@ -149,7 +151,7 @@ describe('Join Organisation Page', () => {
 
       const backButton = buttons.find(b => b.props('icon') === 'i-lucide-chevron-left');
       expect(backButton?.exists()).toBe(true);
-      expect(backButton?.props('label')).toBe('common.back');
+      expect(backButton?.props('label')).toBe('Back');
     });
   });
 

@@ -57,7 +57,7 @@ describe('Login Component', () => {
       expect(wrapper.find('input[type="email"]').isVisible()).toBe(true);
       const continueButton = wrapper
         .findAllComponents({ name: 'UButton' })
-        .find(btn => btn.props('label') === 'common.continue');
+        .find(btn => btn.props('label') === 'Continue');
       expect(continueButton?.isVisible()).toBe(true);
     });
 
@@ -65,7 +65,7 @@ describe('Login Component', () => {
       const wrapper = await mountSuspended(LoginComponent, { attachTo: document.body });
 
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
-      const passkeyButton = buttons.find(btn => btn.props('label') === 'auth.loginWithPasskey');
+      const passkeyButton = buttons.find(btn => btn.props('label') === 'Login with Passkey');
 
       expect(passkeyButton).toBeDefined();
       expect(passkeyButton?.isVisible()).toBe(true);
@@ -99,7 +99,7 @@ describe('Login Component', () => {
       await nextTick();
 
       // Click back button (has chevron-left icon)
-      const backButton = wrapper.find('button[aria-label="common.back"]');
+      const backButton = wrapper.find('button[aria-label="Back"]');
       await backButton.trigger('click');
       await nextTick();
 
@@ -231,7 +231,7 @@ describe('Login Component', () => {
 
       // Fill in credentials
       await wrapper.find('input[type="email"]').setValue('test@example.com');
-      const continueButton = buttons.find(btn => btn.props('label') === 'common.continue')!;
+      const continueButton = buttons.find(btn => btn.props('label') === 'Continue')!;
       await continueButton.find('button').trigger('click');
       await nextTick();
 
@@ -270,7 +270,7 @@ describe('Login Component', () => {
       // Click passkey button
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
       const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'auth.loginWithPasskey',
+        btn => btn.props('label') === 'Login with Passkey',
       )!;
       await passkeyButtonComponent.find('button').trigger('click');
 
@@ -302,7 +302,7 @@ describe('Login Component', () => {
       // Click passkey button
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
       const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'auth.loginWithPasskey',
+        btn => btn.props('label') === 'Login with Passkey',
       )!;
       await passkeyButtonComponent.find('button').trigger('click');
 
@@ -322,7 +322,7 @@ describe('Login Component', () => {
       // Leave email empty
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
       const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'auth.loginWithPasskey',
+        btn => btn.props('label') === 'Login with Passkey',
       )!;
       await passkeyButtonComponent.find('button').trigger('click');
 
@@ -343,7 +343,7 @@ describe('Login Component', () => {
       // Click passkey button
       const buttons = wrapper.findAllComponents({ name: 'UButton' });
       const passkeyButtonComponent = buttons.find(
-        btn => btn.props('label') === 'auth.loginWithPasskey',
+        btn => btn.props('label') === 'Login with Passkey',
       )!;
       await passkeyButtonComponent.find('button').trigger('click');
 
